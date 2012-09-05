@@ -113,7 +113,7 @@ void CardBoxApp::update()
 void CardBoxApp::draw()
 {
 	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) ); 
+	gl::clear( Color( 1,1,1 ) );
     for(int i=0;i<cards.size();i++){
         cards.at(i)->draw();
     }
