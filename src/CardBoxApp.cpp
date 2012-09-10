@@ -244,7 +244,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
         settings->setWindowSize( 848, 564 );
         settings->setFrameRate( 60 );
         settings->setResizable( false );
-        settings->setTitle( "ImageAccordion" );
+        settings->setTitle( "Card Box" );
 
 }
 
