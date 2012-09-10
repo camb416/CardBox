@@ -47,24 +47,36 @@ public:
     void setOriginalPos(Vec3f _pos);
     Vec2f getCenter();
     void setScale(float _scale);
-    
+    void setRot(float _rot);
     bool operator < (const Card* crd) const
     {
         return (getSize().length() < crd->getSize().length());
     }
-    float alpha;
+    
     string getPath();
+        void update();
+    void select();
+    void unselect();
+    Vec2f getPos2f();
+    void grow();
+    void shrink();
 private:
-    float rot;
-    Vec3f pos;
+    bool isBig;
+    Anim<float> rot;
+    Anim<Vec3f> pos;
+    Anim<float> alpha;
     Vec3f originalPos;
-    Vec2f scale;
+    Anim<Vec2f> scale;
+    
     // float alpha;
     CardSettings * settings;
     CardModel model;
     gl::Texture tex;
     void load();
     string path;
+    bool isSelected;
+    
+
 
 };
 
