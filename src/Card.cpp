@@ -12,9 +12,11 @@ Card::Card(CardSettings * _settings, CardModel _model){
     model = _model;
     settings = _settings;
     load();
-    pos.set(0.0f,0.0f);
+    pos.set(0.0f,0.0f,rand());
     alpha = 1.0f;
     scale.set(0.2f,0.2f);
+    rot = rand();
+    
     
 }
 void Card::load(){
@@ -28,20 +30,27 @@ void Card::draw(){
     if (tex) {
         
         
-        gl::translate(pos.x-scale.x*tex.getWidth()/2,pos.y-scale.y*tex.getHeight()/2);
+        gl::translate(pos.x-scale.x*tex.getWidth()/2,pos.y-scale.y*tex.getHeight()/2, pos.z);
        /*
         gl::rotate(deg);
         */
-         
-        gl::color(ColorA(255, 255, 255, alpha));
+        gl::rotate(rot);
+     //   gl::color(ColorA(255, 255, 255, alpha));
 
         
-        Rectf texRect = Rectf(0.0f,0.0f,scale.x*tex.getWidth(),scale.y*tex.getHeight());
-        
+        Rectf texRect = Rectf(0.05f*scale.x*tex.getWidth(),0.05f*scale.y*tex.getHeight(),scale.x*tex.getWidth(),scale.y*tex.getHeight());
+       // float bgW = scale.x*1.1f*tex.getWidth();
+     //   float bgH = scale.y*1.1f*tex.getHeight();
+        Rectf bgRect = Rectf(0,0,scale.x*1.1f*tex.getWidth(),scale.y*1.1f*tex.getHeight());
       //  GalleryHelper::alignElement(_align,Area(texRect));
         //  gl::draw( texture, Vec2f( 0, 0 ) );
-        gl::color(1.0f,1.0f,1.0f,alpha);
-        
+        gl::color(1.0f,1.0f,1.0f,1.0f);
+       // gl::Texture shadow = settings->shadow_tex;
+      //  gl::draw(settings->shadow_tex, texRect);
+        gl::translate(0,0,0.01f);
+        gl::drawSolidRect(bgRect);
+        gl::translate(0,0,0.01f);
+        gl::color(1.0f,1.0f,1.0f,1.0f);
         gl::draw(tex, texRect );
 }
     gl::popMatrices();
@@ -51,9 +60,15 @@ Vec2f Card::getSize() const{
     return effectiveSize;
 }
 Vec2f Card::getCenter(){
-    return pos;// + (tex.getSize()/2.0f);
+    return Vec2f(pos.x,pos.y);// + (tex.getSize()/2.0f);
 }
-void Card::setPos(Vec2f _pos){
+Vec3f Card::getPos(){
+    return pos;
+}
+void Card::setOriginalPos(Vec3f _pos){
+    pos = originalPos = _pos;
+}
+void Card::setPos(Vec3f _pos){
     pos = _pos;
 }
 void Card::setScale(float _scale){
@@ -64,7 +79,7 @@ string Card::getPath(){
 }
 bool sortBySize(Card *A, Card *B)
 {
-    return (A->alpha < B->alpha);
+    return (A->getSize().length() < B->getSize().length());
 }
 bool sortByPath(Card*A, Card *B){
     for( string::const_iterator lit = A->getPath().begin(), rit = B->getPath().begin(); lit != A->getPath().end() && rit != B->getPath().end(); ++lit, ++rit )

@@ -31,6 +31,9 @@ struct CardModel{
 
 struct CardSettings {
     string basePath;
+    string background;
+    string shadow_path;
+    gl::Texture shadow_tex;
 };
 
 class Card{
@@ -39,7 +42,9 @@ public:
     Card(CardSettings * _settings, CardModel _model);
     void draw();
     Vec2f getSize() const;
-    void setPos(Vec2f _pos);
+    Vec3f getPos();
+    void setPos(Vec3f _pos);
+    void setOriginalPos(Vec3f _pos);
     Vec2f getCenter();
     void setScale(float _scale);
     
@@ -50,7 +55,9 @@ public:
     float alpha;
     string getPath();
 private:
-    Vec2f pos;
+    float rot;
+    Vec3f pos;
+    Vec3f originalPos;
     Vec2f scale;
     // float alpha;
     CardSettings * settings;

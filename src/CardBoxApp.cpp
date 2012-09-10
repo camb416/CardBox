@@ -13,14 +13,21 @@ class CardBoxApp : public AppBasic {
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
+    void resize(ResizeEvent evt);
+    void prepareSettings(Settings * settings);
     
     private :
     vector<Card *> cards;
+    gl::Texture bg_tex;
+    gl::Texture shadow_tex;
+    Vec2f cursorPos;
 };
 
 void CardBoxApp::setup()
 {
     setWindowSize(1920,1080);
+   // setBorderless(true);
+    
     string mJsonStr = "    { \
     \"menu\": { \
         \"id\": \"file\", \
@@ -41,6 +48,10 @@ void CardBoxApp::setup()
     
     CardSettings cs;
     cs.basePath = root["basepath"].getValue();
+    cs.background = root["background"].getValue();
+    cs.shadow_path = root["shadow"].getValue();
+    cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
+    // &gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
     {
@@ -67,7 +78,7 @@ void CardBoxApp::setup()
     float margin = 25;
     for(int i=0;i<cards.size();i++){
         if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec2f(xCount, yCount));
+        cards.at(i)->setOriginalPos(Vec3f(xCount, yCount,rand()%10));
         xCount += cards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
@@ -77,46 +88,60 @@ void CardBoxApp::setup()
         }
     }
     
+    bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
+    
+    
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
     fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
     gl::enableAlphaBlending();
 }
-
+void CardBoxApp::resize(ResizeEvent evt){
+    // setWindowSize(1920,1080);
+}
 void CardBoxApp::mouseDown( MouseEvent event )
 {
-    // sort them
-    sort(cards.begin(), cards.end(), sortByPath);
+    
 
 }
 
 void CardBoxApp::update()
 {
-    
+   
+        
     // set the sizes
     for(int i=0;i<cards.size();i++){
-        Vec2f mouseRelative = getMousePos() - cards.at(i)->getCenter();
-        if(mouseRelative.length()<1000.0f){
-            cards.at(i)->setScale((1000.0f-mouseRelative.length())/1000.0f+0.2f);
+        Vec2f mouseRelative = cursorPos - cards.at(i)->getCenter();
+        if(mouseRelative.length()<500.0f){
+            cards.at(i)->setPos(Vec3f(cards.at(i)->getPos().x,cards.at(i)->getPos().y,(500.0f-mouseRelative.length())/1.0f));
             cards.at(i)->alpha = ((1000.0f-mouseRelative.length())/1000.0f+0.2f);
         } else {
-            cards.at(i)->setScale(0.2f);
             cards.at(i)->alpha = 0.2f;
         }
     }
     
-    
+    // sort them
+   // sort(cards.begin(), cards.end(), sortBySize);
     
 
 }
 
 void CardBoxApp::draw()
 {
+   // gl::enableDepthRead();
 	// clear out the window with black
 	gl::clear( Color( 1,1,1 ) );
+    gl::draw(bg_tex,getWindowBounds());
+    gl::enableDepthWrite();
+    gl::enableDepthRead();
+    gl::enableAlphaBlending();
     for(int i=0;i<cards.size();i++){
         cards.at(i)->draw();
     }
+    cursorPos = getMousePos();
+}
+void CardBoxApp::prepareSettings(Settings * settings){
+    settings->setTitle("Card Box");
 }
 
 
