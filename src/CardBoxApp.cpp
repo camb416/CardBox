@@ -37,11 +37,15 @@ void CardBoxApp::setup()
 {
     curtainsAlpha = 0.0f;
     selectedCard = -1;
-    setWindowSize(1920,1080);
+   
    // setBorderless(true);
     
     Url apiUrl = Url( "http://localhost/json/json.js" );
-    JsonTree root = JsonTree( loadUrl( apiUrl ) );
+    
+    DataSourceRef ds = loadResource("data.js");
+    console() << "data.js lives at: " << getAssetPath( "data.js" ) << std::endl;
+   // JsonTree root = JsonTree( loadUrl( apiUrl ) );
+    JsonTree root = JsonTree( loadResource("data.js"));
     JsonTree cardTree = root.getChild( "cards" );
     
     
@@ -241,7 +245,7 @@ void CardBoxApp::draw()
 void CardBoxApp::prepareSettings(Settings * settings){
 
     
-        settings->setWindowSize( 848, 564 );
+        settings->setWindowSize( 1050,1680 );
         settings->setFrameRate( 60 );
         settings->setResizable( false );
         settings->setTitle( "Card Box" );

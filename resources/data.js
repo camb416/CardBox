@@ -1,6 +1,8 @@
 
 {
 	"basepath" : "/Applications/MAMP/htdocs/fantasticsmag.com/html/files/imagecache/425w/fmag_story/2012/Aug",
+	"background" : "background.jpg",
+	"shadow" : "shadow.png",
 	"cards" : [
 { 
  		"firstname" : "Cameron",

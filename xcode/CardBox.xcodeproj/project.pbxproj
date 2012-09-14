@@ -15,8 +15,9 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00BAE65A0E7ED9C10018A608 /* CardBoxApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BAE6590E7ED9C10018A608 /* CardBoxApp.cpp */; };
 		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
+		32A1E1FF15FF984B007D1AE0 /* data.js in Resources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		32C5162915F7A73000525141 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162715F7A73000525141 /* Card.cpp */; };
-		32C5162B15F80E1500525141 /* json.js in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* json.js */; };
+		32C5162B15F80E1500525141 /* data.js in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
@@ -38,7 +39,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32C5162715F7A73000525141 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Card.cpp; path = ../src/Card.cpp; sourceTree = "<group>"; };
 		32C5162815F7A73000525141 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../src/Card.h; sourceTree = "<group>"; };
-		32C5162A15F80E1500525141 /* json.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = json.js; path = ../resources/json.js; sourceTree = "<group>"; };
+		32C5162A15F80E1500525141 /* data.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = data.js; path = ../resources/data.js; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* CardBox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardBox_Prefix.pch; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
@@ -136,7 +137,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				32C5162A15F80E1500525141 /* json.js */,
+				32C5162A15F80E1500525141 /* data.js */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				00CCAF14116A9FEE008396D5 /* CinderApp.icns */,
 			);
@@ -203,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */,
+				32A1E1FF15FF984B007D1AE0 /* data.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +217,7 @@
 			files = (
 				00BAE65A0E7ED9C10018A608 /* CardBoxApp.cpp in Sources */,
 				32C5162915F7A73000525141 /* Card.cpp in Sources */,
-				32C5162B15F80E1500525141 /* json.js in Sources */,
+				32C5162B15F80E1500525141 /* data.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
