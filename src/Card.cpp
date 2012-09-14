@@ -50,7 +50,8 @@ void Card::shrink(){
     Vec2f scale2f = scale;
     if(scale2f.x>0.2){
          Vec3f pos3f = pos;
-        setPos(Vec3f(pos3f.x,pos3f.y,0.1f));
+        setPos(originalPos);
+        setRot(originalRot);
         setScale(0.2f);
     }
         isBig = false;
@@ -86,7 +87,7 @@ void Card::draw(){
         if(shadow){
             gl::draw(shadow, texRect);
         }
-        gl::translate(0,0,0.01f);
+        gl::translate(0,0,0.001f);
         gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
@@ -118,13 +119,13 @@ Vec2f Card::getPos2f(){
 void Card::setOriginalPos(Vec3f _pos){
     pos = originalPos = _pos;
 }
-void Card::setPos(Vec3f _pos){
+void Card::setPos(Vec3f _pos, bool setOrigin){
    // pos = _pos;
     timeline().apply(&alpha,0.5f, 0.5f,EaseNone());
     // CueRef cue = timeline().add(bind(&doSlide,this),getElapsedSeconds()+0.3f);
-
     timeline().apply(&pos,_pos,1.0,EaseInOutSine());
     timeline().apply(&alpha,1.0f, 0.5f,EaseNone());
+    if(setOrigin) originalPos = _pos;
 }
 
 
@@ -132,9 +133,11 @@ void Card::setScale(float _scale){
     //scale = Vec2f(_scale, _scale);
     timeline().apply(&scale,Vec2f(_scale,_scale),1.0f,EaseInOutSine());
 }
-void Card::setRot(float _rot){
+void Card::setRot(float _rot, bool _setOrigin){
    // rot = _rot;
     timeline().apply(&rot, _rot, 1.0f,EaseOutElastic(1.0f,1.0f));
+    if(_setOrigin) originalRot = _rot;
+    
 }
 string Card::getPath(){
     return path;

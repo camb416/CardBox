@@ -43,11 +43,11 @@ public:
     void draw();
     Vec2f getSize() const;
     Vec3f getPos();
-    void setPos(Vec3f _pos);
+    void setPos(Vec3f _pos, bool setOrigin = false);
     void setOriginalPos(Vec3f _pos);
     Vec2f getCenter();
     void setScale(float _scale);
-    void setRot(float _rot);
+    void setRot(float _rot, bool _setOrigin = false);
     bool operator < (const Card* crd) const
     {
         return (getSize().length() < crd->getSize().length());
@@ -66,6 +66,7 @@ private:
     Anim<Vec3f> pos;
     Anim<float> alpha;
     Vec3f originalPos;
+    float originalRot;
     Anim<Vec2f> scale;
     
     // float alpha;

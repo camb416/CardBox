@@ -112,8 +112,8 @@ void CardBoxApp::randomize(){
     // randomize everything
     for(int i=0;i<cards.size();i++){
         //if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(rand() % getWindowWidth(), rand() % getWindowHeight(),rand()%10));
-        cards.at(i)->setRot(rand() % 360);
+        cards.at(i)->setPos(Vec3f(rand() % getWindowWidth(), rand() % getWindowHeight(),(float)i/(float)cards.size()), true);
+        cards.at(i)->setRot(rand() % 360, true);
     }
     shrinkAll();
 }
@@ -127,8 +127,8 @@ void CardBoxApp::sortByOrder(){
     float margin = 25;
     for(int i=0;i<cards.size();i++){
         if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(xCount, yCount,rand()%10));
-        cards.at(i)->setRot(0.0f);
+        cards.at(i)->setPos(Vec3f(xCount, yCount,rand()%100));
+        cards.at(i)->setRot(0.0f, true);
         xCount += cards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
@@ -222,8 +222,11 @@ void CardBoxApp::draw()
 	gl::clear( Color( 1,1,1 ) );
     gl::color(1.0f,1.0f,1.0f,1.0f);
     gl::draw(bg_tex,getWindowBounds());
-    gl::enableDepthWrite();
+   
     gl::enableDepthRead();
+    gl::enableDepthWrite();
+    // gl::disableDepthWrite();
+  // gl::disableDepthRead();
     gl::enableAlphaBlending();
     for(int i=0;i<cards.size();i++){
         cards.at(i)->draw();
@@ -232,7 +235,7 @@ void CardBoxApp::draw()
     gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
         gl::pushMatrices();
         gl::translate(0,0,10.0f);
-    gl::drawSolidRect(getWindowBounds());
+        gl::drawSolidRect(getWindowBounds());
         gl::popMatrices();
     }
     cursorPos = getMousePos();
