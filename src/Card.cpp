@@ -77,18 +77,28 @@ void Card::draw(){
         Vec2f scale2f = scale;
         
         Rectf texRect = Rectf(-0.5f*scale2f.x*tex.getWidth(),-0.5f*scale2f.y*tex.getHeight(),0.5f*scale2f.x*tex.getWidth(),0.5f*scale2f.y*tex.getHeight());
-       // float bgW = scale.x*1.1f*tex.getWidth();
-     //   float bgH = scale.y*1.1f*tex.getHeight();
-        Rectf bgRect = Rectf(texRect.x1-5,texRect.y1-5,texRect.x2+5,texRect.y2+5);
-      //  GalleryHelper::alignElement(_align,Area(texRect));
-        //  gl::draw( texture, Vec2f( 0, 0 ) );
-        gl::color(1.0f,1.0f,1.0f,1.0f);
-        gl::Texture shadow = settings->shadow_tex;
+      
+        Rectf bgRect = texRect;
+        bgRect.inflate(Vec2f(10,10));
+        Rectf shadowRect = bgRect;
+        shadowRect.inflate(Vec2f(15,15));
+        //  Rectf bgRect = Rectf(texRect.x1-5,texRect.y1-5,texRect.x2+5,texRect.y2+5);
+     
+//        Rectf shadowRect = Rectf(bgRect.x1-15,bgRect.y1-15,bgRect.x2+15,bgRect.y2+15);
+        
         if(shadow){
-            gl::draw(shadow, texRect);
+            gl::enableDepthRead();
+            gl::color(1.0f,1.0f,1.0f,1.0f);
+            gl::Texture shadow = settings->shadow_tex;
+            
+            gl::enableAlphaBlending();
+            gl::draw(shadow,shadowRect);
+            gl::translate(texRect.getWidth(),0,0.01f);
+        } else {
+            console() << "there's no shadow" << endl;
         }
-        gl::translate(0,0,0.001f);
-        gl::drawSolidRect(bgRect);
+//       / gl::disableDepthRead();
+     //   gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
             gl::color(1.0f,0.0f,0.0f,alpha);
@@ -96,7 +106,10 @@ void Card::draw(){
         } else {
         gl::color(1.0f,1.0f,1.0f,alpha);
         }
+        
         gl::draw(tex, texRect );
+        
+        
 }
     gl::popMatrices();
 }
