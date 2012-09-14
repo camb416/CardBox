@@ -112,7 +112,7 @@ void CardBoxApp::randomize(){
     // randomize everything
     for(int i=0;i<cards.size();i++){
         //if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(rand() % getWindowWidth(), rand() % getWindowHeight(),1000.0f-1000.0f*(float)i/(float)cards.size()), true);
+        cards.at(i)->setPos(Vec3f(rand() % getWindowWidth(), rand() % getWindowHeight(),(float)i/(float)cards.size()), true);
         cards.at(i)->setRot(rand() % 360, true);
     }
     shrinkAll();
@@ -175,7 +175,7 @@ void CardBoxApp::keyDown(KeyEvent evt){
 
 void CardBoxApp::update()
 {
-//   sort (cards.begin(), cards.end(), sortBySize);
+   sort (cards.begin(), cards.end(), sortBySize);
     for(int i=0;i<cards.size(); i++){
         cards.at(i)->update();
     }
@@ -216,23 +216,18 @@ void CardBoxApp::unselectAll(){
 
 void CardBoxApp::draw()
 {
-   gl::enableDepthRead();
-  //  gl::enableDepthRead();
-    gl::enableDepthWrite();
-    gl::enableAlphaBlending();
-   // gl::enableAdditiveBlending();
-    // gl::disableDepthWrite();
-    // gl::disableDepthRead();
-//gl::enableAlphaBlending();
+//   gl::enableDepthRead();
+
     // clear out the window with black
-	gl::clear( Color( 0,0,0 ) );
+	gl::clear( Color( 1,1,1 ) );
     gl::color(1.0f,1.0f,1.0f,1.0f);
-  //  gl::draw(bg_tex,getWindowBounds());
-     gl::pushMatrices();
-    gl::translate(getWindowCenter().x,getWindowCenter().y);
+    gl::draw(bg_tex,getWindowBounds());
    
-    gl::rotate(Vec3f(0,getMousePos().x,0));
-gl::translate(-1*getWindowCenter().x,-1*getWindowCenter().y);
+    gl::enableDepthRead();
+    gl::enableDepthWrite();
+    // gl::disableDepthWrite();
+  // gl::disableDepthRead();
+    gl::enableAlphaBlending();
     for(int i=0;i<cards.size();i++){
         cards.at(i)->draw();
     }
@@ -248,7 +243,6 @@ gl::translate(-1*getWindowCenter().x,-1*getWindowCenter().y);
     gl::disableDepthRead();
     gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
-    gl::popMatrices();
    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
 }
 void CardBoxApp::prepareSettings(Settings * settings){
