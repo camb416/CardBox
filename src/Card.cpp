@@ -35,10 +35,21 @@ void Card::unselect(){
     isSelected = false;
 }
 
+bool Card::getIsBig(){
+    return isBig;
+}
+
 void Card::grow(){
     if(!isBig){
         isBig = true;
-    setScale(1.0f);
+        float desiredScale;
+        float maxWidth = getWindowWidth() - 300.0f;
+        float maxHeight = getWindowHeight()- 500.0f;
+        desiredScale = maxWidth/tex.getWidth();
+        if(tex.getHeight()*desiredScale>maxHeight){
+            desiredScale = maxHeight/tex.getHeight();
+        }
+    setScale(desiredScale);
     setRot(0.0f);
     Vec3f newPos = Vec3f(getWindowCenter().x,getWindowCenter().y,25.0f);
     setPos(newPos);
@@ -77,24 +88,27 @@ void Card::draw(){
         Vec2f scale2f = scale;
         
         Rectf texRect = Rectf(-0.5f*scale2f.x*tex.getWidth(),-0.5f*scale2f.y*tex.getHeight(),0.5f*scale2f.x*tex.getWidth(),0.5f*scale2f.y*tex.getHeight());
+      
        // float bgW = scale.x*1.1f*tex.getWidth();
      //   float bgH = scale.y*1.1f*tex.getHeight();
         Rectf bgRect = Rectf(texRect.x1-5,texRect.y1-5,texRect.x2+5,texRect.y2+5);
+        
+        Rectf shadowRect = bgRect;
+        shadowRect.inflate(Vec2f(10.0f,10.0f));
       //  GalleryHelper::alignElement(_align,Area(texRect));
         //  gl::draw( texture, Vec2f( 0, 0 ) );
         gl::color(1.0f,1.0f,1.0f,1.0f);
         gl::Texture shadow = settings->shadow_tex;
         if(shadow){
-            gl::draw(shadow, texRect);
+            gl::draw(shadow, shadowRect);
         }
         gl::translate(0,0,0.001f);
         gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
             gl::color(1.0f,0.0f,0.0f,alpha);
-            
-        } else {
-        gl::color(1.0f,1.0f,1.0f,alpha);
+            gl::drawStrokedRect(bgRect);
+            gl::color(1.0f,1.0f,1.0f,alpha);
         }
         gl::draw(tex, texRect );
 }
@@ -130,7 +144,7 @@ void Card::setPos(Vec3f _pos, bool setOrigin){
 
 
 void Card::setScale(float _scale){
-    //scale = Vec2f(_scale, _scale);
+   // scale = Vec2f(_scale, _scale);
     timeline().apply(&scale,Vec2f(_scale,_scale),1.0f,EaseInOutSine());
 }
 void Card::setRot(float _rot, bool _setOrigin){
@@ -144,7 +158,16 @@ string Card::getPath(){
 }
 bool sortBySize(Card *A, Card *B)
 {
-    return (A->getSize().length() < B->getSize().length());
+    float a,b;
+    a = A->getSize().length();
+    b = B->getSize().length();
+   // b+=0.1f;
+    if(a<b){
+        return true;
+    } else {
+        return false;
+    }
+ // return (A->getSize().length() < B->getSize().length());
 }
 bool sortByPath(Card*A, Card *B){
     for( string::const_iterator lit = A->getPath().begin(), rit = B->getPath().begin(); lit != A->getPath().end() && rit != B->getPath().end(); ++lit, ++rit )

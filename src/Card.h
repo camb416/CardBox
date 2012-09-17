@@ -60,6 +60,7 @@ public:
     Vec2f getPos2f();
     void grow();
     void shrink();
+    bool getIsBig();
 private:
     bool isBig;
     Anim<float> rot;

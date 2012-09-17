@@ -19,6 +19,8 @@ class CardBoxApp : public AppBasic {
     
     private :
     vector<Card *> cards;
+    vector<Card *>animatingCards;
+    Card * bigCard;
     gl::Texture bg_tex;
     gl::Texture shadow_tex;
     Vec2f cursorPos;
@@ -86,7 +88,7 @@ void CardBoxApp::setup()
     float margin = 25;
     for(int i=0;i<cards.size();i++){
         if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setOriginalPos(Vec3f(xCount, yCount,rand()%10));
+        cards.at(i)->setOriginalPos(Vec3f(xCount, yCount,0));
         xCount += cards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
@@ -112,7 +114,7 @@ void CardBoxApp::randomize(){
     // randomize everything
     for(int i=0;i<cards.size();i++){
         //if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(rand() % getWindowWidth(), rand() % getWindowHeight(),(float)i/(float)cards.size()), true);
+        cards.at(i)->setPos(Vec3f(rand() % (getWindowWidth()-200)+100, rand() % (getWindowHeight()-200)+100,0), true);
         cards.at(i)->setRot(rand() % 360, true);
     }
     shrinkAll();
@@ -127,7 +129,7 @@ void CardBoxApp::sortByOrder(){
     float margin = 25;
     for(int i=0;i<cards.size();i++){
         if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(xCount, yCount,rand()%100));
+        cards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
         cards.at(i)->setRot(0.0f, true);
         xCount += cards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
@@ -223,13 +225,18 @@ void CardBoxApp::draw()
     gl::color(1.0f,1.0f,1.0f,1.0f);
     gl::draw(bg_tex,getWindowBounds());
    
-    gl::enableDepthRead();
-    gl::enableDepthWrite();
-    // gl::disableDepthWrite();
-  // gl::disableDepthRead();
+   // gl::enableDepthRead();
+ //   gl::enableDepthWrite();
+     gl::disableDepthWrite();
+   gl::disableDepthRead();
     gl::enableAlphaBlending();
+    bigCard = NULL;
     for(int i=0;i<cards.size();i++){
-        cards.at(i)->draw();
+        if(!cards.at(i)->getIsBig()){
+            cards.at(i)->draw();
+        } else {
+            bigCard = cards.at(i);
+        }
     }
     if(curtainsAlpha > 0.0f){
     gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
@@ -238,10 +245,11 @@ void CardBoxApp::draw()
         gl::drawSolidRect(getWindowBounds());
         gl::popMatrices();
     }
+   if(bigCard!=NULL) bigCard->draw();
     cursorPos = getMousePos();
     gl::color(0.0f,0.0f,1.0f,1.0f);
-    gl::disableDepthRead();
-    gl::disableDepthWrite();
+  //  gl::disableDepthRead();
+  //  gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
 }
