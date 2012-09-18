@@ -24,10 +24,13 @@ using namespace ci::app;
 
 class Button{
 public:
+    Button();
     Button(string path_str,Vec2f pos);
     bool isOver();
     Vec2f pos;
     Anim<float> alpha;
+    void draw();
+    void update();
 private:
     gl::Texture tex;
     

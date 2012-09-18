@@ -2,6 +2,7 @@
 #include "cinder/Json.h"
 #include "Card.h"
 #include "cinder/gl/gl.h"
+#include "Button.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -34,8 +35,8 @@ class CardBoxApp : public AppBasic {
     void shrinkAll(int _exception = -1);
     Anim<float>curtainsAlpha;
     
-    
-    gl::Texture closeButton_tex;
+    Button closeButton;
+   // gl::Texture closeButton_tex;
 };
 
 void CardBoxApp::setup()
@@ -102,7 +103,8 @@ void CardBoxApp::setup()
     }
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
-    closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
+    closeButton = Button("closeButton.png",Vec2f(0,0));
+    //closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
     
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
@@ -262,7 +264,8 @@ void CardBoxApp::draw()
   gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
     gl::color(1.0f,1.0f,1.0f,1.0f);
-    gl::draw(closeButton_tex,Rectf(0,0,64,64));
+    closeButton.draw();
+//    gl::draw(closeButton_tex,Rectf(0,0,64,64));
    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
 }
 void CardBoxApp::prepareSettings(Settings * settings){
