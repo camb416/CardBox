@@ -1,3 +1,4 @@
 *.xcuserstate
 *.xcbkptlist
 build/*
+resources/source/*

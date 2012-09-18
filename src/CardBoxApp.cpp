@@ -233,7 +233,7 @@ void CardBoxApp::draw()
    // gl::disableDepthWrite();
     
     gl::color(1.0f,1.0f,1.0f,1.0f);
-   // gl::draw(bg_tex,getWindowBounds());
+    gl::draw(bg_tex,getWindowBounds());
    
      gl::enableDepthRead();
     gl::enableDepthWrite();
