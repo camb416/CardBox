@@ -26,7 +26,7 @@ class Button{
 public:
     Button();
     Button(string path_str,Vec2f pos);
-    bool isOver();
+    bool isOver(Vec2f mousePos);
     Vec2f pos;
     Anim<float> alpha;
     void draw();

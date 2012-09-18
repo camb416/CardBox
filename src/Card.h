@@ -44,6 +44,7 @@ public:
     Vec2f getSize() const;
     Vec3f getPos();
     void setPos(Vec3f _pos, bool setOrigin = false);
+    Vec3f getOriginalPos();
     void setOriginalPos(Vec3f _pos);
     Vec2f getCenter();
     void setScale(float _scale);
@@ -62,6 +63,8 @@ public:
     void shrink();
     bool getIsBig();
     float getScale();
+    
+    bool isMoving();
     
 private:
     bool isBig;

@@ -9,7 +9,7 @@ using namespace ci::app;
 using namespace std;
 
 class CardBoxApp : public AppBasic {
-  public:
+public:
 	void setup();
 	void mouseDown( MouseEvent evt );
     void keyDown(KeyEvent evt);
@@ -36,21 +36,21 @@ class CardBoxApp : public AppBasic {
     Anim<float>curtainsAlpha;
     
     Button closeButton;
-   // gl::Texture closeButton_tex;
+    // gl::Texture closeButton_tex;
 };
 
 void CardBoxApp::setup()
 {
     curtainsAlpha = 0.0f;
     selectedCard = -1;
-   
-   // setBorderless(true);
+    
+    // setBorderless(true);
     
     Url apiUrl = Url( "http://localhost/json/json.js" );
     
     DataSourceRef ds = loadResource("data.js");
     console() << "data.js lives at: " << getAssetPath( "data.js" ) << std::endl;
-   // JsonTree root = JsonTree( loadUrl( apiUrl ) );
+    // JsonTree root = JsonTree( loadUrl( apiUrl ) );
     JsonTree root = JsonTree( loadResource("data.js"));
     JsonTree cardTree = root.getChild( "cards" );
     
@@ -69,11 +69,11 @@ void CardBoxApp::setup()
     
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
     {
-       // console () << "elemennt" << endl;
+        // console () << "elemennt" << endl;
         JsonTree jt = (*cIt);
         // string firstname =
         
-                // console() << firstname << ":" << path << std::endl;
+        // console() << firstname << ":" << path << std::endl;
         
         CardModel cm;
         cm.firstName = (*cIt)["firstname"].getValue();
@@ -81,10 +81,10 @@ void CardBoxApp::setup()
         cm.caption = (*cIt)["caption"].getValue();
         cm.location = (*cIt)["location"].getValue();
         cm.path = (*cIt)["path"].getValue();
-
+        
         cards.push_back(new Card(&cs,cm));
     }
-
+    
     // align everything
     float xCount  = 225;
     float yCount = 225;
@@ -103,13 +103,16 @@ void CardBoxApp::setup()
     }
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
-    closeButton = Button("closeButton.png",Vec2f(0,0));
+    
+    closeButton = Button("closeButton.png",Vec2f(128,128));
+    
+    
     //closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
     
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
     fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
-  //  gl::enableAlphaBlending();
+    //  gl::enableAlphaBlending();
 }
 void CardBoxApp::resize(ResizeEvent evt){
     // setWindowSize(1920,1080);
@@ -150,7 +153,7 @@ void CardBoxApp::sortByOrder(){
 void CardBoxApp::shrinkAll(int _exception){
     for(int i=0;i<cards.size();i++){
         if(i!=_exception){
-           cards.at(i)->shrink(); 
+            cards.at(i)->shrink(); 
         }
     }
     if(_exception>-1){
@@ -162,16 +165,22 @@ void CardBoxApp::shrinkAll(int _exception){
 
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
-    shrinkAll(selectedCard);
-    cards.at(selectedCard)->grow();
+    
+    
+    if(closeButton.isOver(evt.getPos())){
+        shrinkAll();
+    }else if(selectedCard>-1){
+        shrinkAll(selectedCard);
+        cards.at(selectedCard)->grow();
+    }
 }
 void CardBoxApp::keyDown(KeyEvent evt){
     switch(evt.getChar()){
-            case ' ':
+        case ' ':
             sortByOrder();
             break;
-            case 'r':
-            case 'R':
+        case 'r':
+        case 'R':
             randomize();
             break;
         default:
@@ -186,7 +195,7 @@ void CardBoxApp::update()
     for(int i=0;i<cards.size(); i++){
         cards.at(i)->update();
     }
-   
+    
     
     float nearest = 99999;
     float nearestID = -1;
@@ -197,16 +206,14 @@ void CardBoxApp::update()
         if(mouseDist<nearest){
             nearestID = i;
             nearest = mouseDist;
-        
+            
         }
     }
     if(nearestID>-1){
-          selectedCard = nearestID;
+        selectedCard = nearestID;
         selectACard(nearestID);
-      
+        
     }
-    
-
 }
 void CardBoxApp::selectACard(int _selectedID){
     cards.at(_selectedID)->select();
@@ -225,57 +232,88 @@ void CardBoxApp::unselectAll(){
 
 void CardBoxApp::draw()
 {
-//   gl::enableDepthRead();
-
+    //   gl::enableDepthRead();
+    
     // clear out the window with black
 	gl::clear( Color( 1,1,1 ) );
     
     gl::enableAlphaBlending();
-   // gl::disableDepthRead();
-   // gl::disableDepthWrite();
+    // gl::disableDepthRead();
+    // gl::disableDepthWrite();
     
     gl::color(1.0f,1.0f,1.0f,1.0f);
     gl::draw(bg_tex,getWindowBounds());
-   
-     gl::enableDepthRead();
+    
+    gl::enableDepthRead();
     gl::enableDepthWrite();
- 
+    
     bigCard = NULL;
+  //  int drawCount = 0;
+  //  int reason1 = 0;
+  //  int reason2 = 0;
     for(int i=0;i<cards.size();i++){
+        // if(!cards.at(i)->getIsBig() && !cards.at(i)->isMoving()){
         if(!cards.at(i)->getIsBig()){
+            gl::color(1.0f,1.0f,1.0f,1.0f);
             cards.at(i)->draw();
+          //  drawCount++;
+            
+        //} //else if(!cards.at(i)->getIsBig()){
+            // gl::color(1.0f,1.0f,1.0f,1.0f);
+            // cards.at(i)->draw();
+            //reason2++;
         } else {
+          //  reason1++;
             bigCard = cards.at(i);
         }
     }
- 
+    
     if(curtainsAlpha > 0.0f){
-    gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
+        gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
         gl::pushMatrices();
         gl::translate(0,0,2.0f);
+        
+        // this here is problematic...
         gl::drawSolidRect(getWindowBounds());
         gl::popMatrices();
     }
-   
-   if(bigCard!=NULL) bigCard->draw();
+   // if(drawCount<200)
+  //  console() << drawCount << " cards being drawn up front. CUZ: " << reason1 << " cards are big, and " << reason2 << " cards are moving."<< endl;
+   // int drawCount2 = 0;
+  //  for(int i=0;i<cards.size();i++){
+      //  if(cards.at(i)->isMoving() && !cards.at(i)->getIsBig()){
+      //      drawCount2++;
+      //      gl::color(1.0f,1.0f,1.0f,1.0f);
+      //      cards.at(i)->draw();
+     //   }
+  //  }
+   //if(drawCount<200)
+  //  console() << drawCount2 << " cards being drawn in back." << endl;
+
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    if(bigCard!=NULL){
+        bigCard->draw();
+       // console() << "big card being drawn" << endl;
+      //  drawCount++;
+    }
     cursorPos = getMousePos();
     gl::color(0.0f,0.0f,1.0f,1.0f);
-  gl::disableDepthRead();
-  gl::disableDepthWrite();
+    gl::disableDepthRead();
+    gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
     gl::color(1.0f,1.0f,1.0f,1.0f);
     closeButton.draw();
-//    gl::draw(closeButton_tex,Rectf(0,0,64,64));
-   // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
+    //    gl::draw(closeButton_tex,Rectf(0,0,64,64));
+    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
 }
 void CardBoxApp::prepareSettings(Settings * settings){
-
     
-        settings->setWindowSize( 1050,1680 );
-        settings->setFrameRate( 60 );
-        settings->setResizable( false );
-        settings->setTitle( "Card Box" );
-
+    
+    settings->setWindowSize( 1680,1050 );
+    settings->setFrameRate( 60 );
+    settings->setResizable( false );
+    settings->setTitle( "Card Box" );
+    
 }
 
 

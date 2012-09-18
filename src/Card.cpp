@@ -89,7 +89,7 @@ void Card::draw(){
         
         Rectf shadowRect = bgRect;
         shadowRect.inflate(Vec2f(scale2f.x*10.0f,scale2f.y*10.0f));
-        gl::color(1.0f,1.0f,1.0f,1.0f);
+       // gl::color(1.0f,1.0f,1.0f,1.0f);
         gl::Texture shadow = settings->shadow_tex;
         if(shadow){
             gl::draw(shadow, shadowRect);
@@ -98,9 +98,9 @@ void Card::draw(){
       //  gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
-            gl::color(1.0f,0.0f,0.0f,alpha);
+         //   gl::color(1.0f,0.0f,0.0f,alpha);
             gl::drawStrokedRect(bgRect);
-            gl::color(1.0f,1.0f,1.0f,alpha);
+       //     gl::color(1.0f,1.0f,1.0f,alpha);
         }
          gl::draw(tex, texRect );
 }
@@ -120,6 +120,9 @@ Vec2f Card::getCenter(){
 }
 Vec3f Card::getPos(){
     return pos;
+}
+Vec3f Card::getOriginalPos(){
+    return originalPos;
 }
 Vec2f Card::getPos2f(){
     Vec3f pos3f = pos;
@@ -144,12 +147,22 @@ void Card::setScale(float _scale){
 }
 void Card::setRot(float _rot, bool _setOrigin){
    // rot = _rot;
-    timeline().apply(&rot, _rot, 1.0f,EaseOutElastic(1.0f,1.0f));
+    timeline().apply(&rot, _rot, 1.5f,EaseOutElastic(0.2f,0.8f));
     if(_setOrigin) originalRot = _rot;
     
 }
 string Card::getPath(){
     return path;
+}
+
+bool Card::isMoving(){
+    Vec3f pos3f = pos;
+    if(pos3f!=originalPos){
+        // console() << "moving..." << endl;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 float Card::getScale(){

@@ -16,6 +16,7 @@ Button::Button(){
 
 Button::Button(string path_str, Vec2f _pos){
         // eventually this shouldnt be loading from resources...
+    pos = (_pos);
     try{
         tex = loadImage(loadResource(path_str));
     } catch(Exception e){
@@ -24,12 +25,16 @@ Button::Button(string path_str, Vec2f _pos){
     
 }
 
-bool Button::isOver(){
+bool Button::isOver(Vec2f mousePos){
     
     // TO DO: implement me!
     
-    return false;
-}
+    if(mousePos.distance(pos)<tex.getWidth()){
+        return true;
+    } else {
+        return false;
+    }
+    }
 
 void Button::draw(){
     gl::pushMatrices();
