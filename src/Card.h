@@ -61,6 +61,8 @@ public:
     void grow();
     void shrink();
     bool getIsBig();
+    float getScale();
+    
 private:
     bool isBig;
     Anim<float> rot;
@@ -69,7 +71,7 @@ private:
     Vec3f originalPos;
     float originalRot;
     Anim<Vec2f> scale;
-    
+    float scalef;
     // float alpha;
     CardSettings * settings;
     CardModel model;
@@ -84,6 +86,7 @@ private:
 
 bool sortBySize(Card *A, Card *B); //function to sort fruits by names
 bool sortByPath(Card *A, Card *B); //function to sort fruits by names
+bool sortByZ(Card *A, Card *B); //function to sort fruits by names
 
 
 #endif /* defined(__CardBox__Card__) */

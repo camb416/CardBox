@@ -18,7 +18,7 @@ Card::Card(CardSettings * _settings, CardModel _model){
     rot = rand() % 360;
     isSelected = false;
     isBig = false;
-    
+    scalef = 1.0f;
     
 }
 void Card::load(){
@@ -51,7 +51,7 @@ void Card::grow(){
         }
     setScale(desiredScale);
     setRot(0.0f);
-    Vec3f newPos = Vec3f(getWindowCenter().x,getWindowCenter().y,25.0f);
+    Vec3f newPos = Vec3f(getWindowCenter().x,getWindowCenter().y,50.0f);
     setPos(newPos);
     }
 }
@@ -79,44 +79,39 @@ void Card::draw(){
         
         Vec3f vec = pos;
         gl::translate(vec.x,vec.y, vec.z);
-       /*
-        gl::rotate(deg);
-        */
         gl::rotate(rot);
-     //   gl::color(ColorA(255, 255, 255, alpha));
 
         Vec2f scale2f = scale;
         
         Rectf texRect = Rectf(-0.5f*scale2f.x*tex.getWidth(),-0.5f*scale2f.y*tex.getHeight(),0.5f*scale2f.x*tex.getWidth(),0.5f*scale2f.y*tex.getHeight());
       
-       // float bgW = scale.x*1.1f*tex.getWidth();
-     //   float bgH = scale.y*1.1f*tex.getHeight();
         Rectf bgRect = Rectf(texRect.x1-5,texRect.y1-5,texRect.x2+5,texRect.y2+5);
         
         Rectf shadowRect = bgRect;
-        shadowRect.inflate(Vec2f(10.0f,10.0f));
-      //  GalleryHelper::alignElement(_align,Area(texRect));
-        //  gl::draw( texture, Vec2f( 0, 0 ) );
+        shadowRect.inflate(Vec2f(scale2f.x*10.0f,scale2f.y*10.0f));
         gl::color(1.0f,1.0f,1.0f,1.0f);
         gl::Texture shadow = settings->shadow_tex;
         if(shadow){
             gl::draw(shadow, shadowRect);
         }
-        gl::translate(0,0,0.001f);
-        gl::drawSolidRect(bgRect);
+        gl::translate(0,0,0.01f);
+      //  gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
             gl::color(1.0f,0.0f,0.0f,alpha);
             gl::drawStrokedRect(bgRect);
             gl::color(1.0f,1.0f,1.0f,alpha);
         }
-        gl::draw(tex, texRect );
+         gl::draw(tex, texRect );
 }
     gl::popMatrices();
 }
 Vec2f Card::getSize() const{
     Vec2f scale2f = scale;
-    Vec2f effectiveSize = Vec2f(scale2f.x*tex.getWidth(), scale2f.y*tex.getHeight());
+    Vec2f effectiveSize = Vec2f(0,0);
+    if(tex){
+    effectiveSize = Vec2f(scale2f.x*tex.getWidth(), scale2f.y*tex.getHeight());
+    }
     return effectiveSize;
 }
 Vec2f Card::getCenter(){
@@ -156,11 +151,28 @@ void Card::setRot(float _rot, bool _setOrigin){
 string Card::getPath(){
     return path;
 }
+
+float Card::getScale(){
+    Vec2f scale2f = scale;
+    return scale2f.x;
+}
+
+bool sortByZ(Card *A, Card *B){
+    float za,zb;
+    za = A->getPos().z;
+    zb = B->getPos().z;
+    if(za<zb){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 bool sortBySize(Card *A, Card *B)
 {
     float a,b;
-    a = A->getSize().length();
-    b = B->getSize().length();
+    a = A->getScale();
+    b = B->getScale();
    // b+=0.1f;
     if(a<b){
         return true;
