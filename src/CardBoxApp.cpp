@@ -33,6 +33,9 @@ class CardBoxApp : public AppBasic {
     void unselectAll();
     void shrinkAll(int _exception = -1);
     Anim<float>curtainsAlpha;
+    
+    
+    gl::Texture closeButton_tex;
 };
 
 void CardBoxApp::setup()
@@ -99,7 +102,7 @@ void CardBoxApp::setup()
     }
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
-    
+    closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
     
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
@@ -181,6 +184,8 @@ void CardBoxApp::update()
     for(int i=0;i<cards.size(); i++){
         cards.at(i)->update();
     }
+   
+    
     float nearest = 99999;
     float nearestID = -1;
     for(int i=0;i<cards.size(); i++){
@@ -230,32 +235,34 @@ void CardBoxApp::draw()
     gl::color(1.0f,1.0f,1.0f,1.0f);
    // gl::draw(bg_tex,getWindowBounds());
    
-    // gl::enableDepthRead();
-   // gl::enableDepthWrite();
+     gl::enableDepthRead();
+    gl::enableDepthWrite();
  
     bigCard = NULL;
     for(int i=0;i<cards.size();i++){
-      //  if(!cards.at(i)->getIsBig()){
+        if(!cards.at(i)->getIsBig()){
             cards.at(i)->draw();
-      //  } else {
-      //      bigCard = cards.at(i);
-      //  }
+        } else {
+            bigCard = cards.at(i);
+        }
     }
-    /*
+ 
     if(curtainsAlpha > 0.0f){
     gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
-       // gl::pushMatrices();
-       // gl::translate(0,0,0.2f);
+        gl::pushMatrices();
+        gl::translate(0,0,2.0f);
         gl::drawSolidRect(getWindowBounds());
         gl::popMatrices();
     }
-     */
-  // if(bigCard!=NULL) bigCard->draw();
+   
+   if(bigCard!=NULL) bigCard->draw();
     cursorPos = getMousePos();
     gl::color(0.0f,0.0f,1.0f,1.0f);
   gl::disableDepthRead();
   gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    gl::draw(closeButton_tex,Rectf(0,0,64,64));
    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
 }
 void CardBoxApp::prepareSettings(Settings * settings){
