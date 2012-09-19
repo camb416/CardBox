@@ -21,6 +21,7 @@
 		3223121B160A07D800FB16AF /* rightArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231219160A07D800FB16AF /* rightArrow.png */; };
 		32231222160A396B00FB16AF /* notePaper.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231221160A396B00FB16AF /* notePaper.png */; };
 		32231225160A3A0C00FB16AF /* InfoSection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32231223160A3A0C00FB16AF /* InfoSection.cpp */; };
+		32231228160A44C400FB16AF /* MovingImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32231226160A44C400FB16AF /* MovingImage.cpp */; };
 		32A1E1FF15FF984B007D1AE0 /* data.js in Resources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		32C5162915F7A73000525141 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162715F7A73000525141 /* Card.cpp */; };
 		32C5162B15F80E1500525141 /* data.js in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
@@ -51,6 +52,8 @@
 		32231221160A396B00FB16AF /* notePaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = notePaper.png; path = ../resources/notePaper.png; sourceTree = "<group>"; };
 		32231223160A3A0C00FB16AF /* InfoSection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InfoSection.cpp; path = ../src/InfoSection.cpp; sourceTree = "<group>"; };
 		32231224160A3A0C00FB16AF /* InfoSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSection.h; path = ../src/InfoSection.h; sourceTree = "<group>"; };
+		32231226160A44C400FB16AF /* MovingImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovingImage.cpp; path = ../src/MovingImage.cpp; sourceTree = "<group>"; };
+		32231227160A44C400FB16AF /* MovingImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovingImage.h; path = ../src/MovingImage.h; sourceTree = "<group>"; };
 		32C5162715F7A73000525141 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Card.cpp; path = ../src/Card.cpp; sourceTree = "<group>"; };
 		32C5162815F7A73000525141 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../src/Card.h; sourceTree = "<group>"; };
 		32C5162A15F80E1500525141 /* data.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = data.js; path = ../resources/data.js; sourceTree = SOURCE_ROOT; };
@@ -88,6 +91,8 @@
 			children = (
 				00BAE6590E7ED9C10018A608 /* CardBoxApp.cpp */,
 				32231223160A3A0C00FB16AF /* InfoSection.cpp */,
+				32231226160A44C400FB16AF /* MovingImage.cpp */,
+				32231227160A44C400FB16AF /* MovingImage.h */,
 				32231224160A3A0C00FB16AF /* InfoSection.h */,
 				322312151608FD9C00FB16AF /* Button.cpp */,
 				322312161608FD9C00FB16AF /* Button.h */,
@@ -246,6 +251,7 @@
 				32C5162B15F80E1500525141 /* data.js in Sources */,
 				322312171608FD9C00FB16AF /* Button.cpp in Sources */,
 				32231225160A3A0C00FB16AF /* InfoSection.cpp in Sources */,
+				32231228160A44C400FB16AF /* MovingImage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,16 +19,20 @@ void InfoSection::setup(string p1_str, string p2_str){
 }
 void InfoSection::draw(){
     gl::color(1.0f,1.0f,1.0f,alpha);
-    gl::draw(pageOne);
+    gl::pushMatrices();
+    gl::translate(getWindowCenter());
+    gl::draw(pageOne,Vec2f(pageOne.getWidth()/-2.0f,pageTwo.getWidth()/-2.0f));
+    
+    gl::popMatrices();
 }
 
 bool InfoSection::isVisible(){
     return (alpha>0.0f);
 }
 void InfoSection::open(){
-    timeline().apply(&alpha,1.0f,1.0f,EaseNone());
+    timeline().apply(&alpha,1.0f,0.3f,EaseNone());
 }
 void InfoSection::close(){
-    timeline().apply(&alpha,0.0f,1.0f,EaseNone());
+    timeline().apply(&alpha,0.0f,0.2f,EaseNone());
     
 }
