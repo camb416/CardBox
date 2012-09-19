@@ -40,7 +40,7 @@ void CardUI::draw(){
 }
 
 void CardUI::updateCaption(string _text){
-
+/*
     string normalFont( "Amasis MT Pro" );
     TextLayout layout;
    // layout.clear( ColorA( 0.0f, 0.0f, 0.0f, 0.8f ) );
@@ -49,6 +49,18 @@ void CardUI::updateCaption(string _text){
     layout.addLine( _text);
     Surface8u rendered = layout.render( true, false );
     caption_tex = gl::Texture( rendered );
+  */  
+    
+   // string txt = "Here is some text that is larger than can fit naturally inside of 100 pixels.\nAnd here is another line after a hard break.";
+    Font mFont = Font( "Amasis MT Pro", 32 );
+    Vec2f mSize = Vec2f(getWindowWidth() - 100,75);
+
+	TextBox tbox = TextBox().alignment( TextBox::CENTER ).font( mFont ).size( Vec2i( mSize.x, TextBox::GROW ) ).text( _text );
+	tbox.setColor( Color( 1.0f,1.0f,1.0f ) );
+	// tbox.setBackgroundColor( ColorA( 0.5, 0, 0, 1 ) );
+	Vec2i sz = tbox.measure();
+	//console() << "Height: " << sz.y << endl;
+	caption_tex = gl::Texture( tbox.render() );
 }
 void CardUI::updateByline(string _text){
     
