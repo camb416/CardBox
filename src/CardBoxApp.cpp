@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "cinder/gl/gl.h"
 #include "Button.h"
+#include "cinder/params/Params.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -18,6 +19,11 @@ public:
     void resize(ResizeEvent evt);
     void prepareSettings(Settings * settings);
     
+    // PARAMS
+	params::InterfaceGl	mParams;
+    Quatf mSceneRotation;
+    
+    
     private :
     vector<Card *> cards;
     vector<Card *>animatingCards;
@@ -28,6 +34,8 @@ public:
     void sortByOrder();
     void randomize();
     CardSettings cs;
+    
+    int getIDfromUID(int card_uid);
     void selectACard(int _selectedID);
     int selectedCard;
     Vec2f myVec;
@@ -36,14 +44,35 @@ public:
     Anim<float>curtainsAlpha;
     
     Button closeButton;
+    Button prevButton;
+    Button nextButton;
     // gl::Texture closeButton_tex;
+    
+    // button handlers
+    void closeCard();
+    void nextCard();
+    void prevCard();
+    void info();
+    void closeInfo();
+    void nextInfo();
+    void prevInfo();
+    
 };
-
 void CardBoxApp::setup()
 {
     curtainsAlpha = 0.0f;
     selectedCard = -1;
-    
+
+    mParams = params::InterfaceGl( "CardBox Functions", Vec2i( 225, 200 ) );
+    mParams.addButton("close card", std::bind( &CardBoxApp::closeCard, this ));
+    mParams.addButton("next card", std::bind( &CardBoxApp::nextCard, this ));
+    mParams.addButton("previous card", std::bind( &CardBoxApp::prevCard, this ));
+    mParams.addButton("info", std::bind( &CardBoxApp::info, this ));
+    mParams.addButton("close info", std::bind( &CardBoxApp::closeInfo, this ));
+    mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
+    mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
+    mParams.show();
+
     // setBorderless(true);
     
     Url apiUrl = Url( "http://localhost/json/json.js" );
@@ -66,7 +95,7 @@ void CardBoxApp::setup()
         console() << "not looking good" << endl;
     }
     // &gl::Texture(loadImage(cs.basePath+"/"+cs.background));
-    
+    int i = 0;
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
     {
         // console () << "elemennt" << endl;
@@ -81,7 +110,7 @@ void CardBoxApp::setup()
         cm.caption = (*cIt)["caption"].getValue();
         cm.location = (*cIt)["location"].getValue();
         cm.path = (*cIt)["path"].getValue();
-        
+        cm.uid = i++;
         cards.push_back(new Card(&cs,cm));
     }
     
@@ -105,7 +134,8 @@ void CardBoxApp::setup()
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
     closeButton = Button("closeButton.png",Vec2f(128,128));
-    
+    prevButton = Button("leftArrow.png",Vec2f(128,512));
+    nextButton = Button("rightArrow.png",Vec2f(512,512));
     
     //closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
     
@@ -135,11 +165,16 @@ void CardBoxApp::sortByOrder(){
     float yCount = 225;
     float largestY = 0;
     float margin = 25;
-    for(int i=0;i<cards.size();i++){
-        if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
-        cards.at(i)->setRot(0.0f, true);
-        xCount += cards.at(i)->getSize().x+margin;
+    
+    vector<Card *> orderedCards = cards;
+    
+    sort(orderedCards.begin(),orderedCards.end(),sortByUID);
+    
+    for(int i=0;i<orderedCards.size();i++){
+        if(largestY<orderedCards.at(i)->getSize().y) largestY = orderedCards.at(i)->getSize().y;
+        orderedCards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
+        orderedCards.at(i)->setRot(0.0f, true);
+        xCount += orderedCards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
             xCount = 225;
@@ -148,6 +183,7 @@ void CardBoxApp::sortByOrder(){
         }
     }
     shrinkAll();
+
 }
 
 void CardBoxApp::shrinkAll(int _exception){
@@ -215,6 +251,14 @@ void CardBoxApp::update()
         
     }
 }
+int CardBoxApp::getIDfromUID(int card_uid){
+    for(int i=0;i<cards.size();i++){
+        if(cards.at(i)->getUID() == card_uid){
+            return i;
+        }
+    }
+    return -1;
+}
 void CardBoxApp::selectACard(int _selectedID){
     cards.at(_selectedID)->select();
     myVec = cards.at(_selectedID)->getPos2f();
@@ -242,6 +286,8 @@ void CardBoxApp::draw()
     // gl::disableDepthWrite();
     
     gl::color(1.0f,1.0f,1.0f,1.0f);
+    
+
     gl::draw(bg_tex,getWindowBounds());
     
     gl::enableDepthRead();
@@ -303,8 +349,14 @@ void CardBoxApp::draw()
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
     gl::color(1.0f,1.0f,1.0f,1.0f);
     closeButton.draw();
+    nextButton.draw();
+    prevButton.draw();
     //    gl::draw(closeButton_tex,Rectf(0,0,64,64));
     // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
+     
+     
+    params::InterfaceGl::draw();
+
 }
 void CardBoxApp::prepareSettings(Settings * settings){
     
@@ -315,6 +367,48 @@ void CardBoxApp::prepareSettings(Settings * settings){
     settings->setTitle( "Card Box" );
     
 }
+
+// button handlers
+void CardBoxApp::closeCard(){
+    console() << "closeCard()" << endl;
+    shrinkAll();
+}
+void CardBoxApp::nextCard(){
+    int curCard_uid = -1;
+    int nextCard_id = -1;
+    if(bigCard!=NULL){
+        curCard_uid = bigCard->getUID();
+        console() << "the current card has a uid of: " << curCard_uid << endl;
+        if(curCard_uid>-1){
+            curCard_uid++;
+            if(curCard_uid>=cards.size()) curCard_uid = 0; // loop
+            nextCard_id = getIDfromUID(curCard_uid);
+            console() << "the next card id is: " << nextCard_id << endl;
+            if(nextCard_id>-1){
+                shrinkAll(nextCard_id);
+                cards.at(nextCard_id)->grow();
+            }
+        }
+    }
+    
+    console() << "nextCard()" << endl;
+}
+void CardBoxApp::prevCard(){
+    console() << "prevCard()" << endl;
+}
+void CardBoxApp::info(){
+    console() << "info()" << endl;
+}
+void CardBoxApp::closeInfo(){
+    console() << "closeInfo()" << endl;
+}
+void CardBoxApp::nextInfo(){
+    console() << "nextInfo()" << endl;
+}
+void CardBoxApp::prevInfo(){
+    console() << "prevInfo()" << endl;
+}
+
 
 
 CINDER_APP_BASIC( CardBoxApp, RendererGl )

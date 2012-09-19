@@ -27,6 +27,7 @@ struct CardModel{
     string lastInitial;
     string caption;
     string location;
+    int uid;
 };
 
 struct CardSettings {
@@ -54,6 +55,7 @@ public:
         return (getSize().length() < crd->getSize().length());
     }
     
+    int getUID();
     string getPath();
         void update();
     void select();
@@ -90,6 +92,6 @@ private:
 bool sortBySize(Card *A, Card *B); //function to sort fruits by names
 bool sortByPath(Card *A, Card *B); //function to sort fruits by names
 bool sortByZ(Card *A, Card *B); //function to sort fruits by names
-
+bool sortByUID(Card *A, Card *B); //function to sort fruits by names
 
 #endif /* defined(__CardBox__Card__) */

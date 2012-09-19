@@ -121,6 +121,9 @@ Vec2f Card::getCenter(){
 Vec3f Card::getPos(){
     return pos;
 }
+int Card::getUID(){
+    return model.uid;
+}
 Vec3f Card::getOriginalPos(){
     return originalPos;
 }
@@ -168,6 +171,14 @@ bool Card::isMoving(){
 float Card::getScale(){
     Vec2f scale2f = scale;
     return scale2f.x;
+}
+
+bool sortByUID(Card *A, Card *B){
+    if(A->getUID()<B->getUID()){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool sortByZ(Card *A, Card *B){
