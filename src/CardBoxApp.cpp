@@ -426,9 +426,11 @@ void CardBoxApp::prevCard(){
     console() << "prevCard()" << endl;
 }
 void CardBoxApp::info(){
+    infoSection.open();
     console() << "info()" << endl;
 }
 void CardBoxApp::closeInfo(){
+    infoSection.close();
     console() << "closeInfo()" << endl;
 }
 void CardBoxApp::nextInfo(){

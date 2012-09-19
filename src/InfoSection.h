@@ -32,6 +32,7 @@ public:
     void open();
     void close();
     void draw();
+    bool isVisible();
 private:
     
     
