@@ -126,7 +126,7 @@ void CardBoxApp::setup()
         cm.uid = i++;
         cards.push_back(new Card(&cs,cm));
     }
-    
+    /*
     // align everything
     float xCount  = 225;
     float yCount = 225;
@@ -143,6 +143,8 @@ void CardBoxApp::setup()
             largestY = 0;
         }
     }
+    */
+    randomize();
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
