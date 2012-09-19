@@ -28,6 +28,7 @@ void MovingImage::update(){
 void MovingImage::draw(){
     gl::pushMatrices();
     gl::translate(pos);
+    gl::color(1.0f,1.0f,1.0f,alpha);
     gl::draw(tex,Vec2f(-0.5f*tex.getWidth(), -0.5f*tex.getHeight()));
     gl::popMatrices();
 }
@@ -36,15 +37,15 @@ void MovingImage::setPos(Vec3f _pos){
     pos = _pos;
 }
 void MovingImage::moveTo(Vec3f _pos, float _s){
-    timeline().apply(&pos,_pos,1.0f,_s,EaseOutAtan());
-}
+  timeline().apply(&pos,_pos,_s,EaseInOutSine());
+   }
 void MovingImage::setAlpha(float _alpha){
     alpha = _alpha;
 }
 void MovingImage::show(float _s){
-    timeline().apply(&alpha,1.0f,_s,EaseOutAtan());
+    timeline().apply(&alpha,1.0f,_s,EaseInOutSine());
 }
 void MovingImage::hide(float _s){
-    timeline().apply(&alpha,0.0f,_s,EaseOutAtan());
+    timeline().apply(&alpha,0.0f,_s,EaseInOutSine());
 
 }

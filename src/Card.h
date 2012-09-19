@@ -65,7 +65,7 @@ public:
     void shrink();
     bool getIsBig();
     float getScale();
-    
+    CardModel getModel();
     bool isMoving();
     
 private:

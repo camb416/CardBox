@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "cinder/params/Params.h"
 #include "InfoSection.h"
+#include "CardUI.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -38,6 +39,8 @@ public:
     void randomize();
     CardSettings cs;
     
+    CardUI cui;
+    
     int getIDfromUID(int card_uid);
     void selectACard(int _selectedID);
     int selectedCard;
@@ -63,6 +66,8 @@ public:
 };
 void CardBoxApp::setup()
 {
+    cui.setup();
+    
     curtainsAlpha = 0.0f;
     selectedCard = -1;
 
@@ -92,7 +97,7 @@ void CardBoxApp::setup()
     cs.shadow_path = root["shadow"].getValue();
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
     
-    infoSection.setup("notePaper.png","notePaper.png");
+    infoSection.setup("instructions1.png","instructions2.png");
     //infoBG = gl::Texture(loadImage(loadResource("notePaper.png")));
     
     console() << "loading the gl texture" << endl;
@@ -217,6 +222,7 @@ void CardBoxApp::mouseDown( MouseEvent evt )
         shrinkAll();
     }else if(selectedCard>-1){
         shrinkAll(selectedCard);
+        cui.update(cards.at(selectedCard)->getModel());
         cards.at(selectedCard)->grow();
     }
 }
@@ -367,6 +373,7 @@ void CardBoxApp::draw()
     infoSection.draw();
    // gl::draw(infoBG);
     params::InterfaceGl::draw();
+    cui.draw();
 
 }
 void CardBoxApp::prepareSettings(Settings * settings){
@@ -397,6 +404,7 @@ void CardBoxApp::nextCard(){
             console() << "the next card id is: " << nextCard_id << endl;
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
+                cui.update(cards.at(nextCard_id)->getModel());
                 cards.at(nextCard_id)->grow();
             }
         }
@@ -417,6 +425,7 @@ void CardBoxApp::prevCard(){
             console() << "the next card id is: " << nextCard_id << endl;
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
+                cui.update(cards.at(nextCard_id)->getModel());
                 cards.at(nextCard_id)->grow();
             }
         }
@@ -434,9 +443,11 @@ void CardBoxApp::closeInfo(){
     console() << "closeInfo()" << endl;
 }
 void CardBoxApp::nextInfo(){
+    infoSection.next();
     console() << "nextInfo()" << endl;
 }
 void CardBoxApp::prevInfo(){
+    infoSection.prev();
     console() << "prevInfo()" << endl;
 }
 

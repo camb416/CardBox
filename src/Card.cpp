@@ -143,6 +143,9 @@ void Card::setPos(Vec3f _pos, bool setOrigin){
     if(setOrigin) originalPos = _pos;
 }
 
+CardModel Card::getModel(){
+    return model;
+}
 
 void Card::setScale(float _scale){
    // scale = Vec2f(_scale, _scale);

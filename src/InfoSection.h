@@ -13,6 +13,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/Timeline.h"
+#include "MovingImage.h"
 #include <string>
 #include <iostream>
 
@@ -27,13 +28,16 @@ public:
     InfoSection();
     Anim<Vec3f> pos;
     Anim<float> alpha;
-    gl::Texture pageOne;
-    gl::Texture pageTwo;
+    MovingImage pageOne;
+    MovingImage pageTwo;
     void open();
     void close();
     void draw();
     bool isVisible();
+    void next();
+    void prev();
 private:
+    int curPage;
     
     
 };
