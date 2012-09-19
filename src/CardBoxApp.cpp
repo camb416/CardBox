@@ -170,10 +170,13 @@ void CardBoxApp::sortByOrder(){
     
     sort(orderedCards.begin(),orderedCards.end(),sortByUID);
     
+    
     for(int i=0;i<orderedCards.size();i++){
-        if(largestY<orderedCards.at(i)->getSize().y) largestY = orderedCards.at(i)->getSize().y;
+       if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
         orderedCards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
         orderedCards.at(i)->setRot(0.0f, true);
+        
+        
         xCount += orderedCards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
@@ -394,6 +397,24 @@ void CardBoxApp::nextCard(){
     console() << "nextCard()" << endl;
 }
 void CardBoxApp::prevCard(){
+    int curCard_uid = -1;
+    int nextCard_id = -1;
+    if(bigCard!=NULL){
+        curCard_uid = bigCard->getUID();
+        console() << "the current card has a uid of: " << curCard_uid << endl;
+        if(curCard_uid>-1){
+            curCard_uid--;
+            if(curCard_uid<0) curCard_uid = (cards.size()-1); // loop
+            nextCard_id = getIDfromUID(curCard_uid);
+            console() << "the next card id is: " << nextCard_id << endl;
+            if(nextCard_id>-1){
+                shrinkAll(nextCard_id);
+                cards.at(nextCard_id)->grow();
+            }
+        }
+    }
+    
+
     console() << "prevCard()" << endl;
 }
 void CardBoxApp::info(){
