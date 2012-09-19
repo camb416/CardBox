@@ -4,6 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "Button.h"
 #include "cinder/params/Params.h"
+#include "InfoSection.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -23,6 +24,8 @@ public:
 	params::InterfaceGl	mParams;
     Quatf mSceneRotation;
     
+   // gl::Texture infoBG;
+    InfoSection infoSection;
     
     private :
     vector<Card *> cards;
@@ -88,6 +91,10 @@ void CardBoxApp::setup()
     cs.background = root["background"].getValue();
     cs.shadow_path = root["shadow"].getValue();
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
+    
+    infoSection.setup("notePaper.png","notePaper.png");
+    //infoBG = gl::Texture(loadImage(loadResource("notePaper.png")));
+    
     console() << "loading the gl texture" << endl;
     if(cs.shadow_tex){
         console() << "looks successful" << endl;
@@ -163,7 +170,7 @@ void CardBoxApp::sortByOrder(){
     // align everything
     float xCount  = 225;
     float yCount = 225;
-    float largestY = 0;
+    float largestY = 110;
     float margin = 25;
     
     vector<Card *> orderedCards = cards;
@@ -172,17 +179,17 @@ void CardBoxApp::sortByOrder(){
     
     
     for(int i=0;i<orderedCards.size();i++){
-       if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
+      // if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
         orderedCards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
         orderedCards.at(i)->setRot(0.0f, true);
         
-        
-        xCount += orderedCards.at(i)->getSize().x+margin;
+        xCount += 85+margin;
+        //xCount += orderedCards.at(i)->getSize().x+margin;
         // console() << xCount << ", " << yCount << endl;
         if(xCount>getWindowWidth()-225){
             xCount = 225;
             yCount += largestY+margin;
-            largestY = 0;
+            //largestY = 0;
         }
     }
     shrinkAll();
@@ -357,7 +364,8 @@ void CardBoxApp::draw()
     //    gl::draw(closeButton_tex,Rectf(0,0,64,64));
     // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
      
-     
+    infoSection.draw();
+   // gl::draw(infoBG);
     params::InterfaceGl::draw();
 
 }
