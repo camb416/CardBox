@@ -31,11 +31,14 @@ public:
     void setup();
     void update(CardModel cm);
     void draw();
-    
+    void show();
+    void hide();
 private:
-    void updateText(string _text = "");
+    void updateCaption(string _text = "");
+    void updateByline(string _text = "");
     Anim<float> alpha;
-    gl::Texture text_texture;
+    gl::Texture caption_tex;
+    gl::Texture byline_tex;
     CardModel cardModel;
     
     

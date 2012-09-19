@@ -67,6 +67,7 @@ public:
 void CardBoxApp::setup()
 {
     cui.setup();
+    cui.hide();
     
     curtainsAlpha = 0.0f;
     selectedCard = -1;
@@ -118,7 +119,7 @@ void CardBoxApp::setup()
         
         CardModel cm;
         cm.firstName = (*cIt)["firstname"].getValue();
-        cm.lastInitial = (*cIt)["path"].getValue();
+        cm.lastInitial = (*cIt)["lastinitial"].getValue();
         cm.caption = (*cIt)["caption"].getValue();
         cm.location = (*cIt)["location"].getValue();
         cm.path = (*cIt)["path"].getValue();
@@ -168,6 +169,7 @@ void CardBoxApp::randomize(){
         cards.at(i)->setRot(rand() % 360, true);
     }
     shrinkAll();
+    cui.hide();
 }
 
 
@@ -198,6 +200,7 @@ void CardBoxApp::sortByOrder(){
         }
     }
     shrinkAll();
+    cui.hide();
 
 }
 
@@ -208,7 +211,7 @@ void CardBoxApp::shrinkAll(int _exception){
         }
     }
     if(_exception>-1){
-        timeline().apply(&curtainsAlpha, 0.5f,1.0f,EaseInOutSine());
+        timeline().apply(&curtainsAlpha, 0.8f,1.0f,EaseInOutSine());
     } else {
         timeline().apply(&curtainsAlpha, 0.0f,1.0f,EaseInOutSine());
     }
@@ -220,8 +223,10 @@ void CardBoxApp::mouseDown( MouseEvent evt )
     
     if(closeButton.isOver(evt.getPos())){
         shrinkAll();
+        cui.hide();
     }else if(selectedCard>-1){
         shrinkAll(selectedCard);
+        cui.show();
         cui.update(cards.at(selectedCard)->getModel());
         cards.at(selectedCard)->grow();
     }
@@ -252,7 +257,7 @@ void CardBoxApp::update()
     float nearest = 99999;
     float nearestID = -1;
     for(int i=0;i<cards.size(); i++){
-        Vec2f mousePos = getMousePos();
+        Vec2f mousePos = cursorPos;
         Vec2f cardPos = Vec2f(cards.at(i)->getPos().x,cards.at(i)->getPos().y);
         float mouseDist = mousePos.distance(cardPos);
         if(mouseDist<nearest){
@@ -381,7 +386,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
     
     settings->setWindowSize( 1680,1050 );
     settings->setFrameRate( 60 );
-    settings->setResizable( false );
+  //  settings->setResizable( false );
     settings->setTitle( "Card Box" );
     
 }
@@ -390,6 +395,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
 void CardBoxApp::closeCard(){
     console() << "closeCard()" << endl;
     shrinkAll();
+    cui.hide();
 }
 void CardBoxApp::nextCard(){
     int curCard_uid = -1;
@@ -404,6 +410,7 @@ void CardBoxApp::nextCard(){
             console() << "the next card id is: " << nextCard_id << endl;
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
+                cui.show();
                 cui.update(cards.at(nextCard_id)->getModel());
                 cards.at(nextCard_id)->grow();
             }
@@ -425,6 +432,7 @@ void CardBoxApp::prevCard(){
             console() << "the next card id is: " << nextCard_id << endl;
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
+                cui.show();
                 cui.update(cards.at(nextCard_id)->getModel());
                 cards.at(nextCard_id)->grow();
             }
@@ -436,6 +444,8 @@ void CardBoxApp::prevCard(){
 }
 void CardBoxApp::info(){
     infoSection.open();
+    shrinkAll();
+    cui.hide();
     console() << "info()" << endl;
 }
 void CardBoxApp::closeInfo(){
