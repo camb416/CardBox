@@ -34,6 +34,7 @@ public:
     void show();
     void hide();
     float getLowerBound();
+    bool isOpen();
 private:
     void updateCaption(string _text = "");
     void updateByline(string _text = "");

@@ -43,7 +43,7 @@
  		"firstname" : "Cameron",
  		"lastinitial" : "B",
  		"location" : "New York, NY",
- 		"caption" : "This is my caption",
+ 		"caption" : "",
 		"path" : "CoolWhite_14 copy.jpg"
 },
 { 

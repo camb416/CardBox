@@ -59,6 +59,7 @@
 		3223122A160A591A00FB16AF /* instructions1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instructions1.png; path = ../resources/instructions1.png; sourceTree = "<group>"; };
 		3223122D160A59FE00FB16AF /* CardUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CardUI.cpp; sourceTree = "<group>"; };
 		3223122E160A59FE00FB16AF /* CardUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardUI.h; sourceTree = "<group>"; };
+		3223123A160B942000FB16AF /* CardBoxApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CardBoxApp.h; path = ../src/CardBoxApp.h; sourceTree = "<group>"; };
 		32C5162715F7A73000525141 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Card.cpp; path = ../src/Card.cpp; sourceTree = "<group>"; };
 		32C5162815F7A73000525141 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../src/Card.h; sourceTree = "<group>"; };
 		32C5162A15F80E1500525141 /* data.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = data.js; path = ../resources/data.js; sourceTree = SOURCE_ROOT; };
@@ -94,6 +95,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3223123A160B942000FB16AF /* CardBoxApp.h */,
 				00BAE6590E7ED9C10018A608 /* CardBoxApp.cpp */,
 				3223122D160A59FE00FB16AF /* CardUI.cpp */,
 				3223122E160A59FE00FB16AF /* CardUI.h */,
@@ -101,8 +103,8 @@
 				32231223160A3A0C00FB16AF /* InfoSection.cpp */,
 				32231226160A44C400FB16AF /* MovingImage.cpp */,
 				32231227160A44C400FB16AF /* MovingImage.h */,
-				322312151608FD9C00FB16AF /* Button.cpp */,
 				322312161608FD9C00FB16AF /* Button.h */,
+				322312151608FD9C00FB16AF /* Button.cpp */,
 				32C5162715F7A73000525141 /* Card.cpp */,
 				32C5162815F7A73000525141 /* Card.h */,
 			);

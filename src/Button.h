@@ -31,8 +31,15 @@ public:
     Anim<float> alpha;
     void draw();
     void update();
+    void down();
+    void up();
+    bool isDown();
+    void hide();
+    void show();
 private:
     gl::Texture tex;
+    bool bOver;
+    bool bDown;
     
 };
 

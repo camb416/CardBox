@@ -1,68 +1,6 @@
-#include "cinder/app/AppBasic.h"
-#include "cinder/Json.h"
-#include "Card.h"
-#include "cinder/gl/gl.h"
-#include "Button.h"
-#include "cinder/params/Params.h"
-#include "InfoSection.h"
-#include "CardUI.h"
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
+#include "CardBoxApp.h"
 
-class CardBoxApp : public AppBasic {
-public:
-	void setup();
-	void mouseDown( MouseEvent evt );
-    void keyDown(KeyEvent evt);
-	void update();
-	void draw();
-    void resize(ResizeEvent evt);
-    void prepareSettings(Settings * settings);
-    
-    // PARAMS
-	params::InterfaceGl	mParams;
-    Quatf mSceneRotation;
-    
-   // gl::Texture infoBG;
-    InfoSection infoSection;
-    
-    private :
-    vector<Card *> cards;
-    vector<Card *>animatingCards;
-    Card * bigCard;
-    gl::Texture bg_tex;
-    gl::Texture shadow_tex;
-    Vec2f cursorPos;
-    void sortByOrder();
-    void randomize();
-    CardSettings cs;
-    
-    CardUI cui;
-    
-    int getIDfromUID(int card_uid);
-    void selectACard(int _selectedID);
-    int selectedCard;
-    Vec2f myVec;
-    void unselectAll();
-    void shrinkAll(int _exception = -1);
-    Anim<float>curtainsAlpha;
-    
-    Button closeButton;
-    Button prevButton;
-    Button nextButton;
-    
-    // button handlers
-    void closeCard();
-    void nextCard();
-    void prevCard();
-    void info();
-    void closeInfo();
-    void nextInfo();
-    void prevInfo();
-    
-};
 void CardBoxApp::setup()
 {
     cui.setup();
@@ -80,6 +18,7 @@ void CardBoxApp::setup()
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
     mParams.show();
+    
     
     Url apiUrl = Url( "http://localhost/json/json.js" );
     
@@ -101,15 +40,11 @@ void CardBoxApp::setup()
     } else {
         console() << "not looking good" << endl;
     }
-    // &gl::Texture(loadImage(cs.basePath+"/"+cs.background));
+
     int i = 0;
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
     {
-        // console () << "elemennt" << endl;
         JsonTree jt = (*cIt);
-        // string firstname =
-        
-        // console() << firstname << ":" << path << std::endl;
         
         CardModel cm;
         cm.firstName = (*cIt)["firstname"].getValue();
@@ -120,41 +55,22 @@ void CardBoxApp::setup()
         cm.uid = i++;
         cards.push_back(new Card(&cs,cm));
     }
-    /*
-    // align everything
-    float xCount  = 225;
-    float yCount = 225;
-    float largestY = 0;
-    float margin = 25;
-    for(int i=0;i<cards.size();i++){
-        if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setOriginalPos(Vec3f(xCount, yCount,0));
-        xCount += cards.at(i)->getSize().x+margin;
-        // console() << xCount << ", " << yCount << endl;
-        if(xCount>getWindowWidth()-225){
-            xCount = 225;
-            yCount += largestY+margin;
-            largestY = 0;
-        }
-    }
-    */
+    
     randomize();
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
-    closeButton = Button("closeButton.png",Vec2f(128,128));
-    prevButton = Button("leftArrow.png",Vec2f(128,512));
-    nextButton = Button("rightArrow.png",Vec2f(512,512));
-    
-    //closeButton_tex = gl::Texture(loadImage(loadResource("closeButton.png")));
-    
+    closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-128,128));
+    prevButton = Button("leftArrow.png",Vec2f(128,getWindowHeight()/2));
+    nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-128,getWindowHeight()/2));
+        
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
     fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
-    //  gl::enableAlphaBlending();
 }
+
 void CardBoxApp::resize(ResizeEvent evt){
-    // setWindowSize(1920,1080);
+        // resize event (empty so far)
 }
 
 void CardBoxApp::randomize(){
@@ -166,6 +82,9 @@ void CardBoxApp::randomize(){
     }
     shrinkAll();
     cui.hide();
+    closeButton.hide();
+    prevButton.hide();
+    nextButton.hide();
 }
 
 
@@ -197,6 +116,9 @@ void CardBoxApp::sortByOrder(){
     }
     shrinkAll();
     cui.hide();
+    closeButton.hide();
+    prevButton.hide();
+    nextButton.hide();
 
 }
 
@@ -213,18 +135,59 @@ void CardBoxApp::shrinkAll(int _exception){
     }
 }
 
+void CardBoxApp::mouseUp(MouseEvent evt){
+    
+    if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
+        shrinkAll();
+        cui.hide();
+        closeButton.hide();
+        prevButton.hide();
+        nextButton.hide();
+        closeButton.up();
+        console() << "you released while over the close button" << endl;
+    }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
+        prevButton.up();
+        prevCard();
+        console() << "you released while over the prev button" << endl;
+    } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
+        nextButton.up();
+        nextCard();
+        console() << "you released while over the next button" << endl;
+    } else {
+        closeButton.up();
+        nextButton.up();
+        prevButton.up();
+    }
+}
+
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
     
-    
+    if(cui.isOpen()){
     if(closeButton.isOver(evt.getPos())){
-        shrinkAll();
-        cui.hide();
+       // shrinkAll();
+        //cui.hide();
+        closeButton.down();
+        console() << "you pressed while over the close button" << endl;
+
+    }else if(prevButton.isOver(evt.getPos())){
+        prevButton.down();
+        console() << "you pressed while over the prev button" << endl;
+    } else if(nextButton.isOver(evt.getPos())){
+        nextButton.down();
+        console() << "you pressed while over the next button" << endl;
+
+    }
+        
     }else if(selectedCard>-1){
         shrinkAll(selectedCard);
         cui.show();
+        closeButton.show();
+        prevButton.show();
+        nextButton.show();
         cui.update(cards.at(selectedCard)->getModel());
         cards.at(selectedCard)->grow(cui.getLowerBound());
+        
     }
 }
 void CardBoxApp::keyDown(KeyEvent evt){
@@ -267,6 +230,10 @@ void CardBoxApp::update()
         selectACard(nearestID);
         
     }
+    closeButton.isOver(cursorPos);
+    prevButton.isOver(cursorPos);
+    nextButton.isOver(cursorPos);
+    
 }
 int CardBoxApp::getIDfromUID(int card_uid){
     for(int i=0;i<cards.size();i++){
@@ -311,22 +278,11 @@ void CardBoxApp::draw()
     gl::enableDepthWrite();
     
     bigCard = NULL;
-  //  int drawCount = 0;
-  //  int reason1 = 0;
-  //  int reason2 = 0;
-    for(int i=0;i<cards.size();i++){
-        // if(!cards.at(i)->getIsBig() && !cards.at(i)->isMoving()){
+      for(int i=0;i<cards.size();i++){
         if(!cards.at(i)->getIsBig()){
             gl::color(1.0f,1.0f,1.0f,1.0f);
             cards.at(i)->draw();
-          //  drawCount++;
-            
-        //} //else if(!cards.at(i)->getIsBig()){
-            // gl::color(1.0f,1.0f,1.0f,1.0f);
-            // cards.at(i)->draw();
-            //reason2++;
-        } else {
-          //  reason1++;
+            } else {
             bigCard = cards.at(i);
         }
     }
@@ -336,32 +292,16 @@ void CardBoxApp::draw()
         gl::pushMatrices();
         gl::translate(0,0,0);
         
-        // this here is problematic...
         Rectf rect = getWindowBounds();
-       // rect.x2/=2;
         gl::disableDepthRead();
         gl::disableDepthWrite();
         gl::drawSolidRect(rect);
         gl::popMatrices();
     }
-   // if(drawCount<200)
-  //  console() << drawCount << " cards being drawn up front. CUZ: " << reason1 << " cards are big, and " << reason2 << " cards are moving."<< endl;
-   // int drawCount2 = 0;
-  //  for(int i=0;i<cards.size();i++){
-      //  if(cards.at(i)->isMoving() && !cards.at(i)->getIsBig()){
-      //      drawCount2++;
-      //      gl::color(1.0f,1.0f,1.0f,1.0f);
-      //      cards.at(i)->draw();
-     //   }
-  //  }
-   //if(drawCount<200)
-  //  console() << drawCount2 << " cards being drawn in back." << endl;
 
     gl::color(1.0f,1.0f,1.0f,1.0f);
     if(bigCard!=NULL){
         bigCard->draw();
-       // console() << "big card being drawn" << endl;
-      //  drawCount++;
     }
     cursorPos = getMousePos();
     gl::color(0.0f,0.0f,1.0f,1.0f);
@@ -369,15 +309,15 @@ void CardBoxApp::draw()
     gl::disableDepthWrite();
     gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
     gl::color(1.0f,1.0f,1.0f,1.0f);
+    
     closeButton.draw();
     nextButton.draw();
     prevButton.draw();
-    //    gl::draw(closeButton_tex,Rectf(0,0,64,64));
-    // console() << cursorPos.x << ", " << cursorPos.y << " : " << myVec.x << ", " << myVec.y << endl;
-     
+    
     infoSection.draw();
-   // gl::draw(infoBG);
+    
     params::InterfaceGl::draw();
+    
     cui.draw();
 
 }
@@ -386,7 +326,6 @@ void CardBoxApp::prepareSettings(Settings * settings){
     
     settings->setWindowSize( 1050,1050 );
     settings->setFrameRate( 60 );
-  //  settings->setResizable( false );
     settings->setTitle( "Card Box" );
     
 }
@@ -396,6 +335,9 @@ void CardBoxApp::closeCard(){
     console() << "closeCard()" << endl;
     shrinkAll();
     cui.hide();
+    closeButton.hide();
+    prevButton.hide();
+    nextButton.hide();
 }
 void CardBoxApp::nextCard(){
     int curCard_uid = -1;

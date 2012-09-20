@@ -48,7 +48,7 @@ void CardUI::draw(){
 
     
       gl::draw(caption_tex, caption_middle);
-    gl::drawStrokedCircle(caption_middle,10);
+  //  gl::drawStrokedCircle(caption_middle,10);
     gl::popMatrices();
 }
 
@@ -60,6 +60,13 @@ void CardUI::updateCaption(string _text){
 	tbox.setColor( Color( 1.0f,1.0f,1.0f ) );
 	caption_tex = gl::Texture( tbox.render() );
         caption_middle = Vec2f(byline_leftmiddle.x-caption_tex.getWidth()/2+byline_tex.getWidth()/2,byline_leftmiddle.y-10-caption_tex.getHeight());
+}
+bool CardUI::isOpen(){
+    if(alpha>0.9f){
+        return true;
+    } else{
+        return false;
+    }
 }
 void CardUI::updateByline(string _text){
     
