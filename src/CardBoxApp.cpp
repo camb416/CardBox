@@ -52,7 +52,6 @@ public:
     Button closeButton;
     Button prevButton;
     Button nextButton;
-    // gl::Texture closeButton_tex;
     
     // button handlers
     void closeCard();
@@ -81,17 +80,13 @@ void CardBoxApp::setup()
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
     mParams.show();
-
-    // setBorderless(true);
     
     Url apiUrl = Url( "http://localhost/json/json.js" );
     
     DataSourceRef ds = loadResource("data.js");
     console() << "data.js lives at: " << getAssetPath( "data.js" ) << std::endl;
-    // JsonTree root = JsonTree( loadUrl( apiUrl ) );
     JsonTree root = JsonTree( loadResource("data.js"));
     JsonTree cardTree = root.getChild( "cards" );
-    
     
     cs.basePath = root["basepath"].getValue();
     cs.background = root["background"].getValue();
@@ -99,7 +94,6 @@ void CardBoxApp::setup()
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
     
     infoSection.setup("instructions1.png","instructions2.png");
-    //infoBG = gl::Texture(loadImage(loadResource("notePaper.png")));
     
     console() << "loading the gl texture" << endl;
     if(cs.shadow_tex){
@@ -230,7 +224,7 @@ void CardBoxApp::mouseDown( MouseEvent evt )
         shrinkAll(selectedCard);
         cui.show();
         cui.update(cards.at(selectedCard)->getModel());
-        cards.at(selectedCard)->grow();
+        cards.at(selectedCard)->grow(cui.getLowerBound());
     }
 }
 void CardBoxApp::keyDown(KeyEvent evt){
@@ -340,10 +334,14 @@ void CardBoxApp::draw()
     if(curtainsAlpha > 0.0f){
         gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
         gl::pushMatrices();
-        gl::translate(0,0,2.0f);
+        gl::translate(0,0,0);
         
         // this here is problematic...
-        gl::drawSolidRect(getWindowBounds());
+        Rectf rect = getWindowBounds();
+       // rect.x2/=2;
+        gl::disableDepthRead();
+        gl::disableDepthWrite();
+        gl::drawSolidRect(rect);
         gl::popMatrices();
     }
    // if(drawCount<200)
@@ -386,7 +384,7 @@ void CardBoxApp::draw()
 void CardBoxApp::prepareSettings(Settings * settings){
     
     
-    settings->setWindowSize( 1680,1050 );
+    settings->setWindowSize( 1050,1050 );
     settings->setFrameRate( 60 );
   //  settings->setResizable( false );
     settings->setTitle( "Card Box" );
@@ -414,7 +412,7 @@ void CardBoxApp::nextCard(){
                 shrinkAll(nextCard_id);
                 cui.show();
                 cui.update(cards.at(nextCard_id)->getModel());
-                cards.at(nextCard_id)->grow();
+                cards.at(nextCard_id)->grow(cui.getLowerBound());
             }
         }
     }
@@ -436,7 +434,7 @@ void CardBoxApp::prevCard(){
                 shrinkAll(nextCard_id);
                 cui.show();
                 cui.update(cards.at(nextCard_id)->getModel());
-                cards.at(nextCard_id)->grow();
+                cards.at(nextCard_id)->grow(cui.getLowerBound());
             }
         }
     }

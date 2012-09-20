@@ -38,8 +38,7 @@
  		"location" : "New York, NY",
  		"caption" : "In vitae felis risus. Suspendisse potenti. Vivamus dictum justo nibh. Praesent vitae erat sit amet felis vehicula sagittis quis in elit.",
 		"path" : "CoolWhite_13 copy.jpg"
-}
-/*,
+},
 { 
  		"firstname" : "Cameron",
  		"lastinitial" : "B",
@@ -704,6 +703,6 @@
  		"location" : "New York, NY",
  		"caption" : "This is my caption",
 		"path" : "Note-Alisa_21.jpg"
-}*/
+}
  	]
  }

@@ -61,7 +61,7 @@ public:
     void select();
     void unselect();
     Vec2f getPos2f();
-    void grow();
+    void grow(float lowerBound = 200.0f);
     void shrink();
     bool getIsBig();
     float getScale();

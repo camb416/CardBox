@@ -39,19 +39,24 @@ bool Card::getIsBig(){
     return isBig;
 }
 
-void Card::grow(){
+void Card::grow(float lowerBound){
     if(!isBig){
         isBig = true;
+        
+        float upperBound = 10;
+        float sideBounds = 10;
+        
+        
         float desiredScale;
-        float maxWidth = getWindowWidth() - 300.0f;
-        float maxHeight = getWindowHeight()- 500.0f;
+        float maxWidth = getWindowWidth() - (sideBounds*2.0f);
+        float maxHeight = (lowerBound-upperBound);
         desiredScale = maxWidth/tex.getWidth();
         if(tex.getHeight()*desiredScale>maxHeight){
             desiredScale = maxHeight/tex.getHeight();
         }
     setScale(desiredScale);
     setRot(0.0f);
-    Vec3f newPos = Vec3f(getWindowCenter().x,getWindowCenter().y,50.0f);
+    Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound)/2+upperBound,2.0f);
     setPos(newPos);
     }
 }

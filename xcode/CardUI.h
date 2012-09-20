@@ -33,6 +33,7 @@ public:
     void draw();
     void show();
     void hide();
+    float getLowerBound();
 private:
     void updateCaption(string _text = "");
     void updateByline(string _text = "");
@@ -40,6 +41,9 @@ private:
     gl::Texture caption_tex;
     gl::Texture byline_tex;
     CardModel cardModel;
+    Vec2f byline_leftmiddle;
+    Vec2f caption_middle;
+    
     
     
 };
