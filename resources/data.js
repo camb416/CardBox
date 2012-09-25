@@ -68,25 +68,25 @@
 		"path" : "samislimani.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_4 copy.jpg"
+ 		"firstname" : "@eatseamless",
+ 		"lastinitial" : "",
+ 		"location" : "",
+ 		"caption" : "LUNCH: Chicken Shawarma Salad from Naya Express",
+		"path" : "eatseamless.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
+ 		"firstname" : "El",
+ 		"lastinitial" : "Z",
  		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_5 copy.jpg"
+ 		"caption" : "Sandwich from Guy & Gallard ",
+		"path" : "elz.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_6 copy.jpg"
+ 		"firstname" : "@eatseamless",
+ 		"lastinitial" : "",
+ 		"location" : "",
+ 		"caption" : "LUNCH: Dai Hachi Sushi Lunch Special. So happy.",
+		"path" : "eatseamless_sushi.jpeg"
 },
 { 
  		"firstname" : "Cameron",
