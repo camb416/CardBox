@@ -1,6 +1,6 @@
 
 {
-	"basepath" : "/Applications/MAMP/htdocs/fantasticsmag.com/html/files/imagecache/425w/fmag_story/2012/Aug",
+	"basepath" : "/Users/cam/Desktop/foodpics",
 	"background" : "background.jpg",
 	"shadow" : "shadow.png",
 	"cards" : [
@@ -47,25 +47,25 @@
 		"path" : "CoolWhite_14 copy.jpg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_15 copy.jpg"
+ 		"firstname" : "giraffe restaurant",
+ 		"lastinitial" : "",
+ 		"location" : "@giraffetweet",
+ 		"caption" : "Check out our delish spicy jungle curry only at Southbank, Spitalfields, MK, Trafford&Stratford, lots of #nom in 1 bowl",
+		"path" : "A3onUhnCEAEWHH4.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_2 copy.jpg"
+ 		"firstname" : "Luke",
+ 		"lastinitial" : "",
+ 		"location" : "@CoolerHand_Luke",
+ 		"caption" : "I don't always eat cake...but when I do, it's red velvet. #nom",
+		"path" : "A3mt83RCcAAZlqa.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_3 copy.jpg"
+ 		"firstname" : "Sami",
+ 		"lastinitial" : "S",
+ 		"location" : "@HerrTutorial",
+ 		"caption" : "Macarons-TIME!! So lecker&Yummy!! Wer will? ❤ #macarons",
+		"path" : "samislimani.jpeg"
 },
 { 
  		"firstname" : "Cameron",
