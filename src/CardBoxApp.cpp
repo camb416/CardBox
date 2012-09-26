@@ -102,7 +102,7 @@ void CardBoxApp::sortByOrder(){
     
     for(int i=0;i<orderedCards.size();i++){
       // if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
-        orderedCards.at(i)->setPos(Vec3f(xCount, yCount,0),true);
+        orderedCards.at(i)->setPos(Vec3f(xCount, yCount,(float)i/1000.0f),true);
         orderedCards.at(i)->setRot(0.0f, true);
         
         xCount += 85+margin;
