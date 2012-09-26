@@ -50,6 +50,7 @@ public:
     Vec2f getCenter();
     void setScale(float _scale);
     void setRot(float _rot, bool _setOrigin = false);
+    void fitToRect(Rectf r);
     bool operator < (const Card* crd) const
     {
         return (getSize().length() < crd->getSize().length());

@@ -39,6 +39,23 @@ bool Card::getIsBig(){
     return isBig;
 }
 
+void Card::fitToRect(Rectf r){
+
+        float desiredScale;
+        float maxWidth = r.x2-r.x1;
+        float maxHeight = r.y2-r.y1;
+        desiredScale = maxWidth/tex.getWidth();
+        if(tex.getHeight()*desiredScale>maxHeight){
+            desiredScale = maxHeight/tex.getHeight();
+        }
+        setScale(desiredScale);
+        //Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
+        //setPos(newPos);
+
+
+    
+}
+
 void Card::grow(float lowerBound){
     if(!isBig){
         isBig = true;

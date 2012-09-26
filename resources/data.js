@@ -89,11 +89,11 @@
 		"path" : "eatseamless_sushi.jpeg"
 },
 { 
- 		"firstname" : "Cameron",
- 		"lastinitial" : "B",
- 		"location" : "New York, NY",
- 		"caption" : "This is my caption",
-		"path" : "CoolWhite_7 copy.jpg"
+ 		"firstname" : "Jordan",
+ 		"lastinitial" : "C",
+ 		"location" : "Boston, MA",
+ 		"caption" : "First Insta of my food: steamy omelet made to order #BCfood",
+		"path" : "jcollins.jpeg"
 },
 { 
  		"firstname" : "Cameron",

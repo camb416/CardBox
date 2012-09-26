@@ -41,6 +41,7 @@ public:
     InfoSection infoSection;
     
     private :
+    void drawAlignmentGrid();
     vector<Card *> cards;
     vector<Card *>animatingCards;
     Card * bigCard;
@@ -73,6 +74,15 @@ public:
     void closeInfo();
     void nextInfo();
     void prevInfo();
+    
+    int topMargin;
+    int bottomMargin;
+    int sideMargin;
+    int gutter;
+    void alignToGrid();
+    
+    int maxCards;
+    bool drawGrid;
     
 };
 

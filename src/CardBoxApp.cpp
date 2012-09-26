@@ -3,6 +3,13 @@
 
 void CardBoxApp::setup()
 {
+    drawGrid = false;
+    topMargin = 100;
+    bottomMargin = 150;
+    sideMargin = 100;
+    gutter = 15;
+    maxCards = 40;
+    
     cui.setup();
     cui.hide();
     
@@ -53,7 +60,7 @@ void CardBoxApp::setup()
         cm.location = (*cIt)["location"].getValue();
         cm.path = (*cIt)["path"].getValue();
         cm.uid = i++;
-        cards.push_back(new Card(&cs,cm));
+       if(i<=maxCards) cards.push_back(new Card(&cs,cm));
     }
     
     randomize();
@@ -90,16 +97,16 @@ void CardBoxApp::randomize(){
 
 void CardBoxApp::sortByOrder(){
     // align everything
-    float xCount  = 225;
-    float yCount = 225;
-    float largestY = 110;
-    float margin = 25;
+  //  float xCount  = 225;
+  //  float yCount = 225;
+   // float largestY = 110;
+   // float margin = 25;
     
     vector<Card *> orderedCards = cards;
     
     sort(orderedCards.begin(),orderedCards.end(),sortByUID);
     
-    
+    /*
     for(int i=0;i<orderedCards.size();i++){
       // if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
         orderedCards.at(i)->setPos(Vec3f(xCount, yCount,(float)i/1000.0f),true);
@@ -114,11 +121,8 @@ void CardBoxApp::sortByOrder(){
             //largestY = 0;
         }
     }
-    shrinkAll();
-    cui.hide();
-    closeButton.hide();
-    prevButton.hide();
-    nextButton.hide();
+     */
+
 
 }
 
@@ -193,15 +197,81 @@ void CardBoxApp::mouseDown( MouseEvent evt )
 void CardBoxApp::keyDown(KeyEvent evt){
     switch(evt.getChar()){
         case ' ':
-            sortByOrder();
+            alignToGrid();
+            //sortByOrder();
             break;
         case 'r':
         case 'R':
             randomize();
             break;
+            case 'g':
+            case 'G':
+            drawGrid = !drawGrid;
         default:
             console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
             break;
+    }
+}
+
+void CardBoxApp::alignToGrid(){
+   // gl::disableDepthRead();
+   // gl::disableDepthWrite();
+    
+    vector<Card *> orderedCards = cards;
+    
+    sort(orderedCards.begin(),orderedCards.end(),sortByUID);
+    
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    int xRes = 5;
+    int yRes = 8;
+    
+    int widthNoMargins = getWindowWidth()-sideMargin*2;
+    int heightNoMargins = getWindowHeight()-(topMargin+bottomMargin);
+    
+    int boxWidth = (widthNoMargins-(gutter*(xRes-1)))/xRes;
+    int boxHeight = (heightNoMargins-(gutter*(yRes-1)))/yRes;
+    
+    int cardIterator = 0;
+    
+    for(int j=0;j<yRes;j++){
+        for(int i=0;i<xRes;i++){
+            int x = i*boxWidth+sideMargin+gutter*i;
+            int y = j*boxHeight+sideMargin+gutter*j;
+            Rectf r = Rectf(x,y,x+boxWidth,y+boxHeight);
+            gl::drawStrokedRect(r);
+            if(cardIterator<orderedCards.size()){
+                orderedCards.at(cardIterator)->fitToRect(r);
+                orderedCards.at(cardIterator)->setPos(Vec3f(x+boxWidth/2, y+boxHeight/2,(float)cardIterator/1000.0f),true);
+                orderedCards.at(cardIterator)->setRot(0.0f, true);
+                cardIterator++;
+            }
+            //gl::drawStrokedCircle(Vec2f(x,y),24);
+        }
+    }
+}
+
+void CardBoxApp::drawAlignmentGrid(){
+    
+    gl::disableDepthRead();
+    gl::disableDepthWrite();
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    int xRes = 5;
+    int yRes = 8;
+    
+    int widthNoMargins = getWindowWidth()-sideMargin*2;
+    int heightNoMargins = getWindowHeight()-(topMargin+bottomMargin);
+    
+    int boxWidth = (widthNoMargins-(gutter*(xRes-1)))/xRes;
+    int boxHeight = (heightNoMargins-(gutter*(yRes-1)))/yRes;
+    
+    for(int j=0;j<yRes;j++){
+        for(int i=0;i<xRes;i++){
+            int x = i*boxWidth+sideMargin+gutter*i;
+            int y = j*boxHeight+sideMargin+gutter*j;
+            Rectf r = Rectf(x,y,x+boxWidth,y+boxHeight);
+            gl::drawStrokedRect(r);
+            //gl::drawStrokedCircle(Vec2f(x,y),24);
+        }
     }
 }
 
@@ -316,9 +386,13 @@ void CardBoxApp::draw()
     
     infoSection.draw();
     
+   
+    
     params::InterfaceGl::draw();
     
     cui.draw();
+    
+    if(drawGrid) drawAlignmentGrid();
 
 }
 void CardBoxApp::prepareSettings(Settings * settings){
