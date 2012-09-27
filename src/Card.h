@@ -48,9 +48,9 @@ public:
     Vec3f getOriginalPos();
     void setOriginalPos(Vec3f _pos);
     Vec2f getCenter();
-    void setScale(float _scale);
+    void setScale(float _scale, bool _setOrigin = false);
     void setRot(float _rot, bool _setOrigin = false);
-    void fitToRect(Rectf r);
+    void fitToRect(Rectf r, bool _setOrigin = false);
     bool operator < (const Card* crd) const
     {
         return (getSize().length() < crd->getSize().length());
@@ -76,8 +76,10 @@ private:
     Anim<float> alpha;
     Vec3f originalPos;
     float originalRot;
+    float originalScale;
     Anim<Vec2f> scale;
     float scalef;
+    
     // float alpha;
     CardSettings * settings;
     CardModel model;

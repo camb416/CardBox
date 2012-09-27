@@ -39,7 +39,7 @@ bool Card::getIsBig(){
     return isBig;
 }
 
-void Card::fitToRect(Rectf r){
+void Card::fitToRect(Rectf r, bool _setOrigin){
 
         float desiredScale;
         float maxWidth = r.x2-r.x1;
@@ -48,7 +48,7 @@ void Card::fitToRect(Rectf r){
         if(tex.getHeight()*desiredScale>maxHeight){
             desiredScale = maxHeight/tex.getHeight();
         }
-        setScale(desiredScale);
+        setScale(desiredScale, _setOrigin);
         //Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
         //setPos(newPos);
 
@@ -71,22 +71,23 @@ void Card::grow(float lowerBound){
         if(tex.getHeight()*desiredScale>maxHeight){
             desiredScale = maxHeight/tex.getHeight();
         }
-    setScale(desiredScale);
-    setRot(0.0f);
-    Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
-    setPos(newPos);
+        setScale(desiredScale);
+        setRot(0.0f);
+        Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
+        setPos(newPos);
     }
 }
 void Card::shrink(float _s){
-   
+    
     if(isBig){
-    Vec2f scale2f = scale;
-    if(scale2f.x>0.2){
-         Vec3f pos3f = pos;
-        setPos(originalPos);
-        setRot(originalRot);
-        setScale(0.2f);
-    }
+        Vec2f scale2f = scale;
+        if(scale2f.x>0.2){
+            Vec3f pos3f = pos;
+            setPos(originalPos);
+            setRot(originalRot);
+            setScale(originalScale);
+            //setScale(0.2f);
+        }
         isBig = false;
     }
 }
@@ -169,7 +170,8 @@ CardModel Card::getModel(){
     return model;
 }
 
-void Card::setScale(float _scale){
+void Card::setScale(float _scale, bool _setOrigin){
+    if(_setOrigin) originalScale = _scale;
    // scale = Vec2f(_scale, _scale);
     timeline().apply(&scale,Vec2f(_scale,_scale),1.0f,EaseInOutSine());
 }

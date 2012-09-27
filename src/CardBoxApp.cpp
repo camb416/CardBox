@@ -87,6 +87,8 @@ void CardBoxApp::randomize(){
         //if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
         cards.at(i)->setPos(Vec3f(rand() % (getWindowWidth()-200)+100, rand() % (getWindowHeight()-200)+100,(rand() % 32000)/320000.0f), true);
         cards.at(i)->setRot(rand() % 360, true);
+        Rectf r = Rectf(0,0,160,160);
+        cards.at(i)->fitToRect(r, true);
     }
     shrinkAll();
     cui.hide();
@@ -131,9 +133,6 @@ void CardBoxApp::shrinkAll(int _exception){
     for(int i=0;i<cards.size();i++){
         if(i!=_exception){
             cards.at(i)->shrink();
-            Rectf r = Rectf(0,0,160,160);
-            cards.at(i)->fitToRect(r);
-            
         }
     }
     if(_exception>-1){
@@ -253,7 +252,7 @@ void CardBoxApp::alignToGrid(){
             Rectf r = Rectf(x,y,x+boxWidth,y+boxHeight);
             gl::drawStrokedRect(r);
             if(cardIterator<orderedCards.size()){
-                orderedCards.at(cardIterator)->fitToRect(r);
+                orderedCards.at(cardIterator)->fitToRect(r,true);
                 orderedCards.at(cardIterator)->setPos(Vec3f(x+boxWidth/2, y+boxHeight/2,(float)cardIterator/1000.0f),true);
                 orderedCards.at(cardIterator)->setRot(0.0f, true);
                 cardIterator++;

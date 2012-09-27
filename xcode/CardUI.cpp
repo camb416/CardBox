@@ -24,8 +24,13 @@ void CardUI::update(CardModel cm){
     // do something to update the text
     cardModel = cm;
     
-    
-    updateByline(cm.firstName+ " "+cm.lastInitial+", "+cm.location);
+    if(cm.location.length()>0 && cm.lastInitial.length()>0){
+        updateByline(cm.firstName+ " "+cm.lastInitial+", "+cm.location);
+    } else if(cm.location.length()>0 && cm.lastInitial.length()<=0) {
+        updateByline(cm.firstName+", "+cm.location);
+    } else if(cm.location.length()<=0){
+        updateByline(cm.firstName+ " "+cm.lastInitial);
+    }
     updateCaption(cm.caption);
 }
 void CardUI::hide(){
