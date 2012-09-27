@@ -24,25 +24,19 @@ using namespace std;
 
 class CardBoxApp : public AppBasic {
 public:
-    // Cinder Events
+    /////////////////////////////////////////
+    // Cinder Events ////////////////////////
+    /////////////////////////////////////////
+    void prepareSettings(Settings * settings);
 	void setup();
+    void update();
+    void draw();
 	void mouseDown( MouseEvent evt );
     void mouseUp( MouseEvent evt );
     void keyDown(KeyEvent evt);
-	void update();
-	void draw();
     void resize(ResizeEvent evt);
-    void prepareSettings(Settings * settings);
-    
-    
-    
-    
-
-    
-    private :
-    
-
-    
+    /////////////////////////////////////////
+private :
     /////////////////////////////////////////
     // app view and controller methods //////
     /////////////////////////////////////////

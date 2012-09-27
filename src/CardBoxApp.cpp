@@ -1,6 +1,13 @@
 
 #include "CardBoxApp.h"
-
+/////////////////////////////////////////
+////// Cinder Events (public) ///////////
+/////////////////////////////////////////
+void CardBoxApp::prepareSettings(Settings * settings){
+    settings->setWindowSize( 1050,1050 );
+    settings->setFrameRate( 60 );
+    settings->setTitle( "Card Box" );
+}
 void CardBoxApp::setup()
 {
     isMouseDown = false;
@@ -26,22 +33,20 @@ void CardBoxApp::setup()
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
     mParams.show();
+
     
+    // and these images are not specified in JSON? 
+    infoSection.setup("instructions1.png","instructions2.png");
     
-    Url apiUrl = Url( "http://localhost/json/json.js" );
-    
-    DataSourceRef ds = loadResource("data.js");
-    console() << "data.js lives at: " << getAssetPath( "data.js" ) << std::endl;
+    // PARSE THE JSON
     JsonTree root = JsonTree( loadResource("data.js"));
-    JsonTree cardTree = root.getChild( "cards" );
-    
+
     cs.basePath = root["basepath"].getValue();
     cs.background = root["background"].getValue();
     cs.shadow_path = root["shadow"].getValue();
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
-    
-    infoSection.setup("instructions1.png","instructions2.png");
-    
+
+    // hmmmmm, this should probably be handled more generally...
     console() << "loading the gl texture" << endl;
     if(cs.shadow_tex){
         console() << "looks successful" << endl;
@@ -50,6 +55,7 @@ void CardBoxApp::setup()
     }
     
     int i = 0;
+    JsonTree cardTree = root.getChild( "cards" );
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
     {
         JsonTree jt = (*cIt);
@@ -64,22 +70,200 @@ void CardBoxApp::setup()
         if(i<=maxCards) cards.push_back(new Card(&cs,cm));
     }
     
-    randomize();
-    
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
+    // not in the JSON?
     closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-128,128));
     prevButton = Button("leftArrow.png",Vec2f(128,getWindowHeight()/2));
     nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-128,getWindowHeight()/2));
     
+    // some text formatting stuff
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
     fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
+    
+    randomize();
 }
-
+void CardBoxApp::update()
+{
+    sort(cards.begin(), cards.end(), sortByZ);
+    for(int i=0;i<cards.size(); i++){
+        cards.at(i)->update();
+    }
+    
+    if(isMouseDown){
+        float nearest = 99999;
+        float nearestID = -1;
+        for(int i=0;i<cards.size(); i++){
+            Vec2f mousePos = cursorPos;
+            Vec2f cardPos = Vec2f(cards.at(i)->getPos().x,cards.at(i)->getPos().y);
+            float mouseDist = mousePos.distance(cardPos);
+            if(mouseDist<nearest){
+                nearestID = i;
+                nearest = mouseDist;
+                
+            }
+        }
+        if(nearestID>-1){
+            selectedCard = nearestID;
+            selectACard(nearestID);
+            
+        }
+    }
+    closeButton.isOver(cursorPos);
+    prevButton.isOver(cursorPos);
+    nextButton.isOver(cursorPos);
+    
+}
+void CardBoxApp::draw()
+{
+    //   gl::enableDepthRead();
+    
+    // clear out the window with black
+	gl::clear( Color( 1,1,1 ) );
+    
+    gl::enableAlphaBlending();
+    // gl::disableDepthRead();
+    // gl::disableDepthWrite();
+    
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    
+    
+    gl::draw(bg_tex,getWindowBounds());
+    
+    gl::enableDepthRead();
+    gl::enableDepthWrite();
+    
+    bigCard = NULL;
+    for(int i=0;i<cards.size();i++){
+        if(!cards.at(i)->getIsBig()){
+            gl::color(1.0f,1.0f,1.0f,1.0f);
+            cards.at(i)->draw();
+        } else {
+            bigCard = cards.at(i);
+        }
+    }
+    
+    if(curtainsAlpha > 0.0f){
+        gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
+        gl::pushMatrices();
+        gl::translate(0,0,0);
+        
+        Rectf rect = getWindowBounds();
+        gl::disableDepthRead();
+        gl::disableDepthWrite();
+        gl::drawSolidRect(rect);
+        gl::popMatrices();
+    }
+    
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    if(bigCard!=NULL){
+        bigCard->draw();
+    }
+    cursorPos = getMousePos();
+    // gl::color(0.0f,0.0f,1.0f,1.0f);
+    // gl::disableDepthRead();
+    // gl::disableDepthWrite();
+    // gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
+    // gl::color(1.0f,1.0f,1.0f,1.0f);
+    
+    closeButton.draw();
+    nextButton.draw();
+    prevButton.draw();
+    
+    infoSection.draw();
+    
+    
+    
+    params::InterfaceGl::draw();
+    
+    cui.draw();
+    
+    if(drawGrid) drawAlignmentGrid();
+    
+}
+void CardBoxApp::mouseDown( MouseEvent evt )
+{
+    isMouseDown = true;
+    if(cui.isOpen()){
+        if(closeButton.isOver(evt.getPos())){
+            // shrinkAll();
+            //cui.hide();
+            closeButton.down();
+            console() << "you pressed while over the close button" << endl;
+            
+        }else if(prevButton.isOver(evt.getPos())){
+            prevButton.down();
+            console() << "you pressed while over the prev button" << endl;
+        } else if(nextButton.isOver(evt.getPos())){
+            nextButton.down();
+            console() << "you pressed while over the next button" << endl;
+            
+        }
+        
+    }
+}
+void CardBoxApp::mouseUp(MouseEvent evt){
+    isMouseDown = false;
+    if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
+        shrinkAll();
+        cui.hide();
+        closeButton.hide();
+        prevButton.hide();
+        nextButton.hide();
+        closeButton.up();
+        console() << "you released while over the close button" << endl;
+    }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
+        prevButton.up();
+        prevCard();
+        console() << "you released while over the prev button" << endl;
+    } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
+        nextButton.up();
+        nextCard();
+        console() << "you released while over the next button" << endl;
+    } else {
+        closeButton.up();
+        nextButton.up();
+        prevButton.up();
+    }
+    
+    if(!cui.isOpen() && selectedCard>-1){
+        shrinkAll(selectedCard);
+        cui.show();
+        closeButton.show();
+        prevButton.show();
+        nextButton.show();
+        cui.update(cards.at(selectedCard)->getModel());
+        cards.at(selectedCard)->grow(cui.getLowerBound());
+        
+    }
+}
+void CardBoxApp::keyDown(KeyEvent evt){
+    switch(evt.getChar()){
+        case ' ':
+            alignToGrid();
+            //sortByOrder();
+            break;
+        case 'r':
+        case 'R':
+            randomize();
+            break;
+        case 'g':
+        case 'G':
+            drawGrid = !drawGrid;
+        default:
+            console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
+            break;
+    }
+}
 void CardBoxApp::resize(ResizeEvent evt){
     // resize event (empty so far)
 }
+/////////////////////////////////////////
+// END Cinder Events (public) ///////////
+/////////////////////////////////////////
+
+
 
 void CardBoxApp::randomize(){
     // randomize everything
@@ -142,81 +326,9 @@ void CardBoxApp::shrinkAll(int _exception){
     }
 }
 
-void CardBoxApp::mouseUp(MouseEvent evt){
-    isMouseDown = false;
-    if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
-        shrinkAll();
-        cui.hide();
-        closeButton.hide();
-        prevButton.hide();
-        nextButton.hide();
-        closeButton.up();
-        console() << "you released while over the close button" << endl;
-    }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
-        prevButton.up();
-        prevCard();
-        console() << "you released while over the prev button" << endl;
-    } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
-        nextButton.up();
-        nextCard();
-        console() << "you released while over the next button" << endl;
-    } else {
-        closeButton.up();
-        nextButton.up();
-        prevButton.up();
-    }
-    
-    if(!cui.isOpen() && selectedCard>-1){
-        shrinkAll(selectedCard);
-        cui.show();
-        closeButton.show();
-        prevButton.show();
-        nextButton.show();
-        cui.update(cards.at(selectedCard)->getModel());
-        cards.at(selectedCard)->grow(cui.getLowerBound());
-        
-    }
-}
 
-void CardBoxApp::mouseDown( MouseEvent evt )
-{
-    isMouseDown = true;
-    if(cui.isOpen()){
-        if(closeButton.isOver(evt.getPos())){
-            // shrinkAll();
-            //cui.hide();
-            closeButton.down();
-            console() << "you pressed while over the close button" << endl;
-            
-        }else if(prevButton.isOver(evt.getPos())){
-            prevButton.down();
-            console() << "you pressed while over the prev button" << endl;
-        } else if(nextButton.isOver(evt.getPos())){
-            nextButton.down();
-            console() << "you pressed while over the next button" << endl;
-            
-        }
-        
-    }
-}
-void CardBoxApp::keyDown(KeyEvent evt){
-    switch(evt.getChar()){
-        case ' ':
-            alignToGrid();
-            //sortByOrder();
-            break;
-        case 'r':
-        case 'R':
-            randomize();
-            break;
-        case 'g':
-        case 'G':
-            drawGrid = !drawGrid;
-        default:
-            console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
-            break;
-    }
-}
+
+
 
 void CardBoxApp::alignToGrid(){
     // gl::disableDepthRead();
@@ -287,37 +399,7 @@ void CardBoxApp::drawAlignmentGrid(){
     }
 }
 
-void CardBoxApp::update()
-{
-    sort(cards.begin(), cards.end(), sortByZ);
-    for(int i=0;i<cards.size(); i++){
-        cards.at(i)->update();
-    }
-    
-    if(isMouseDown){
-        float nearest = 99999;
-        float nearestID = -1;
-        for(int i=0;i<cards.size(); i++){
-            Vec2f mousePos = cursorPos;
-            Vec2f cardPos = Vec2f(cards.at(i)->getPos().x,cards.at(i)->getPos().y);
-            float mouseDist = mousePos.distance(cardPos);
-            if(mouseDist<nearest){
-                nearestID = i;
-                nearest = mouseDist;
-                
-            }
-        }
-        if(nearestID>-1){
-            selectedCard = nearestID;
-            selectACard(nearestID);
-            
-        }
-    }
-    closeButton.isOver(cursorPos);
-    prevButton.isOver(cursorPos);
-    nextButton.isOver(cursorPos);
-    
-}
+
 int CardBoxApp::getIDfromUID(int card_uid){
     for(int i=0;i<cards.size();i++){
         if(cards.at(i)->getUID() == card_uid){
@@ -341,81 +423,7 @@ void CardBoxApp::unselectAll(){
     
 }
 
-void CardBoxApp::draw()
-{
-    //   gl::enableDepthRead();
-    
-    // clear out the window with black
-	gl::clear( Color( 1,1,1 ) );
-    
-    gl::enableAlphaBlending();
-    // gl::disableDepthRead();
-    // gl::disableDepthWrite();
-    
-    gl::color(1.0f,1.0f,1.0f,1.0f);
-    
-    
-    gl::draw(bg_tex,getWindowBounds());
-    
-    gl::enableDepthRead();
-    gl::enableDepthWrite();
-    
-    bigCard = NULL;
-    for(int i=0;i<cards.size();i++){
-        if(!cards.at(i)->getIsBig()){
-            gl::color(1.0f,1.0f,1.0f,1.0f);
-            cards.at(i)->draw();
-        } else {
-            bigCard = cards.at(i);
-        }
-    }
-    
-    if(curtainsAlpha > 0.0f){
-        gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
-        gl::pushMatrices();
-        gl::translate(0,0,0);
-        
-        Rectf rect = getWindowBounds();
-        gl::disableDepthRead();
-        gl::disableDepthWrite();
-        gl::drawSolidRect(rect);
-        gl::popMatrices();
-    }
-    
-    gl::color(1.0f,1.0f,1.0f,1.0f);
-    if(bigCard!=NULL){
-        bigCard->draw();
-    }
-    cursorPos = getMousePos();
-    // gl::color(0.0f,0.0f,1.0f,1.0f);
-    // gl::disableDepthRead();
-    // gl::disableDepthWrite();
-    // gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
-    // gl::color(1.0f,1.0f,1.0f,1.0f);
-    
-    closeButton.draw();
-    nextButton.draw();
-    prevButton.draw();
-    
-    infoSection.draw();
-    
-    
-    
-    params::InterfaceGl::draw();
-    
-    cui.draw();
-    
-    if(drawGrid) drawAlignmentGrid();
-    
-}
-void CardBoxApp::prepareSettings(Settings * settings){
-    
-    
-    settings->setWindowSize( 1050,1050 );
-    settings->setFrameRate( 60 );
-    settings->setTitle( "Card Box" );
-    
-}
+
 
 // button handlers
 void CardBoxApp::closeCard(){
