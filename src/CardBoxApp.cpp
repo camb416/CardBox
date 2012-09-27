@@ -328,7 +328,7 @@ int CardBoxApp::getIDfromUID(int card_uid){
 }
 void CardBoxApp::selectACard(int _selectedID){
     cards.at(_selectedID)->select();
-    myVec = cards.at(_selectedID)->getPos2f();
+   // myVec = cards.at(_selectedID)->getPos2f();
     unselectAll();
     
 }

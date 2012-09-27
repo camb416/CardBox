@@ -24,6 +24,7 @@ using namespace std;
 
 class CardBoxApp : public AppBasic {
 public:
+    // Cinder Events
 	void setup();
 	void mouseDown( MouseEvent evt );
     void mouseUp( MouseEvent evt );
@@ -33,58 +34,88 @@ public:
     void resize(ResizeEvent evt);
     void prepareSettings(Settings * settings);
     
-    // PARAMS
-	params::InterfaceGl	mParams;
-    Quatf mSceneRotation;
     
-    // gl::Texture infoBG;
-    InfoSection infoSection;
+    
+    
+
     
     private :
-    bool isMouseDown;
-    void drawAlignmentGrid();
-    vector<Card *> cards;
-    vector<Card *>animatingCards;
-    Card * bigCard;
-    gl::Texture bg_tex;
-    gl::Texture shadow_tex;
-    Vec2f cursorPos;
-    void sortByOrder();
-    void randomize();
-    CardSettings cs;
     
-    CardUI cui;
+
     
-    int getIDfromUID(int card_uid);
+    /////////////////////////////////////////
+    // app view and controller methods //////
+    /////////////////////////////////////////
+    // application view transistions
+    void randomize();               // shuffle the cards
+    void drawAlignmentGrid();       // draws the destination grid of the alignToGrid()
+    void alignToGrid();
+    // mode-independent selection actions
     void selectACard(int _selectedID);
-    int selectedCard;
-    Vec2f myVec;
     void unselectAll();
     void shrinkAll(int _exception = -1);
-    Anim<float>curtainsAlpha;
+    // helper methods
+    void sortByOrder();             // sort Cards by UID
+    int getIDfromUID(int card_uid);
+    /////////////////////////////////////////
     
-    Button closeButton;
-    Button prevButton;
-    Button nextButton;
-    
-    // button handlers
-    void closeCard();
-    void nextCard();
-    void prevCard();
-    void info();
-    void closeInfo();
-    void nextInfo();
-    void prevInfo();
-    
+    /////////////////////////////////////////
+    // button handlers //////////////////////
+    /////////////////////////////////////////
+    // card ui
+    void closeCard();   // close
+    void nextCard();    // next
+    void prevCard();    // prev
+    //info
+    void info();        
+    void closeInfo();   // close
+    void nextInfo();    // next
+    void prevInfo();    // prev
+    /////////////////////////////////////////
+
+    /////////////////////////////////////////
+    // App-Level Data ///////////////////////
+    /////////////////////////////////////////
+    CardSettings cs;
+    // App-Level Visual Elements
+    gl::Texture bg_tex;
+    gl::Texture shadow_tex;
+    // App-Level Visual Settings
+    // (these should maybe load from the JSON?)
     int topMargin;
     int bottomMargin;
     int sideMargin;
     int gutter;
-    void alignToGrid();
+    /////////////////////////////////////////
     
+    /////////////////////////////////////////
+    // CARDS ////////////////////////////////
+    /////////////////////////////////////////
+    vector<Card *> cards;
+    Card * bigCard;
+    int selectedCard;
     int maxCards;
-    bool drawGrid;
+    // Vec2f myVec;    // temporarily disabled... used for drawing the selector line
+    /////////////////////////////////////////
     
+    // Big Card UI
+    CardUI cui;
+    Anim<float>curtainsAlpha;
+    Button closeButton;
+    Button prevButton;
+    Button nextButton;
+    
+    // Info Section UI
+    InfoSection infoSection;
+    
+    // Debugging UI
+	params::InterfaceGl	mParams;
+    
+    // Application State
+    bool isMouseDown;
+    Vec2f cursorPos;
+    bool drawGrid;
+  
 };
 
 #endif
