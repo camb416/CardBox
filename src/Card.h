@@ -63,7 +63,7 @@ public:
     void unselect();
     Vec2f getPos2f();
     void grow(float lowerBound = 200.0f);
-    void shrink();
+    void shrink(float _s = 0.2f);
     bool getIsBig();
     float getScale();
     CardModel getModel();

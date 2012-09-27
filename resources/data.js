@@ -1,6 +1,6 @@
 
 {
-	"basepath" : "/Users/cam/Desktop/foodpics",
+	"basepath" : "/Users/cam/Documents/Development/CardBox/data",
 	"background" : "background.jpg",
 	"shadow" : "shadow.png",
 	"cards" : [

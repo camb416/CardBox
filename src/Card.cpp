@@ -77,7 +77,7 @@ void Card::grow(float lowerBound){
     setPos(newPos);
     }
 }
-void Card::shrink(){
+void Card::shrink(float _s){
    
     if(isBig){
     Vec2f scale2f = scale;

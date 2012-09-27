@@ -41,6 +41,7 @@ public:
     InfoSection infoSection;
     
     private :
+    bool isMouseDown;
     void drawAlignmentGrid();
     vector<Card *> cards;
     vector<Card *>animatingCards;

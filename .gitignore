@@ -2,3 +2,4 @@
 *.xcbkptlist
 build/*
 resources/source/*
+data/*
