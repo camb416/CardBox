@@ -30,7 +30,7 @@ public:
     CardUI();
     ~CardUI();
     void setup();
-    void update(CardModel cm);
+    void update(CardModel cm, Rectf _r);
     void draw();
     void show();
     void hide();

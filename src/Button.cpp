@@ -15,6 +15,10 @@ Button::Button(){
     bDown = bOver = false;
 }
 
+void Button::moveTo(Vec2f _pos){
+    pos = _pos;
+}
+
 Button::Button(string path_str, Vec2f _pos){
         // eventually this shouldnt be loading from resources...
     pos = (_pos);

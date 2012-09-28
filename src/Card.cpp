@@ -56,13 +56,13 @@ void Card::fitToRect(Rectf r, bool _setOrigin){
     
 }
 
-void Card::grow(float lowerBound){
+Rectf Card::grow(float lowerBound){
+    float upperBound = 75;
+    float sideBounds = 75;
+    
+    Rectf returnRect = Rectf(sideBounds,upperBound,getWindowWidth()-sideBounds,lowerBound);
     if(!isBig){
         isBig = true;
-        
-        float upperBound = 20;
-        float sideBounds = 20;
-        
         
         float desiredScale;
         float maxWidth = getWindowWidth() - (sideBounds*2.0f);
@@ -75,7 +75,12 @@ void Card::grow(float lowerBound){
         setRot(0.0f);
         Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
         setPos(newPos);
+        returnRect.x1 = newPos.x-tex.getWidth()/2*desiredScale;
+        returnRect.y1 = newPos.y-tex.getHeight()/2*desiredScale;
+        returnRect.x2 = newPos.x+tex.getWidth()/2*desiredScale;
+        returnRect.y2 = newPos.y+tex.getHeight()/2*desiredScale;
     }
+    return returnRect;
 }
 void Card::shrink(float _s){
     

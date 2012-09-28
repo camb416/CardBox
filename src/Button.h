@@ -36,6 +36,7 @@ public:
     bool isDown();
     void hide();
     void show();
+    void moveTo(Vec2f _pos);
 private:
     gl::Texture tex;
     bool bOver;

@@ -24,10 +24,9 @@ float CardUI::getLowerBound(){
     return caption_middle.y;
 }
 
-void CardUI::update(CardModel cm){
+void CardUI::update(CardModel cm, Rectf _r){
     // do something to update the text
     cardModel = cm;
-    
     if(cm.location.length()>0 && cm.lastInitial.length()>0){
         updateByline(cm.firstName+ " "+cm.lastInitial+", "+cm.location);
     } else if(cm.location.length()>0 && cm.lastInitial.length()<=0) {
@@ -36,6 +35,9 @@ void CardUI::update(CardModel cm){
         updateByline(cm.firstName+ " "+cm.lastInitial);
     }
     updateCaption(cm.caption);
+    
+    // move the close button to the upper right corner of the big card
+    closeButton.moveTo(Vec2f(_r.x2,_r.y1));
 
 
     
@@ -184,9 +186,9 @@ void CardUI::setup(){
 
         // need to drop this back until the window is ready
         // not in the JSON?
-        closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-128,128));
-        prevButton = Button("leftArrow.png",Vec2f(128,getWindowHeight()/2));
-        nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-128,getWindowHeight()/2));
+        closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-75,75));
+        prevButton = Button("leftArrow.png",Vec2f(75,getWindowHeight()/2));
+        nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-75,getWindowHeight()/2));
     
    
 }
