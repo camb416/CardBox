@@ -52,10 +52,16 @@ void CardUI::hide(){
     prevButton.hide();
     nextButton.hide();
     timeline().apply(&alpha,0.0f,0.8f,EaseInOutSine());
+    timeline().apply(&curtainsAlpha, 0.0f,1.0f,EaseInOutSine());
 }
 void CardUI::show(){
     // show the UI
     timeline().apply(&alpha,1.0f,1.0f,EaseInOutSine());
+    timeline().apply(&curtainsAlpha, 0.8f,1.0f,EaseInOutSine());
+    closeButton.show();
+    nextButton.show();
+    prevButton.show();
+
 }
 void CardUI::draw(){
     

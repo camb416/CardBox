@@ -198,7 +198,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
                 break;
         }
     }
-    if(!cui.isOpen() && selectedCard>-1){
+    else if(selectedCard>-1){
         shrinkAll(selectedCard);
         cui.show();
         //closeButton.show();
@@ -429,7 +429,7 @@ void CardBoxApp::nextCard(){
     
     console() << "nextCard()" << endl;
 }
-void CardBoxApp::prevCard(){
+void CardBoxApp::prevCard(){    
     int curCard_uid = -1;
     int nextCard_id = -1;
     if(bigCard!=NULL){
@@ -448,8 +448,6 @@ void CardBoxApp::prevCard(){
             }
         }
     }
-    
-    
     console() << "prevCard()" << endl;
 }
 void CardBoxApp::info(){
