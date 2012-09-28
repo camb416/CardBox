@@ -11,7 +11,11 @@
 CardUI::CardUI(){
     // empty constructor
     alpha = 0.0f;
+    curtainsAlpha = 0.0f;
+    
+    
 }
+
 CardUI::~CardUI(){
     // empty destructor
 }
@@ -32,9 +36,21 @@ void CardUI::update(CardModel cm){
         updateByline(cm.firstName+ " "+cm.lastInitial);
     }
     updateCaption(cm.caption);
+
+
+    
 }
+
+void CardUI::handleMouse(Vec2f cursorPos){
+    closeButton.isOver(cursorPos);
+    prevButton.isOver(cursorPos);
+    nextButton.isOver(cursorPos);
+}
+
 void CardUI::hide(){
-    // hide the UI
+    closeButton.hide();
+    prevButton.hide();
+    nextButton.hide();
     timeline().apply(&alpha,0.0f,0.8f,EaseInOutSine());
 }
 void CardUI::show(){
@@ -42,20 +58,85 @@ void CardUI::show(){
     timeline().apply(&alpha,1.0f,1.0f,EaseInOutSine());
 }
 void CardUI::draw(){
+    
+    if(curtainsAlpha > 0.0f){
+        gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
+        gl::pushMatrices();
+        gl::translate(0,0,0);
+        
+        Rectf rect = getWindowBounds();
+        gl::disableDepthRead();
+        gl::disableDepthWrite();
+        gl::drawSolidRect(rect);
+        gl::popMatrices();
+    }
+
+    
     gl::pushMatrices();
     gl::color(1.0f,1.0f,1.0f,alpha);
   //  gl::translate(getWindowCenter());
   
 
-    
-    gl::draw(byline_tex,byline_leftmiddle);
+    if(byline_tex) gl::draw(byline_tex,byline_leftmiddle);
     
 
     
-      gl::draw(caption_tex, caption_middle);
+   if(caption_tex)   gl::draw(caption_tex, caption_middle);
   //  gl::drawStrokedCircle(caption_middle,10);
     gl::popMatrices();
+    
+    
+    
 }
+void CardUI::drawOverlay(){
+    closeButton.draw();
+    nextButton.draw();
+    prevButton.draw();
+}
+void CardUI::mouseDown(MouseEvent evt){
+    if(closeButton.isOver(evt.getPos())){
+        // shrinkAll();
+        //cui.hide();
+        closeButton.down();
+        console() << "you pressed while over the close button" << endl;
+        
+    }else if(prevButton.isOver(evt.getPos())){
+        prevButton.down();
+        console() << "you pressed while over the prev button" << endl;
+    } else if(nextButton.isOver(evt.getPos())){
+        nextButton.down();
+        console() << "you pressed while over the next button" << endl;
+        
+    }
+}
+int CardUI::mouseUp(MouseEvent evt){
+    if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
+       // shrinkAll();
+        hide();
+        closeButton.hide();
+        prevButton.hide();
+        nextButton.hide();
+        closeButton.up();
+        console() << "you released while over the close button" << endl;
+        return 0;
+    }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
+        prevButton.up();
+       // prevCard();
+        console() << "you released while over the prev button" << endl;
+        return 1;
+    } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
+        nextButton.up();
+       // nextCard();
+        console() << "you released while over the next button" << endl;
+        return 2;
+    } else {
+        closeButton.up();
+        nextButton.up();
+        prevButton.up();
+        return -1;
+    }
+    
+    }
 
 void CardUI::updateCaption(string _text){
     Font mFont = Font( "Amasis MT Pro", 32 );
@@ -91,7 +172,15 @@ void CardUI::updateByline(string _text){
 
 void CardUI::setup(){
     
-     updateByline("World!");
-    updateCaption("Hello,");
+    // necessary to generate the texture?
+    // updateByline("");
+   // updateCaption("");
+
+        // need to drop this back until the window is ready
+        // not in the JSON?
+        closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-128,128));
+        prevButton = Button("leftArrow.png",Vec2f(128,getWindowHeight()/2));
+        nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-128,getWindowHeight()/2));
+    
    
 }

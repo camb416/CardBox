@@ -21,7 +21,6 @@ void CardBoxApp::setup()
     cui.setup();
     cui.hide();
     
-    curtainsAlpha = 0.0f;
     selectedCard = -1;
     
     mParams = params::InterfaceGl( "CardBox Functions", Vec2i( 225, 200 ) );
@@ -72,16 +71,12 @@ void CardBoxApp::setup()
     
     bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
     
-    // not in the JSON?
-    closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-128,128));
-    prevButton = Button("leftArrow.png",Vec2f(128,getWindowHeight()/2));
-    nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-128,getWindowHeight()/2));
-    
     // some text formatting stuff
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
     fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
     
+    cui.setup();
     randomize();
 }
 void CardBoxApp::update()
@@ -110,9 +105,9 @@ void CardBoxApp::update()
             
         }
     }
-    closeButton.isOver(cursorPos);
-    prevButton.isOver(cursorPos);
-    nextButton.isOver(cursorPos);
+
+    cui.handleMouse(cursorPos);
+    
     
 }
 void CardBoxApp::draw()
@@ -144,18 +139,8 @@ void CardBoxApp::draw()
         }
     }
     
-    if(curtainsAlpha > 0.0f){
-        gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
-        gl::pushMatrices();
-        gl::translate(0,0,0);
+    cui.draw();
         
-        Rectf rect = getWindowBounds();
-        gl::disableDepthRead();
-        gl::disableDepthWrite();
-        gl::drawSolidRect(rect);
-        gl::popMatrices();
-    }
-    
     gl::color(1.0f,1.0f,1.0f,1.0f);
     if(bigCard!=NULL){
         bigCard->draw();
@@ -167,9 +152,9 @@ void CardBoxApp::draw()
     // gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
     // gl::color(1.0f,1.0f,1.0f,1.0f);
     
-    closeButton.draw();
-    nextButton.draw();
-    prevButton.draw();
+    
+    cui.drawOverlay();
+
     
     infoSection.draw();
     
@@ -177,7 +162,7 @@ void CardBoxApp::draw()
     
     params::InterfaceGl::draw();
     
-    cui.draw();
+    
     
     if(drawGrid) drawAlignmentGrid();
     
@@ -186,57 +171,44 @@ void CardBoxApp::mouseDown( MouseEvent evt )
 {
     isMouseDown = true;
     if(cui.isOpen()){
-        if(closeButton.isOver(evt.getPos())){
-            // shrinkAll();
-            //cui.hide();
-            closeButton.down();
-            console() << "you pressed while over the close button" << endl;
-            
-        }else if(prevButton.isOver(evt.getPos())){
-            prevButton.down();
-            console() << "you pressed while over the prev button" << endl;
-        } else if(nextButton.isOver(evt.getPos())){
-            nextButton.down();
-            console() << "you pressed while over the next button" << endl;
-            
-        }
+        cui.mouseDown(evt);
+        
         
     }
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
     isMouseDown = false;
-    if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
-        shrinkAll();
-        cui.hide();
-        closeButton.hide();
-        prevButton.hide();
-        nextButton.hide();
-        closeButton.up();
-        console() << "you released while over the close button" << endl;
-    }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
-        prevButton.up();
-        prevCard();
-        console() << "you released while over the prev button" << endl;
-    } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
-        nextButton.up();
-        nextCard();
-        console() << "you released while over the next button" << endl;
-    } else {
-        closeButton.up();
-        nextButton.up();
-        prevButton.up();
+    if(cui.isOpen()){
+       
+        switch(cui.mouseUp(evt)){
+            case 0:
+                // closed
+                shrinkAll();
+                break;
+            case 1:
+                // prevcard
+                prevCard();
+                break;
+            case 2:
+                // nextcard
+                nextCard();
+                break;
+            default:
+                // nothing
+                break;
+        }
     }
-    
     if(!cui.isOpen() && selectedCard>-1){
         shrinkAll(selectedCard);
         cui.show();
-        closeButton.show();
-        prevButton.show();
-        nextButton.show();
+        //closeButton.show();
+        //prevButton.show();
+        //nextButton.show();
         cui.update(cards.at(selectedCard)->getModel());
         cards.at(selectedCard)->grow(cui.getLowerBound());
         
     }
+
 }
 void CardBoxApp::keyDown(KeyEvent evt){
     switch(evt.getChar()){
@@ -276,9 +248,7 @@ void CardBoxApp::randomize(){
     }
     shrinkAll();
     cui.hide();
-    closeButton.hide();
-    prevButton.hide();
-    nextButton.hide();
+
 }
 
 
@@ -319,11 +289,14 @@ void CardBoxApp::shrinkAll(int _exception){
             cards.at(i)->shrink();
         }
     }
+    // TODO check up on this
+    /*
     if(_exception>-1){
         timeline().apply(&curtainsAlpha, 0.8f,1.0f,EaseInOutSine());
     } else {
         timeline().apply(&curtainsAlpha, 0.0f,1.0f,EaseInOutSine());
     }
+     */
 }
 
 
@@ -336,9 +309,9 @@ void CardBoxApp::alignToGrid(){
     
     shrinkAll();
     cui.hide();
-    closeButton.hide();
-    prevButton.hide();
-    nextButton.hide();
+    //closeButton.hide();
+    //prevButton.hide();
+    //nextButton.hide();
     
     
     vector<Card *> orderedCards = cards;
@@ -430,9 +403,9 @@ void CardBoxApp::closeCard(){
     console() << "closeCard()" << endl;
     shrinkAll();
     cui.hide();
-    closeButton.hide();
-    prevButton.hide();
-    nextButton.hide();
+    //closeButton.hide();
+   // prevButton.hide();
+   // nextButton.hide();
 }
 void CardBoxApp::nextCard(){
     int curCard_uid = -1;

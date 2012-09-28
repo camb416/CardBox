@@ -94,10 +94,7 @@ private :
     
     // Big Card UI
     CardUI cui;
-    Anim<float>curtainsAlpha;
-    Button closeButton;
-    Button prevButton;
-    Button nextButton;
+
     
     // Info Section UI
     InfoSection infoSection;
