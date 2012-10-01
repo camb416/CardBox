@@ -95,7 +95,6 @@ private :
     // Big Card UI
     CardUI cui;
 
-    
     // Info Section UI
     InfoSection infoSection;
     

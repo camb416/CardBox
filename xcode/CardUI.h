@@ -9,7 +9,6 @@
 #ifndef __CardBox__CardUI__
 #define __CardBox__CardUI__
 
-//#include "CardBoxApp.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
@@ -21,13 +20,14 @@
 #include <string>
 #include <iostream>
 
-
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 
 class CardUI{
+
 public:
+    
     CardUI();
     ~CardUI();
     void setup();
@@ -47,7 +47,9 @@ public:
         // 0    shrink everything
         // 1    prev card
         // 2    next card
+    
 private:
+    
     void updateCaption(string _text = "");
     void updateByline(string _text = "");
     Anim<float> alpha;
@@ -57,14 +59,11 @@ private:
     Vec2f byline_leftmiddle;
     Vec2f caption_middle;
     
-    // ported from app
     Anim<float>curtainsAlpha;
     Button closeButton;
     Button prevButton;
     Button nextButton;
-    
-    
-    
+
 };
 
 #endif /* defined(__CardBox__CardUI__) */
