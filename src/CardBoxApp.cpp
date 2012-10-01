@@ -10,6 +10,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
 }
 void CardBoxApp::setup()
 {
+    
     isMouseDown = false;
     drawGrid = false;
     topMargin = 100;
@@ -225,10 +226,44 @@ void CardBoxApp::keyDown(KeyEvent evt){
         case 'g':
         case 'G':
             drawGrid = !drawGrid;
+
+    
+    
+            
+        case '\t':
+            // model->useFrontPlate = !model->useFrontPlate;
+            break;
+            
+        case '`':
+        case '~':
+            
+            if(isFullScreen()){
+                showCursor();
+            } else {
+                hideCursor();
+            }
+            setFullScreen( ! isFullScreen() );
+            
+            break;
+        case 'd':
+        case 'D':
+        //    debugState++;
+//if(debugState>2){
+        //        debugState = 0;
+         //   }
+         //   if(debugState!=0){
+         //       myApp->showCursor();
+         //   } else {
+         //       myApp->hideCursor();
+          //  }
+         //   updateViewStates();
+            break;
         default:
             console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
             break;
     }
+    
+    
 }
 void CardBoxApp::resize(ResizeEvent evt){
     // resize event (empty so far)

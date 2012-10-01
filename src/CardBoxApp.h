@@ -80,6 +80,7 @@ private :
     int bottomMargin;
     int sideMargin;
     int gutter;
+    bool isMouseVisible;
     /////////////////////////////////////////
     
     /////////////////////////////////////////
