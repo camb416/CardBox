@@ -205,8 +205,10 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         //prevButton.show();
         //nextButton.show();
         
+
+        cui.updateModel(cards.at(selectedCard)->getModel());
         Rectf theRect = cards.at(selectedCard)->grow(cui.getLowerBound());
-        cui.update(cards.at(selectedCard)->getModel(),theRect);
+        cui.updatePositioning(theRect);
     }
 
 }
@@ -423,8 +425,10 @@ void CardBoxApp::nextCard(){
                 shrinkAll(nextCard_id);
                 cui.show();
                 
+                cui.updateModel(cards.at(nextCard_id)->getModel());
                 Rectf theRect = cards.at(nextCard_id)->grow(cui.getLowerBound());
-                cui.update(cards.at(nextCard_id)->getModel(),theRect);
+                cui.updatePositioning(theRect);
+                
             }
         }
     }
@@ -446,8 +450,9 @@ void CardBoxApp::prevCard(){
                 shrinkAll(nextCard_id);
                 cui.show();
                 
+                cui.updateModel(cards.at(nextCard_id)->getModel());
                 Rectf theRect = cards.at(nextCard_id)->grow(cui.getLowerBound());
-                cui.update(cards.at(nextCard_id)->getModel(), theRect);
+                cui.updatePositioning(theRect);
             }
         }
     }

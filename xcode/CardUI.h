@@ -31,7 +31,10 @@ public:
     CardUI();
     ~CardUI();
     void setup();
-    void update(CardModel cm, Rectf _r);
+    
+    void updateModel(CardModel cm);
+    void updatePositioning(Rectf _r);
+    
     void draw();
     void resize(ResizeEvent evt);
     void show();

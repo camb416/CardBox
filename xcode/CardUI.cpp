@@ -25,10 +25,9 @@ void CardUI::setup(){
     
 }
 
-void CardUI::update(CardModel cm, Rectf _r){
+void CardUI::updateModel(CardModel cm){
     
-    // receives the CardModel of the selected Card and the destination rect of
-    // where it's going to grow to.
+    // receives the CardModel of the selected Card
     
     // update the text based on the CardModel received from the App
     cardModel = cm;
@@ -41,12 +40,18 @@ void CardUI::update(CardModel cm, Rectf _r){
     }
     updateCaption(cm.caption);
     
+}
+
+void CardUI::updatePositioning(Rectf _r){
+    
+    // moves the buttons around to line up with the selected card
+    
     // move the close button to the upper right corner of the big card
     closeButton.moveTo(Vec2f(_r.x2,_r.y1));
     // move the prev/next buttons to the middle of the big card
     prevButton.moveTo(Vec2f(_r.x1,_r.getY2()-_r.getHeight()/2));
     nextButton.moveTo(Vec2f(_r.x2,_r.getY2()-_r.getHeight()/2));
-  
+    
 }
 
 void CardUI::draw(){
