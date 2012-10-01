@@ -116,16 +116,16 @@
  		"location" : "New York, NY",
  		"caption" : "",
 		"path" : "Camila_Pizza.jpg"
-},
+}, 
 { 
-        "firstname" : "Katherine",
-        "lastinitial" : "P",
-        "location" : "Brooklyn, NY",
+        "firstname" : "Mary",
+        "lastinitial" : "G",
+        "location" : "Chicago, IL",
         "caption" : "",
         "path" : "Chicago.jpg"
                },
                { 
-               "firstname" : "Katie",
+               "firstname" : "Katherine",
                "lastinitial" : "P",
                "location" : "Brooklyn, NY",
                "caption" : "",

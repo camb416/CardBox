@@ -15,11 +15,23 @@ CardUI::CardUI(){
     
     
 }
+void CardUI::resize(ResizeEvent evt){
+  //  CardBoxApp *myApp = (CardBoxApp*)app::App::get();
+   // ResizeEvent myEvt = evt;
+ //   prevButton.moveTo(Vec2f(75,evt.getHeight()/2));
+  //  nextButton.moveTo(Vec2f(evt.getWidth()-75,evt.getHeight()/2));
+   // prevButton = Button("leftArrow.png",Vec2f(75,getWindowHeight()/2));
+   // nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-75,getWindowHeight()/2));
+    
+    // this is all handled in the CardUI::update method. Easier that way.
+
+    
+}
 
 CardUI::~CardUI(){
     // empty destructor
 }
-
+                                                
 float CardUI::getLowerBound(){
     return caption_middle.y;
 }
@@ -38,6 +50,8 @@ void CardUI::update(CardModel cm, Rectf _r){
     
     // move the close button to the upper right corner of the big card
     closeButton.moveTo(Vec2f(_r.x2,_r.y1));
+    prevButton.moveTo(Vec2f(_r.x1,_r.getY2()-_r.getHeight()/2));
+    nextButton.moveTo(Vec2f(_r.x2             ,_r.getY2()-_r.getHeight()/2));
 
 
     

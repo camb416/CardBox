@@ -9,6 +9,7 @@
 #ifndef __CardBox__CardUI__
 #define __CardBox__CardUI__
 
+//#include "CardBoxApp.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
@@ -32,6 +33,7 @@ public:
     void setup();
     void update(CardModel cm, Rectf _r);
     void draw();
+    void resize(ResizeEvent evt);
     void show();
     void hide();
     float getLowerBound();

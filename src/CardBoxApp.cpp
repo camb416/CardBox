@@ -230,6 +230,7 @@ void CardBoxApp::keyDown(KeyEvent evt){
 }
 void CardBoxApp::resize(ResizeEvent evt){
     // resize event (empty so far)
+    cui.resize(evt);
 }
 /////////////////////////////////////////
 // END Cinder Events (public) ///////////
