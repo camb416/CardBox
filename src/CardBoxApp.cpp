@@ -3,14 +3,18 @@
 /////////////////////////////////////////
 ////// Cinder Events (public) ///////////
 /////////////////////////////////////////
+
 void CardBoxApp::prepareSettings(Settings * settings){
+    
     settings->setWindowSize( 1050,1050 );
     settings->setFrameRate( 60 );
     settings->setTitle( "Card Box" );
-}
-void CardBoxApp::setup()
-{
     
+}
+
+void CardBoxApp::setup(){
+    
+    debugState = 0;
     isMouseDown = false;
     drawGrid = false;
     topMargin = 100;
@@ -32,6 +36,7 @@ void CardBoxApp::setup()
     mParams.addButton("close info", std::bind( &CardBoxApp::closeInfo, this ));
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
+    mParams.addButton("toggle grid visibility", std::bind( &CardBoxApp::toggleGridVisibility, this ));
     mParams.show();
 
     
@@ -81,8 +86,10 @@ void CardBoxApp::setup()
     cui.setup();
     randomize();
 }
+
 void CardBoxApp::update()
 {
+    
     // manual z-sorting (sort methods in Card.h)
     sort(cards.begin(), cards.end(), sortByZ);
     
@@ -102,19 +109,14 @@ void CardBoxApp::update()
             if(mouseDist<nearest){
                 nearestID = i;
                 nearest = mouseDist;
-                
             }
         }
         if(nearestID>-1){
             selectedCard = nearestID;
             selectACard(nearestID);
-            
         }
     }
 
-    
-    
-    
 }
 
 void CardBoxApp::draw(){
@@ -150,10 +152,11 @@ void CardBoxApp::draw(){
     // maybe add a flag for this to check if open
     infoSection.draw();
     
-    // add a debug flag for these
-    params::InterfaceGl::draw();
-    if(drawGrid) drawAlignmentGrid();
-    
+    // debug UI
+    if(debugState>0){
+        params::InterfaceGl::draw();
+        if(drawGrid) drawAlignmentGrid();
+    }
 }
 
 void CardBoxApp::mouseMove(MouseEvent evt){
@@ -225,7 +228,7 @@ void CardBoxApp::keyDown(KeyEvent evt){
             break;
         case 'g':
         case 'G':
-            drawGrid = !drawGrid;
+            toggleGridVisibility();
             break;
         case '\t':  // tab
             break;
@@ -240,6 +243,8 @@ void CardBoxApp::keyDown(KeyEvent evt){
             break;
         case 'd':
         case 'D':
+            debugState++;
+            if(debugState>1) debugState = 0;
             break;
         default:
             console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
@@ -255,7 +260,6 @@ void CardBoxApp::resize(ResizeEvent evt){
 /////////////////////////////////////////
 // END Cinder Events (public) ///////////
 /////////////////////////////////////////
-
 
 
 void CardBoxApp::randomize(){
@@ -332,7 +336,10 @@ void CardBoxApp::alignToGrid(){
         }
     }
 }
-
+void CardBoxApp::toggleGridVisibility(){
+    drawGrid = !drawGrid;
+}
+    
 void CardBoxApp::drawAlignmentGrid(){
     
     gl::disableDepthRead();

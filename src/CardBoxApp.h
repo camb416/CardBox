@@ -46,6 +46,7 @@ private :
     /////////////////////////////////////////
     // application view transistions
     void randomize();               // shuffle the cards
+    void toggleGridVisibility();
     void drawAlignmentGrid();       // draws the destination grid of the alignToGrid()
     void alignToGrid();
     // mode-independent selection actions
@@ -74,6 +75,7 @@ private :
     /////////////////////////////////////////
     // App-Level Data ///////////////////////
     /////////////////////////////////////////
+    int debugState;
     CardSettings cs;
     // App-Level Visual Elements
     gl::Texture bg_tex;
