@@ -9,6 +9,7 @@
 #include "Card.h"
 
 Card::Card(CardSettings * _settings, CardModel _model){
+    
     model = _model;
     settings = _settings;
     load();
@@ -22,8 +23,8 @@ Card::Card(CardSettings * _settings, CardModel _model){
     
 }
 void Card::load(){
+    
     string actualPath = (settings->basePath) + string("/") + (model.path);
-    // console() << "attempting to load: " << actualPath << endl;
     tex = gl::Texture( loadImage( actualPath ) ) ;
     
 }
@@ -49,14 +50,11 @@ void Card::fitToRect(Rectf r, bool _setOrigin){
             desiredScale = maxHeight/tex.getHeight();
         }
         setScale(desiredScale, _setOrigin);
-        //Vec3f newPos = Vec3f(getWindowCenter().x,(lowerBound-upperBound*2)/2+upperBound,2.0f);
-        //setPos(newPos);
-
-
     
 }
 
 Rectf Card::grow(float lowerBound){
+    
     float upperBound = 75;
     float sideBounds = 75;
     
@@ -80,7 +78,9 @@ Rectf Card::grow(float lowerBound){
         returnRect.x2 = newPos.x+tex.getWidth()/2*desiredScale;
         returnRect.y2 = newPos.y+tex.getHeight()/2*desiredScale;
     }
+    
     return returnRect;
+    
 }
 void Card::shrink(float _s){
     
@@ -99,9 +99,12 @@ void Card::shrink(float _s){
 
 
 void Card::update(){
+    
     isSelected = false;
+    
 }
 void Card::draw(){
+    
     gl::pushMatrices();
     if (tex) {
         
@@ -117,18 +120,14 @@ void Card::draw(){
         
         Rectf shadowRect = bgRect;
         shadowRect.inflate(Vec2f(scale2f.x*10.0f,scale2f.y*10.0f));
-       // gl::color(1.0f,1.0f,1.0f,1.0f);
         gl::Texture shadow = settings->shadow_tex;
         if(shadow){
             gl::draw(shadow, shadowRect);
         }
         gl::translate(0,0,0.01f);
-      //  gl::drawSolidRect(bgRect);
         gl::translate(0,0,0.01f);
         if(isSelected){
-         //   gl::color(1.0f,0.0f,0.0f,alpha);
             gl::drawStrokedRect(bgRect);
-       //     gl::color(1.0f,1.0f,1.0f,alpha);
         }
          gl::draw(tex, texRect );
 }
@@ -144,7 +143,7 @@ Vec2f Card::getSize() const{
 }
 Vec2f Card::getCenter(){
     Vec3f vec = pos;
-    return Vec2f(vec.x,vec.y);// + (tex.getSize()/2.0f);
+    return Vec2f(vec.x,vec.y);
 }
 Vec3f Card::getPos(){
     return pos;
@@ -163,9 +162,7 @@ void Card::setOriginalPos(Vec3f _pos){
     pos = originalPos = _pos;
 }
 void Card::setPos(Vec3f _pos, bool setOrigin){
-   // pos = _pos;
     timeline().apply(&alpha,0.5f, 0.5f,EaseNone());
-    // CueRef cue = timeline().add(bind(&doSlide,this),getElapsedSeconds()+0.3f);
     timeline().apply(&pos,_pos,1.0,EaseInOutSine());
     timeline().apply(&alpha,1.0f, 0.5f,EaseNone());
     if(setOrigin) originalPos = _pos;
@@ -177,11 +174,9 @@ CardModel Card::getModel(){
 
 void Card::setScale(float _scale, bool _setOrigin){
     if(_setOrigin) originalScale = _scale;
-   // scale = Vec2f(_scale, _scale);
     timeline().apply(&scale,Vec2f(_scale,_scale),1.0f,EaseInOutSine());
 }
 void Card::setRot(float _rot, bool _setOrigin){
-   // rot = _rot;
     timeline().apply(&rot, _rot, 1.5f,EaseOutElastic(0.2f,0.8f));
     if(_setOrigin) originalRot = _rot;
     
@@ -193,7 +188,6 @@ string Card::getPath(){
 bool Card::isMoving(){
     Vec3f pos3f = pos;
     if(pos3f!=originalPos){
-        // console() << "moving..." << endl;
         return true;
     } else {
         return false;
@@ -229,13 +223,11 @@ bool sortBySize(Card *A, Card *B)
     float a,b;
     a = A->getScale();
     b = B->getScale();
-   // b+=0.1f;
     if(a<b){
         return true;
     } else {
         return false;
     }
- // return (A->getSize().length() < B->getSize().length());
 }
 bool sortByPath(Card*A, Card *B){
     for( string::const_iterator lit = A->getPath().begin(), rit = B->getPath().begin(); lit != A->getPath().end() && rit != B->getPath().end(); ++lit, ++rit )

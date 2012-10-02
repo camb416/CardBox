@@ -14,6 +14,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
 
 void CardBoxApp::setup(){
     
+    cursorDownPos = Vec2f(-1,-1);
     debugState = 0;
     isMouseDown = false;
     drawGrid = false;
@@ -156,6 +157,17 @@ void CardBoxApp::draw(){
     if(debugState>0){
         params::InterfaceGl::draw();
         if(drawGrid) drawAlignmentGrid();
+        
+        if(cursorDownPos.x>-1){
+      //gl::clear( Color( 0,0,0 ) );
+        gl::color(1.0f,1.0f,1.0f,1.0f);
+           // gl::disableDepthRead();
+          //  gl::disableDepthWrite();
+            gl::drawStrokedCircle(cursorDownPos, 20);
+            gl::drawLine(cursorDownPos, cursorPos);
+            gl::drawSolidCircle(cursorPos, 10);
+        }
+        
     }
 }
 
@@ -175,15 +187,23 @@ void CardBoxApp::mouseDrag(MouseEvent evt){
 
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
-    
+    cursorDownPos = evt.getPos();
+    cursorDownTime = getElapsedSeconds();
     isMouseDown = true;
     if(cui.isOpen()) cui.mouseDown(evt);    // pass the event to the CardUI
     
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
     
-    isMouseDown = false;
+     isMouseDown = false;
     
+    float timeTouched = getElapsedSeconds()-cursorDownTime;
+    
+    // if its a tap
+    if(cursorDownPos.distance(cursorPos)<30 && timeTouched<3.0f){
+    
+    cursorDownPos = Vec2f(-1,-1);
+   
     if(cui.isOpen()){
        // the CardUI mouseup returns what the user clicked on
         switch(cui.mouseUp(evt)){   
@@ -213,6 +233,35 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         cui.updatePositioning(theRect);
         
     }
+    } else if(timeTouched<3.0f){
+        // its not a tap...
+        console() << "it appears that the angle of the swipe is: " << getAngle(cursorPos, cursorDownPos) << endl;
+        float swipeAngle = getAngle(cursorPos, cursorDownPos);
+        float swipeRange = 45.0f;
+        
+       // console() << "down should be >" << -90+0.5f*swipeRange  << " and <" << -90-0.5f*swipeRange << endl;
+        
+        if(swipeAngle>-0.5f*swipeRange && swipeAngle<0.5f*swipeRange){
+            // swipe left
+            console() << "swipe left" << endl;
+        } else if(swipeAngle>90-0.5f*swipeRange && swipeAngle<90+0.5f*swipeRange){
+            // swipe up
+            console() << "swipe up" << endl;
+        } else if(swipeAngle>180-0.5f*swipeRange || swipeAngle<-180+0.5f*swipeRange){
+            // swipe right
+            console() << "swipe right" << endl;
+        } else if(swipeAngle<-90+0.5f*swipeRange && swipeAngle>-90-0.5f*swipeRange){
+            // swipe down
+            console() << "swipe down" << endl;
+        } else {
+            console() << "no diagonal swiping please" << endl;
+        }
+
+        
+    } else {
+        console() << "too slow" << endl;
+    }
+    cursorDownPos = Vec2f(-1,-1);
 
 }
 void CardBoxApp::keyDown(KeyEvent evt){
@@ -477,6 +526,10 @@ void CardBoxApp::prevInfo(){
     infoSection.prev();
     console() << "prevInfo()" << endl;
     
+}
+
+float CardBoxApp::getAngle(const Vec2f & a, const Vec2f  & b){
+    return atan2( b.y-a.y,b.x-a.x )/M_PI*180.0f;
 }
 
 CINDER_APP_BASIC( CardBoxApp, RendererGl )

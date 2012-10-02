@@ -87,8 +87,6 @@ private:
     void load();
     string path;
     bool isSelected;
-    
-
 
 };
 

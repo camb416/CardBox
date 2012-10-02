@@ -56,6 +56,7 @@ private :
     // helper methods
     void sortByOrder();             // sort Cards by UID
     int getIDfromUID(int card_uid);
+    float getAngle(const Vec2f & a, const Vec2f  & b);
     /////////////////////////////////////////
     
     /////////////////////////////////////////
@@ -110,6 +111,8 @@ private :
     // Application State
     bool isMouseDown;
     Vec2f cursorPos;
+    Vec2f cursorDownPos;
+    float cursorDownTime;
     bool drawGrid;
   
 };
