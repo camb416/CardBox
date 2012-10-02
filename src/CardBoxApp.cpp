@@ -54,6 +54,7 @@ void CardBoxApp::setup()
         console() << "not looking good" << endl;
     }
     
+    // parse the JSON and create the card objects
     int i = 0;
     JsonTree cardTree = root.getChild( "cards" );
     for( JsonTree::ConstIter cIt = cardTree.begin(); cIt != cardTree.end(); ++cIt )
@@ -82,12 +83,16 @@ void CardBoxApp::setup()
 }
 void CardBoxApp::update()
 {
+    // manual z-sorting (sort methods in Card.h)
     sort(cards.begin(), cards.end(), sortByZ);
+    
+    // update the cards
     for(int i=0;i<cards.size(); i++){
         cards.at(i)->update();
     }
     
-    if(isMouseDown){
+    // card selection
+    if(isMouseDown && !cui.isOpen()){
         float nearest = 99999;
         float nearestID = -1;
         for(int i=0;i<cards.size(); i++){
@@ -107,81 +112,78 @@ void CardBoxApp::update()
         }
     }
 
-    cui.handleMouse(cursorPos);
+    
     
     
 }
-void CardBoxApp::draw()
-{
-    //   gl::enableDepthRead();
-    
-    // clear out the window with black
+
+void CardBoxApp::draw(){
+   
+    // clear and enable alpha
 	gl::clear( Color( 1,1,1 ) );
-    
     gl::enableAlphaBlending();
-    // gl::disableDepthRead();
-    // gl::disableDepthWrite();
     
+    // draw background
     gl::color(1.0f,1.0f,1.0f,1.0f);
-    
-    
     gl::draw(bg_tex,getWindowBounds());
-    
-    gl::enableDepthRead();
-    gl::enableDepthWrite();
-    
+
+    // draw all the small cards
     bigCard = NULL;
     for(int i=0;i<cards.size();i++){
         if(!cards.at(i)->getIsBig()){
-            gl::color(1.0f,1.0f,1.0f,1.0f);
+            // gl::color(1.0f,1.0f,1.0f,1.0f);
             cards.at(i)->draw();
         } else {
             bigCard = cards.at(i);
         }
     }
     
-    cui.draw();
-        
-    gl::color(1.0f,1.0f,1.0f,1.0f);
-    if(bigCard!=NULL){
-        bigCard->draw();
-    }
-    cursorPos = getMousePos();
-    // gl::color(0.0f,0.0f,1.0f,1.0f);
-    // gl::disableDepthRead();
-    // gl::disableDepthWrite();
-    // gl::drawLine(Vec3f(cursorPos.x, cursorPos.y,0.0f), Vec3f(myVec.x, myVec.y,0.0f));
-    // gl::color(1.0f,1.0f,1.0f,1.0f);
+    // draw the Card UI
+    cui.drawBackground();
     
-    
-    cui.drawOverlay();
+    // draw the big card
+    if(bigCard!=NULL) bigCard->draw();
 
-    
+    // draws the buttons
+    cui.drawForeground();
+
+    // maybe add a flag for this to check if open
     infoSection.draw();
     
-    
-    
+    // add a debug flag for these
     params::InterfaceGl::draw();
-    
-    
-    
     if(drawGrid) drawAlignmentGrid();
     
 }
+
+void CardBoxApp::mouseMove(MouseEvent evt){
+    
+    cursorPos = evt.getPos();
+    cui.handleMouse(cursorPos);
+    
+}
+
+void CardBoxApp::mouseDrag(MouseEvent evt){
+    
+    cursorPos = evt.getPos();
+    cui.handleMouse(cursorPos);
+    
+}
+
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
+    
     isMouseDown = true;
-    if(cui.isOpen()){
-        cui.mouseDown(evt);
-        
-        
-    }
+    if(cui.isOpen()) cui.mouseDown(evt);    // pass the event to the CardUI
+    
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
+    
     isMouseDown = false;
+    
     if(cui.isOpen()){
-       
-        switch(cui.mouseUp(evt)){
+       // the CardUI mouseup returns what the user clicked on
+        switch(cui.mouseUp(evt)){   
             case 0:
                 // closed
                 shrinkAll();
@@ -198,24 +200,22 @@ void CardBoxApp::mouseUp(MouseEvent evt){
                 // nothing
                 break;
         }
-    }
-    else if(selectedCard>-1){
+        
+    } else if(selectedCard>-1){
+        
         shrinkAll(selectedCard);
         cui.show();
-        //closeButton.show();
-        //prevButton.show();
-        //nextButton.show();
-        
-
         cui.updateModel(cards.at(selectedCard)->getModel());
         Rectf theRect = cards.at(selectedCard)->grow(cui.getLowerBound());
         cui.updatePositioning(theRect);
+        
     }
 
 }
 void CardBoxApp::keyDown(KeyEvent evt){
+    
     switch(evt.getChar()){
-        case ' ':
+        case ' ':   // space
             alignToGrid();
             //sortByOrder();
             break;
@@ -226,48 +226,31 @@ void CardBoxApp::keyDown(KeyEvent evt){
         case 'g':
         case 'G':
             drawGrid = !drawGrid;
-
-    
-    
-            
-        case '\t':
-            // model->useFrontPlate = !model->useFrontPlate;
             break;
-            
+        case '\t':  // tab
+            break;
         case '`':
         case '~':
-            
             if(isFullScreen()){
                 showCursor();
             } else {
                 hideCursor();
             }
             setFullScreen( ! isFullScreen() );
-            
             break;
         case 'd':
         case 'D':
-        //    debugState++;
-//if(debugState>2){
-        //        debugState = 0;
-         //   }
-         //   if(debugState!=0){
-         //       myApp->showCursor();
-         //   } else {
-         //       myApp->hideCursor();
-          //  }
-         //   updateViewStates();
             break;
         default:
             console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
             break;
     }
     
-    
 }
 void CardBoxApp::resize(ResizeEvent evt){
-    // resize event (empty so far)
+    
     cui.resize(evt);
+
 }
 /////////////////////////////////////////
 // END Cinder Events (public) ///////////
@@ -276,10 +259,16 @@ void CardBoxApp::resize(ResizeEvent evt){
 
 
 void CardBoxApp::randomize(){
-    // randomize everything
+    
+    // randomize card placement
     for(int i=0;i<cards.size();i++){
-        //if(largestY<cards.at(i)->getSize().y) largestY = cards.at(i)->getSize().y;
-        cards.at(i)->setPos(Vec3f(rand() % (getWindowWidth()-200)+100, rand() % (getWindowHeight()-200)+100,(rand() % 32000)/320000.0f), true);
+        cards.at(i)->setPos(
+                            Vec3f(
+                                  rand() % (getWindowWidth()-200)+100,
+                                  rand() % (getWindowHeight()-200)+100,
+                                  (rand() % 32000)/320000.0f),
+                                  true
+                            );
         cards.at(i)->setRot(rand() % 360, true);
         Rectf r = Rectf(0,0,160,160);
         cards.at(i)->fitToRect(r, true);
@@ -291,66 +280,26 @@ void CardBoxApp::randomize(){
 
 
 void CardBoxApp::sortByOrder(){
-    // align everything
-    //  float xCount  = 225;
-    //  float yCount = 225;
-    // float largestY = 110;
-    // float margin = 25;
-    
+
     vector<Card *> orderedCards = cards;
-    
     sort(orderedCards.begin(),orderedCards.end(),sortByUID);
-    
-    /*
-     for(int i=0;i<orderedCards.size();i++){
-     // if(largestY<orderedCards.at(i)->getSize().y && !orderedCards.at(i)->getIsBig()) largestY = orderedCards.at(i)->getSize().y;
-     orderedCards.at(i)->setPos(Vec3f(xCount, yCount,(float)i/1000.0f),true);
-     orderedCards.at(i)->setRot(0.0f, true);
-     
-     xCount += 85+margin;
-     //xCount += orderedCards.at(i)->getSize().x+margin;
-     // console() << xCount << ", " << yCount << endl;
-     if(xCount>getWindowWidth()-225){
-     xCount = 225;
-     yCount += largestY+margin;
-     //largestY = 0;
-     }
-     }
-     */
-    
-    
+
 }
 
 void CardBoxApp::shrinkAll(int _exception){
+    
     for(int i=0;i<cards.size();i++){
         if(i!=_exception){
             cards.at(i)->shrink();
         }
     }
-    // TODO check up on this
-    /*
-    if(_exception>-1){
-        timeline().apply(&curtainsAlpha, 0.8f,1.0f,EaseInOutSine());
-    } else {
-        timeline().apply(&curtainsAlpha, 0.0f,1.0f,EaseInOutSine());
-    }
-     */
+    
 }
 
-
-
-
-
 void CardBoxApp::alignToGrid(){
-    // gl::disableDepthRead();
-    // gl::disableDepthWrite();
     
     shrinkAll();
     cui.hide();
-    //closeButton.hide();
-    //prevButton.hide();
-    //nextButton.hide();
-    
     
     vector<Card *> orderedCards = cards;
     
@@ -380,7 +329,6 @@ void CardBoxApp::alignToGrid(){
                 orderedCards.at(cardIterator)->setRot(0.0f, true);
                 cardIterator++;
             }
-            //gl::drawStrokedCircle(Vec2f(x,y),24);
         }
     }
 }
@@ -405,27 +353,34 @@ void CardBoxApp::drawAlignmentGrid(){
             int y = j*boxHeight+sideMargin+gutter*j;
             Rectf r = Rectf(x,y,x+boxWidth,y+boxHeight);
             gl::drawStrokedRect(r);
-            //gl::drawStrokedCircle(Vec2f(x,y),24);
         }
     }
+    
 }
 
 
 int CardBoxApp::getIDfromUID(int card_uid){
+    
+    // gets the id of a desired card in the cards vector
     for(int i=0;i<cards.size();i++){
         if(cards.at(i)->getUID() == card_uid){
             return i;
         }
     }
+    
+    console() << "ERROR! uid: " << card_uid << " not found in the cards vector." << endl;
     return -1;
+    
 }
+
 void CardBoxApp::selectACard(int _selectedID){
+
     cards.at(_selectedID)->select();
-   // myVec = cards.at(_selectedID)->getPos2f();
     unselectAll();
     
 }
 void CardBoxApp::unselectAll(){
+    
     for(int i=0;i<cards.size();i++){
         if(i!=selectedCard){
             cards.at(i)->unselect();
@@ -434,16 +389,11 @@ void CardBoxApp::unselectAll(){
     
 }
 
-
-
 // button handlers
 void CardBoxApp::closeCard(){
     console() << "closeCard()" << endl;
     shrinkAll();
     cui.hide();
-    //closeButton.hide();
-   // prevButton.hide();
-   // nextButton.hide();
 }
 void CardBoxApp::nextCard(){
     int curCard_uid = -1;
@@ -467,10 +417,11 @@ void CardBoxApp::nextCard(){
             }
         }
     }
-    
     console() << "nextCard()" << endl;
+    
 }
-void CardBoxApp::prevCard(){    
+void CardBoxApp::prevCard(){
+    
     int curCard_uid = -1;
     int nextCard_id = -1;
     if(bigCard!=NULL){
@@ -492,26 +443,33 @@ void CardBoxApp::prevCard(){
         }
     }
     console() << "prevCard()" << endl;
+    
 }
 void CardBoxApp::info(){
+    
     infoSection.open();
     shrinkAll();
     cui.hide();
     console() << "info()" << endl;
+    
 }
 void CardBoxApp::closeInfo(){
+    
     infoSection.close();
     console() << "closeInfo()" << endl;
+    
 }
 void CardBoxApp::nextInfo(){
+    
     infoSection.next();
     console() << "nextInfo()" << endl;
+    
 }
 void CardBoxApp::prevInfo(){
+    
     infoSection.prev();
     console() << "prevInfo()" << endl;
+    
 }
-
-
 
 CINDER_APP_BASIC( CardBoxApp, RendererGl )

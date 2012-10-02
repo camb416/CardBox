@@ -23,6 +23,7 @@ using namespace ci::app;
 using namespace std;
 
 class CardBoxApp : public AppBasic {
+    
 public:
     /////////////////////////////////////////
     // Cinder Events ////////////////////////
@@ -31,11 +32,14 @@ public:
 	void setup();
     void update();
     void draw();
-	void mouseDown( MouseEvent evt );
+	void mouseMove(MouseEvent evt);
+    void mouseDrag(MouseEvent evt);
+    void mouseDown( MouseEvent evt );
     void mouseUp( MouseEvent evt );
     void keyDown(KeyEvent evt);
     void resize(ResizeEvent evt);
     /////////////////////////////////////////
+    
 private :
     /////////////////////////////////////////
     // app view and controller methods //////
@@ -90,7 +94,6 @@ private :
     Card * bigCard;
     int selectedCard;
     int maxCards;
-    // Vec2f myVec;    // temporarily disabled... used for drawing the selector line
     /////////////////////////////////////////
     
     // Big Card UI

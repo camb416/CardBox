@@ -35,14 +35,14 @@ public:
     void updateModel(CardModel cm);
     void updatePositioning(Rectf _r);
     
-    void draw();
+    void drawBackground();
+    void drawForeground();
     void resize(ResizeEvent evt);
     void show();
     void hide();
     float getLowerBound();
     bool isOpen();
     void handleMouse(Vec2f cursorPos);
-    void drawOverlay();
     void mouseDown(MouseEvent evt);
     int mouseUp(MouseEvent evt);
         // mouse up returns:

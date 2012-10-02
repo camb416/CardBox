@@ -54,7 +54,7 @@ void CardUI::updatePositioning(Rectf _r){
     
 }
 
-void CardUI::draw(){
+void CardUI::drawBackground(){
     
     if(curtainsAlpha > 0.0f){
         gl::color(0.0f,0.0f,0.0f,curtainsAlpha);
@@ -76,9 +76,11 @@ void CardUI::draw(){
     if(caption_tex)   gl::draw(caption_tex, caption_middle);
     gl::popMatrices();
     
+    gl::color(1.0f,1.0f,1.0f,1.0f);
+    
 }
 
-void CardUI::drawOverlay(){
+void CardUI::drawForeground(){
     closeButton.draw();
     nextButton.draw();
     prevButton.draw();
