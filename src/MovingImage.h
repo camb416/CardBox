@@ -33,6 +33,7 @@ public:
     void setAlpha(float _alpha);
     void show(float _s=1.0f);
     void hide(float _s=1.0f);
+    bool isVisible();
 private:
     gl::Texture tex;
     string path;

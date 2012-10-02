@@ -150,8 +150,8 @@ void CardBoxApp::draw(){
     // draws the buttons
     cui.drawForeground();
 
-    // maybe add a flag for this to check if open
-    infoSection.draw();
+    // draw the info section
+    if(infoSection.isOpen()) infoSection.draw();
     
     // debug UI
     if(debugState>0){
@@ -200,7 +200,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
     float timeTouched = getElapsedSeconds()-cursorDownTime;
     
     // if its a tap
-    if(cursorDownPos.distance(cursorPos)<30 && timeTouched<3.0f){
+    if(cursorDownPos.distance(cursorPos)<30 && timeTouched<1.5f){
     
     cursorDownPos = Vec2f(-1,-1);
    
@@ -224,7 +224,11 @@ void CardBoxApp::mouseUp(MouseEvent evt){
                 break;
         }
         
-    } else if(selectedCard>-1){
+    } else if(infoSection.isOpen()){
+    
+        // do nothing(for now)
+        
+    }else if(selectedCard>-1){
         
         shrinkAll(selectedCard);
         cui.show();
@@ -233,7 +237,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         cui.updatePositioning(theRect);
         
     }
-    } else if(timeTouched<3.0f){
+    } else if(timeTouched<2.0f){
         // its not a tap...
         console() << "it appears that the angle of the swipe is: " << getAngle(cursorPos, cursorDownPos) << endl;
         float swipeAngle = getAngle(cursorPos, cursorDownPos);
@@ -243,12 +247,14 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         
         if(swipeAngle>-0.5f*swipeRange && swipeAngle<0.5f*swipeRange){
             // swipe left
+            if(cui.isOpen()) nextCard();
             console() << "swipe left" << endl;
         } else if(swipeAngle>90-0.5f*swipeRange && swipeAngle<90+0.5f*swipeRange){
             // swipe up
             console() << "swipe up" << endl;
         } else if(swipeAngle>180-0.5f*swipeRange || swipeAngle<-180+0.5f*swipeRange){
             // swipe right
+            if(cui.isOpen())  prevCard();
             console() << "swipe right" << endl;
         } else if(swipeAngle<-90+0.5f*swipeRange && swipeAngle>-90-0.5f*swipeRange){
             // swipe down

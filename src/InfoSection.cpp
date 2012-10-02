@@ -36,8 +36,8 @@ void InfoSection::draw(){
     
 }
 
-bool InfoSection::isVisible(){
-    return (alpha>0.0f);
+bool InfoSection::isOpen(){
+    return (pageOne.isVisible() || pageTwo.isVisible());
 }
 void InfoSection::open(){
     //timeline().apply(&alpha,1.0f,0.3f,EaseNone());

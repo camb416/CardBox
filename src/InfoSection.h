@@ -33,7 +33,7 @@ public:
     void open();
     void close();
     void draw();
-    bool isVisible();
+    bool isOpen();
     void next();
     void prev();
 private:

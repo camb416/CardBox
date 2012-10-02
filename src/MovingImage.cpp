@@ -25,6 +25,10 @@ void MovingImage::setup(string _path){
 void MovingImage::update(){
     // empty update
 }
+
+bool MovingImage::isVisible(){
+    return(alpha>0.0f);
+}
 void MovingImage::draw(){
     gl::pushMatrices();
     gl::translate(pos);
