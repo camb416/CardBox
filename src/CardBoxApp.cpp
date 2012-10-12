@@ -300,6 +300,11 @@ void CardBoxApp::keyDown(KeyEvent evt){
         case 'D':
             debugState++;
             if(debugState>1) debugState = 0;
+            if(debugState>0){
+                mParams.show();
+            } else {
+                mParams.hide();
+            }
             break;
         default:
             console() << "KEY PRESSED: " << evt.getCode() << "( " << evt.getChar() << " )" << endl;
