@@ -38,7 +38,7 @@ void CardBoxApp::setup(){
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
     mParams.addButton("toggle grid visibility", std::bind( &CardBoxApp::toggleGridVisibility, this ));
-    mParams.show();
+    mParams.hide();
 
     
     // and these images are not specified in JSON? 
