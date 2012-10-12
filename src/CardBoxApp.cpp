@@ -346,7 +346,11 @@ void CardBoxApp::sortByOrder(){
 }
 
 void CardBoxApp::shrinkAll(int _exception){
-    
+    if(_exception>-1){
+        console() << "shrinking all with the exception of " << _exception << endl;
+    } else {
+        console() << "no exceptions." << endl;
+    }
     for(int i=0;i<cards.size();i++){
         if(i!=_exception){
             cards.at(i)->shrink();
@@ -468,9 +472,10 @@ void CardBoxApp::nextCard(){
             if(curCard_uid>=cards.size()) curCard_uid = 0; // loop
             nextCard_id = getIDfromUID(curCard_uid);
             console() << "the next card id is: " << curCard_uid << ", " << nextCard_id << endl;
+           
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
-                cui.show();
+            //    cui.show();
                 
                 cui.updateModel(cards.at(nextCard_id)->getModel());
                 Rectf theRect = cards.at(nextCard_id)->grow(cui.getLowerBound());

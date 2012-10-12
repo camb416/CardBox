@@ -60,6 +60,7 @@ Rectf Card::grow(float lowerBound){
     
     Rectf returnRect = Rectf(sideBounds,upperBound,getWindowWidth()-sideBounds,lowerBound);
     if(!isBig){
+        console() << "growing: " << model.uid << endl;
         isBig = true;
         
         float desiredScale;
@@ -85,15 +86,24 @@ Rectf Card::grow(float lowerBound){
 void Card::shrink(float _s){
     
     if(isBig){
+        console() << "shrinking: " << model.uid << endl;
         Vec2f scale2f = scale;
-        if(scale2f.x>0.2){
+        
+        // removed this conditional to fix issue #16 where furious tapping
+        // leads to some cards stuck big.
+      //  if(scale2f.x>0.2){
             Vec3f pos3f = pos;
             setPos(originalPos);
             setRot(originalRot);
             setScale(originalScale);
             //setScale(0.2f);
-        }
+       // } else {
+       //     console() << "questionable: " << model.uid << endl;
+      //  }
+        
         isBig = false;
+    } else {
+        // no point in shrinking if it's not big
     }
 }
 
