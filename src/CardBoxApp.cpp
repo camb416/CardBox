@@ -462,12 +462,12 @@ void CardBoxApp::nextCard(){
     int nextCard_id = -1;
     if(bigCard!=NULL){
         curCard_uid = bigCard->getUID();
-        console() << "the current card has a uid of: " << curCard_uid << endl;
+        console() << "the current card has ids of: " << curCard_uid << ", " << getIDfromUID(curCard_uid) << endl;
         if(curCard_uid>-1){
             curCard_uid++;
             if(curCard_uid>=cards.size()) curCard_uid = 0; // loop
             nextCard_id = getIDfromUID(curCard_uid);
-            console() << "the next card id is: " << nextCard_id << endl;
+            console() << "the next card id is: " << curCard_uid << ", " << nextCard_id << endl;
             if(nextCard_id>-1){
                 shrinkAll(nextCard_id);
                 cui.show();

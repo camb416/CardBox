@@ -87,7 +87,7 @@ void CardUI::drawForeground(){
 }
 
 void CardUI::mouseDown(MouseEvent evt){
-    
+    console () << getElapsedSeconds() << "\t";
     if(closeButton.isOver(evt.getPos())){
         closeButton.down();
         console() << "you pressed while over the close button" << endl;
@@ -98,6 +98,8 @@ void CardUI::mouseDown(MouseEvent evt){
     } else if(nextButton.isOver(evt.getPos())){
         nextButton.down();
         console() << "you pressed while over the next button" << endl;
+    } else {
+        console () << endl;
     }
     
 }
@@ -135,13 +137,18 @@ int CardUI::mouseUp(MouseEvent evt){
 }
 
 void CardUI::updateCaption(string _text){
-    
-    Font mFont = Font( "Amasis MT Pro", 32 );
-    Vec2f mSize = Vec2f(getWindowWidth() - 100,75);
-
-	TextBox tbox = TextBox().alignment( TextBox::CENTER ).font( mFont ).size( Vec2i( mSize.x, TextBox::GROW ) ).text( _text );
-	tbox.setColor( Color( 1.0f,1.0f,1.0f ) );
-	caption_tex = gl::Texture( tbox.render() );
+  
+    // cgcontexterror if text is empty....
+    if(_text.length()>0){
+        Font mFont = Font( "Amasis MT Pro", 32 );
+        Vec2f mSize = Vec2f(getWindowWidth() - 100,75);
+        
+        TextBox tbox = TextBox().alignment( TextBox::CENTER ).font( mFont ).size( Vec2i( mSize.x, TextBox::GROW ) ).text( _text );
+        tbox.setColor( Color( 1.0f,1.0f,1.0f ) );
+        caption_tex = gl::Texture( tbox.render() );
+    } else {
+        caption_tex = gl::Texture(0,0);
+    }
     caption_middle = Vec2f(byline_leftmiddle.x-caption_tex.getWidth()/2+byline_tex.getWidth()/2,byline_leftmiddle.y-10-caption_tex.getHeight());
     
 }
@@ -157,7 +164,7 @@ bool CardUI::isOpen(){
 }
 
 void CardUI::updateByline(string _text){
-    
+    if(_text.length()>0){
     string normalFont( "HouseMovements-Sign" );
     TextLayout layout;
     layout.setFont( Font( normalFont, 36 ) );
@@ -165,6 +172,9 @@ void CardUI::updateByline(string _text){
     layout.addLine( _text);
     Surface8u rendered = layout.render( true, false );
     byline_tex = gl::Texture( rendered );
+    } else {
+        byline_tex = gl::Texture(0,0);
+    }
     byline_leftmiddle = Vec2f(getWindowWidth()/2-byline_tex.getWidth()/2,getWindowHeight()-75-byline_tex.getHeight()/2.0f);
     
 }
