@@ -14,6 +14,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/Timeline.h"
 #include "MovingImage.h"
+#include "Button.h"
 #include <string>
 #include <iostream>
 
@@ -30,6 +31,9 @@ public:
     Anim<float> alpha;
     MovingImage pageOne;
     MovingImage pageTwo;
+    int mouseUp(MouseEvent evt);
+    void mouseDown(MouseEvent evt);
+    void handleMouse(Vec2f cursorPos);
     void open();
     void close();
     void draw();
@@ -38,6 +42,9 @@ public:
     void prev();
 private:
     int curPage;
+    Button closeButton;
+    Button prevButton;
+    Button nextButton;
     
     
 };

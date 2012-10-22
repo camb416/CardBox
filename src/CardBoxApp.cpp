@@ -100,7 +100,7 @@ void CardBoxApp::update()
     }
     
     // card selection
-    if(isMouseDown && !cui.isOpen()){
+    if(isMouseDown && !cui.isOpen() && !infoSection.isOpen()){
         float nearest = 99999;
         float nearestID = -1;
         for(int i=0;i<cards.size(); i++){
@@ -191,6 +191,7 @@ void CardBoxApp::mouseDown( MouseEvent evt )
     cursorDownTime = getElapsedSeconds();
     isMouseDown = true;
     if(cui.isOpen()) cui.mouseDown(evt);    // pass the event to the CardUI
+    if(infoSection.isOpen()) infoSection.mouseDown(evt);    // pass the event to the InfoSection
     
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
@@ -226,7 +227,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         
     } else if(infoSection.isOpen()){
     
-        // do nothing(for now)
+        infoSection.mouseUp(evt);
         
     }else if(selectedCard>-1){
         
