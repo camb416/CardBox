@@ -44,8 +44,9 @@ void CardUI::updateModel(CardModel cm){
 
 void CardUI::updatePositioning(Rectf _r){
     
-    // moves the buttons around to line up with the selected card
     
+    caption_middle = Vec2f(byline_leftmiddle.x-caption_tex.getWidth()/2+byline_tex.getWidth()/2,_r.y2+20);
+    byline_leftmiddle = Vec2f(byline_leftmiddle.x,caption_middle.y+caption_tex.getHeight()+10);
     // move the close button to the upper right corner of the big card
     closeButton.moveTo(Vec2f(_r.x2,_r.y1));
     // move the prev/next buttons to the middle of the big card
