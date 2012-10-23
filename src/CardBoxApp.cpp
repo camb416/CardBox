@@ -45,11 +45,14 @@ void CardBoxApp::setup(){
     infoSection.setup("instructions1.png","instructions2.png");
     
     // PARSE THE JSON
-    JsonTree root = JsonTree( loadResource("data.js"));
+    string basePath = getHomeDirectory().string()+"Documents/AMNH/postcards/";
+    console() << "I'd like to load a file from here: " << basePath+"data.js" << endl;
+    JsonTree root = JsonTree( loadFile(basePath+"data.js"));
 
-    cs.basePath = root["basepath"].getValue();
+    cs.basePath = basePath+root["basepath"].getValue();
     cs.background = root["background"].getValue();
     cs.shadow_path = root["shadow"].getValue();
+    console() << cs.basePath+"/"+cs.shadow_path << endl; 
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
 
     // hmmmmm, this should probably be handled more generally...

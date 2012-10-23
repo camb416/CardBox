@@ -23,9 +23,7 @@
 		3223122B160A591A00FB16AF /* instructions2.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231229160A591A00FB16AF /* instructions2.png */; };
 		3223122C160A591A00FB16AF /* instructions1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3223122A160A591A00FB16AF /* instructions1.png */; };
 		3223122F160A59FE00FB16AF /* CardUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3223122D160A59FE00FB16AF /* CardUI.cpp */; };
-		32A1E1FF15FF984B007D1AE0 /* data.js in Resources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		32C5162915F7A73000525141 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162715F7A73000525141 /* Card.cpp */; };
-		32C5162B15F80E1500525141 /* data.js in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		32DA67D21635EAB2003E81CB /* envelopeIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 32DA67D11635EAB2003E81CB /* envelopeIcon.icns */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -61,7 +59,6 @@
 		3223123A160B942000FB16AF /* CardBoxApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CardBoxApp.h; path = ../src/CardBoxApp.h; sourceTree = "<group>"; };
 		32C5162715F7A73000525141 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Card.cpp; path = ../src/Card.cpp; sourceTree = "<group>"; };
 		32C5162815F7A73000525141 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../src/Card.h; sourceTree = "<group>"; };
-		32C5162A15F80E1500525141 /* data.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = data.js; path = ../resources/data.js; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* CardBox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardBox_Prefix.pch; sourceTree = "<group>"; };
 		32DA67D11635EAB2003E81CB /* envelopeIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = envelopeIcon.icns; path = ../resources/envelopeIcon.icns; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
@@ -175,7 +172,6 @@
 				32231218160A07D800FB16AF /* leftArrow.png */,
 				32231219160A07D800FB16AF /* rightArrow.png */,
 				322312121608FAFE00FB16AF /* closeButton.png */,
-				32C5162A15F80E1500525141 /* data.js */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -240,7 +236,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32A1E1FF15FF984B007D1AE0 /* data.js in Resources */,
 				322312131608FAFE00FB16AF /* closeButton.png in Resources */,
 				3223121A160A07D800FB16AF /* leftArrow.png in Resources */,
 				3223121B160A07D800FB16AF /* rightArrow.png in Resources */,
@@ -259,7 +254,6 @@
 			files = (
 				00BAE65A0E7ED9C10018A608 /* CardBoxApp.cpp in Sources */,
 				32C5162915F7A73000525141 /* Card.cpp in Sources */,
-				32C5162B15F80E1500525141 /* data.js in Sources */,
 				322312171608FD9C00FB16AF /* Button.cpp in Sources */,
 				32231225160A3A0C00FB16AF /* InfoSection.cpp in Sources */,
 				32231228160A44C400FB16AF /* MovingImage.cpp in Sources */,
