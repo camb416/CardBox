@@ -34,6 +34,8 @@ public:
     void show(float _s=1.0f);
     void hide(float _s=1.0f);
     bool isVisible();
+    int getWidth();
+    int getHeight();
 private:
     gl::Texture tex;
     string path;

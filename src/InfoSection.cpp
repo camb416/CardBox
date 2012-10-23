@@ -35,7 +35,11 @@ void InfoSection::draw(){
 
         pageOne.draw();
         pageTwo.draw();
+
             gl::popMatrices();
+    
+    // can't draw these with the matrix off, or the
+    // hit testing is borked.
     closeButton.draw();
     nextButton.draw();
     prevButton.draw();
@@ -47,9 +51,11 @@ bool InfoSection::isOpen(){
     return (pageOne.isVisible() || pageTwo.isVisible());
 }
 void InfoSection::open(){
-    //timeline().apply(&alpha,1.0f,0.3f,EaseNone());
     pageOne.setPos(Vec3f(0,0,0));
     pageOne.show();
+    closeButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/2.0f,pageOne.getHeight()/-2.0f));
+    nextButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/2.0f,0));
+    prevButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/-2.0f,0));
     closeButton.show();
     nextButton.show();
     prevButton.show();

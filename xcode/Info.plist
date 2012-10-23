@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>CinderApp.icns</string>
+	<string>envelopeIcon.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.libcinder.CardBox</string>
 	<key>CFBundleInfoDictionaryVersion</key>

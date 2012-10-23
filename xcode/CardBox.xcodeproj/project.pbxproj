@@ -14,7 +14,6 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00BAE65A0E7ED9C10018A608 /* CardBoxApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BAE6590E7ED9C10018A608 /* CardBoxApp.cpp */; };
-		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
 		322312131608FAFE00FB16AF /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 322312121608FAFE00FB16AF /* closeButton.png */; };
 		322312171608FD9C00FB16AF /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322312151608FD9C00FB16AF /* Button.cpp */; };
 		3223121A160A07D800FB16AF /* leftArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231218160A07D800FB16AF /* leftArrow.png */; };
@@ -27,6 +26,7 @@
 		32A1E1FF15FF984B007D1AE0 /* data.js in Resources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
 		32C5162915F7A73000525141 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162715F7A73000525141 /* Card.cpp */; };
 		32C5162B15F80E1500525141 /* data.js in Sources */ = {isa = PBXBuildFile; fileRef = 32C5162A15F80E1500525141 /* data.js */; };
+		32DA67D21635EAB2003E81CB /* envelopeIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 32DA67D11635EAB2003E81CB /* envelopeIcon.icns */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
@@ -41,7 +41,6 @@
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		00BAE6590E7ED9C10018A608 /* CardBoxApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CardBoxApp.cpp; path = ../src/CardBoxApp.cpp; sourceTree = SOURCE_ROOT; };
-		00CCAF14116A9FEE008396D5 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = SOURCE_ROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -64,6 +63,7 @@
 		32C5162815F7A73000525141 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../src/Card.h; sourceTree = "<group>"; };
 		32C5162A15F80E1500525141 /* data.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = data.js; path = ../resources/data.js; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* CardBox_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardBox_Prefix.pch; sourceTree = "<group>"; };
+		32DA67D11635EAB2003E81CB /* envelopeIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = envelopeIcon.icns; path = ../resources/envelopeIcon.icns; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		53E3CDFB0E86099300238D2B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -169,6 +169,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				32DA67D11635EAB2003E81CB /* envelopeIcon.icns */,
 				32231229160A591A00FB16AF /* instructions2.png */,
 				3223122A160A591A00FB16AF /* instructions1.png */,
 				32231218160A07D800FB16AF /* leftArrow.png */,
@@ -176,7 +177,6 @@
 				322312121608FAFE00FB16AF /* closeButton.png */,
 				32C5162A15F80E1500525141 /* data.js */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				00CCAF14116A9FEE008396D5 /* CinderApp.icns */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -240,13 +240,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */,
 				32A1E1FF15FF984B007D1AE0 /* data.js in Resources */,
 				322312131608FAFE00FB16AF /* closeButton.png in Resources */,
 				3223121A160A07D800FB16AF /* leftArrow.png in Resources */,
 				3223121B160A07D800FB16AF /* rightArrow.png in Resources */,
 				3223122B160A591A00FB16AF /* instructions2.png in Resources */,
 				3223122C160A591A00FB16AF /* instructions1.png in Resources */,
+				32DA67D21635EAB2003E81CB /* envelopeIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

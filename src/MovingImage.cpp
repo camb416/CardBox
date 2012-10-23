@@ -53,3 +53,17 @@ void MovingImage::hide(float _s){
     timeline().apply(&alpha,0.0f,_s,EaseInOutSine());
 
 }
+int MovingImage::getWidth(){
+    if(tex){
+        return tex.getWidth();
+    } else {
+        return -1;
+    }
+}
+int MovingImage::getHeight(){
+    if(tex){
+        return tex.getHeight();
+    } else {
+        return -1;
+    }
+}
