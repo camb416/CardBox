@@ -9,6 +9,7 @@
 #ifndef CardBox_CardBoxApp_h
 #define CardBox_CardBoxApp_h
 
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/Json.h"
 #include "Card.h"
@@ -49,6 +50,7 @@ private :
     void toggleGridVisibility();
     void drawAlignmentGrid();       // draws the destination grid of the alignToGrid()
     void alignToGrid();
+    void updateDebugState();
     // mode-independent selection actions
     void selectACard(int _selectedID);
     void unselectAll();
@@ -107,6 +109,7 @@ private :
     
     // Debugging UI
 	params::InterfaceGl	mParams;
+    
     
     // Application State
     bool isMouseDown;

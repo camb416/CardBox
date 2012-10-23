@@ -1,6 +1,7 @@
 
 {
-	"basepath" : "/Users/cam/Documents/Development/CardBox/data",
+    "debugstate" : 0,
+	"basepath" : "assets/opening",
 	"background" : "background.jpg",
 	"shadow" : "shadow.png",
 	"cards" : [

@@ -52,7 +52,9 @@ void CardBoxApp::setup(){
     cs.basePath = basePath+root["basepath"].getValue();
     cs.background = root["background"].getValue();
     cs.shadow_path = root["shadow"].getValue();
-    console() << cs.basePath+"/"+cs.shadow_path << endl; 
+    debugState = atoi(root["debugstate"].getValue().c_str());
+    console() << "setting debugstate to: " << debugState << endl;
+    updateDebugState();
     cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
 
     // hmmmmm, this should probably be handled more generally...
@@ -89,6 +91,19 @@ void CardBoxApp::setup(){
     
     cui.setup();
     randomize();
+}
+
+void CardBoxApp::updateDebugState(){
+    if(debugState==0){
+        if(!isFullScreen()) setFullScreen(true);
+        if(mParams.isVisible()) mParams.hide();
+        hideCursor();
+    } else {
+        if(isFullScreen()) setFullScreen(false);
+        if(!mParams.isVisible()) mParams.show();
+        showCursor();
+    }
+    
 }
 
 void CardBoxApp::update()
