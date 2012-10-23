@@ -57,8 +57,8 @@ void InfoSection::open(){
     nextButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/2.0f,0));
     prevButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/-2.0f,0));
     closeButton.show();
-    nextButton.show();
-    prevButton.show();
+    // nextButton.show();
+    // prevButton.show();
     
 }
 
