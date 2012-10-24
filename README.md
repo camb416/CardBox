@@ -33,10 +33,10 @@ To update the images in the viewer:
 First, duplicate the data.js file, and create a new folder in the assets folder.
 
 before:
-<img src="https://raw.github.com/camb416/CardBox/master/doc/assets_folder_structure.png" />
+<br /><img src="https://raw.github.com/camb416/CardBox/master/doc/assets_folder_structure.png" />
 
 after:
-<img src="https://raw.github.com/camb416/CardBox/master/doc/asset_update_structure.png" />
+<br /><img src="https://raw.github.com/camb416/CardBox/master/doc/asset_update_structure.png" />
 
 Then, update the "basepath" variable in the data.js file. Then for each card, paste in the values for each element as indicated in the graphic below. The "path" variable should be the exact filename of the file in the new folder you created in assets (in this case, the files should be in "press".
 
