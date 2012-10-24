@@ -18,6 +18,9 @@ Button::Button(){
 void Button::moveTo(Vec2f _pos){
     pos = _pos;
 }
+void Button::slideTo(Vec2f _pos, float time_in){
+    timeline().apply(&pos,_pos,time_in,EaseInOutAtan());
+}
 
 Button::Button(string path_str, Vec2f _pos){
         // eventually this shouldnt be loading from resources...
@@ -44,11 +47,11 @@ bool Button::isDown(){
     return bDown;
 }
 
-void Button::hide(){
-      timeline().apply(&alpha,0.0f,0.2f,EaseNone());
+void Button::hide(float time_in){
+      timeline().apply(&alpha,0.0f,time_in,EaseNone());
 }
-void Button::show(){
-    timeline().apply(&alpha,0.8f,0.3f,EaseNone());
+void Button::show(float time_in){
+    timeline().apply(&alpha,0.8f,time_in,EaseNone());
 }
 
 bool Button::isOver(Vec2f mousePos){
@@ -75,7 +78,7 @@ bool Button::isOver(Vec2f mousePos){
 
 void Button::draw(){
     gl::pushMatrices();
-    gl::translate(pos-tex.getSize()/2);
+    gl::translate(Vec2f(pos)-tex.getSize()/2);
    // if(bDown){
        // gl::color(1.0f,1.0f,1.0f,alpha);
    // } else if(bOver){

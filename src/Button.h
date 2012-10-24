@@ -27,16 +27,17 @@ public:
     Button();
     Button(string path_str,Vec2f pos);
     bool isOver(Vec2f mousePos);
-    Vec2f pos;
+    Anim<Vec2f> pos;
     Anim<float> alpha;
     void draw();
     void update();
     void down();
     void up();
     bool isDown();
-    void hide();
-    void show();
+    void hide(float time_in = 0.2f);
+    void show(float time_in = 0.3f);
     void moveTo(Vec2f _pos);
+    void slideTo(Vec2f _pos, float time_in = 1.0f);
 private:
     gl::Texture tex;
     bool bOver;

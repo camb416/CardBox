@@ -180,8 +180,6 @@ void CardBoxApp::draw(){
     if(debugState>-1){
     // clear and enable alpha
 	
-    
-
     // draw all the small cards
     bigCard = NULL;
     for(int i=0;i<cards.size();i++){
@@ -387,7 +385,8 @@ void CardBoxApp::randomize(){
                                   (rand() % 32000)/320000.0f),
                                   true
                             );
-        cards.at(i)->setRot(rand() % 360, true);
+        float randomNumber = (rand() % 360) - 180.0f;
+        cards.at(i)->setRot(randomNumber, true);
         Rectf r = Rectf(0,0,160,160);
         cards.at(i)->fitToRect(r, true);
     }

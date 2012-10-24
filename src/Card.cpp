@@ -17,6 +17,7 @@ Card::Card(CardSettings * _settings, CardModel _model){
     alpha = 1.0f;
     scale = Vec2f(0.2f,0.2f);
     rot = rand() % 360;
+    rot = rot - 180;
     isSelected = false;
     isBig = false;
     scalef = 1.0f;

@@ -22,8 +22,16 @@ void CardUI::setup(){
     closeButton = Button("closeButton.png",Vec2f(getWindowWidth()-75,75));
     prevButton = Button("leftArrow.png",Vec2f(75,getWindowHeight()/2));
     nextButton = Button("rightArrow.png",Vec2f(getWindowWidth()-75,getWindowHeight()/2));
+    hide();
+   
+    closeButton.slideTo(Vec2f(getWindowWidth()+20,-20));
     
-}
+    Vec2f tempPos = prevButton.pos;
+    prevButton.slideTo(Vec2f(-20,tempPos.y));
+    
+    tempPos = nextButton.pos;
+    nextButton.slideTo(Vec2f(getWindowWidth()+20,tempPos.y));
+    }
 
 void CardUI::updateModel(CardModel cm){
     
@@ -48,10 +56,14 @@ void CardUI::updatePositioning(Rectf _r){
     caption_middle = Vec2f(byline_leftmiddle.x-caption_tex.getWidth()/2+byline_tex.getWidth()/2,_r.y2+20);
     byline_leftmiddle = Vec2f(byline_leftmiddle.x,caption_middle.y+caption_tex.getHeight()+10);
     // move the close button to the upper right corner of the big card
-    closeButton.moveTo(Vec2f(_r.x2,_r.y1));
+    closeButton.slideTo(Vec2f(_r.x2,_r.y1));
     // move the prev/next buttons to the middle of the big card
-    prevButton.moveTo(Vec2f(_r.x1,_r.getY2()-_r.getHeight()/2));
-    nextButton.moveTo(Vec2f(_r.x2,_r.getY2()-_r.getHeight()/2));
+    prevButton.slideTo(Vec2f(_r.x1,_r.getY2()-_r.getHeight()/2));
+    nextButton.slideTo(Vec2f(_r.x2,_r.getY2()-_r.getHeight()/2));
+    closeButton.alpha = nextButton.alpha = prevButton.alpha = 0;
+    closeButton.show(1.0f);
+    nextButton.show(1.0f);
+    prevButton.show(1.0f);
     
 }
 
@@ -114,9 +126,14 @@ int CardUI::mouseUp(MouseEvent evt){
     
     if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
         hide();
-        closeButton.hide();
-        prevButton.hide();
-        nextButton.hide();
+        closeButton.hide(0.5f);
+        closeButton.slideTo(Vec2f(getWindowWidth()+20,-20));
+        prevButton.hide(0.5f);
+        Vec2f tempPos = prevButton.pos;
+        prevButton.slideTo(Vec2f(-20,tempPos.y));
+        nextButton.hide(0.5f);
+        tempPos = nextButton.pos;
+        nextButton.slideTo(Vec2f(getWindowWidth()+20,tempPos.y));
         closeButton.up();
         console() << "you released while over the close button" << endl;
         return 0;
