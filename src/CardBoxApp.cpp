@@ -47,15 +47,26 @@ void CardBoxApp::setup(){
     // PARSE THE JSON
     string basePath = getHomeDirectory().string()+"Documents/AMNH/postcards/";
     console() << "I'd like to load a file from here: " << basePath+"data.js" << endl;
-    JsonTree root = JsonTree( loadFile(basePath+"data.js"));
-
+    JsonTree root;
+    
+    try{
+        root = JsonTree( loadFile(basePath+"data.js"));
+    } catch(Exception ex){
+        debugState = -1;
+        console() << "BORK" << endl;
+        
+        
+    }
+    
+    if(debugState>-1){
+        try{
     cs.basePath = basePath+root["basepath"].getValue();
-    cs.background = root["background"].getValue();
-    cs.shadow_path = root["shadow"].getValue();
+    // cs.background = root["background"].getValue();
+    //cs.shadow_path = root["shadow"].getValue();
     debugState = atoi(root["debugstate"].getValue().c_str());
     console() << "setting debugstate to: " << debugState << endl;
     updateDebugState();
-    cs.shadow_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.shadow_path));
+    cs.shadow_tex = gl::Texture(loadImage(loadResource("shadow.png")));
 
     // hmmmmm, this should probably be handled more generally...
     console() << "loading the gl texture" << endl;
@@ -82,7 +93,7 @@ void CardBoxApp::setup(){
         if(i<=maxCards) cards.push_back(new Card(&cs,cm));
     }
     
-    bg_tex = gl::Texture(loadImage(cs.basePath+"/"+cs.background));
+    bg_tex = gl::Texture(loadImage(loadResource("background.jpg")));
     
     // some text formatting stuff
     gl::Texture::Format fmt;
@@ -91,6 +102,26 @@ void CardBoxApp::setup(){
     
     cui.setup();
     randomize();
+    }
+     catch(Exception ex){
+        debugState = -2;
+    }
+        }
+    if(debugState<0){
+        string normalFont( "Arial" );
+        TextLayout layout;
+        layout.setFont( Font( normalFont, 36 ) );
+        layout.setColor( Color( 1,1,1 ) );
+        layout.addLine(basePath+"data.js");
+        layout.addLine("parse error.");
+        
+        Surface8u rendered = layout.render( true, false );
+        Surface8u newSurface(1050,1680,false);
+        newSurface.copyFrom(rendered, newSurface.getBounds());
+        bg_tex = gl::Texture(newSurface);
+
+    }
+        
 }
 
 void CardBoxApp::updateDebugState(){
@@ -108,7 +139,7 @@ void CardBoxApp::updateDebugState(){
 
 void CardBoxApp::update()
 {
-    
+    if(debugState>-1){
     // manual z-sorting (sort methods in Card.h)
     sort(cards.begin(), cards.end(), sortByZ);
     
@@ -135,18 +166,21 @@ void CardBoxApp::update()
             selectACard(nearestID);
         }
     }
-
+    }
 }
 
 void CardBoxApp::draw(){
-   
-    // clear and enable alpha
-	gl::clear( Color( 1,1,1 ) );
+    gl::clear( Color( 1,1,1 ) );
     gl::enableAlphaBlending();
     
     // draw background
     gl::color(1.0f,1.0f,1.0f,1.0f);
     gl::draw(bg_tex,getWindowBounds());
+    
+    if(debugState>-1){
+    // clear and enable alpha
+	
+    
 
     // draw all the small cards
     bigCard = NULL;
@@ -186,6 +220,7 @@ void CardBoxApp::draw(){
             gl::drawSolidCircle(cursorPos, 10);
         }
         
+    }
     }
 }
 

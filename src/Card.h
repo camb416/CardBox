@@ -14,6 +14,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/Timeline.h"
+#include "cinder/Text.h"
 #include <string>
 #include <iostream>
 
@@ -32,8 +33,7 @@ struct CardModel{
 
 struct CardSettings {
     string basePath;
-    string background;
-    string shadow_path;
+   // string background;
     gl::Texture shadow_tex;
 };
 

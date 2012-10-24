@@ -25,7 +25,28 @@ Card::Card(CardSettings * _settings, CardModel _model){
 void Card::load(){
     
     string actualPath = (settings->basePath) + string("/") + (model.path);
-    tex = gl::Texture( loadImage( actualPath ) ) ;
+    try{ tex = gl::Texture( loadImage( actualPath ) ) ;
+    } catch(Exception ex){
+        console() << "busted" << endl;
+        
+        string normalFont( "Arial" );
+        TextLayout layout;
+        layout.setFont( Font( normalFont, 36 ) );
+        layout.setColor( Color( 1, 1, 1 ) );
+        layout.addLine(actualPath);
+        layout.addLine("not loaded.");
+        
+        Surface8u rendered = layout.render( true, false );
+        Surface8u newSurface(rendered.getWidth(),rendered.getWidth(),false);
+        newSurface.copyFrom(rendered, newSurface.getBounds());
+       tex = gl::Texture(newSurface );
+    
+    }
+    /*if(tex){
+        console() << actualPath << " loaded successfully." << endl;
+    } else {
+        console() << actualPath << " not loaded." << endl;
+    }*/
     
 }
 void Card::select(){
