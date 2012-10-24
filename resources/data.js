@@ -9,7 +9,7 @@
  		"lastinitial" : "",
  		"location" : "@giraffetweet",
  		"caption" : "Check out our delish spicy jungle curry only at Southbank, Spitalfields, MK, Trafford&Stratford, lots of #nom in 1 bowl",
-		"path" : "_A3onUhnCEAEWHH4.jpeg"
+		"path" : "A3onUhnCEAEWHH4.jpeg"
 },
 { 
  		"firstname" : "Luke",
