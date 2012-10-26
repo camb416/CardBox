@@ -41,3 +41,5 @@ after:
 Then, update the "basepath" variable in the data.js file. Then for each card, paste in the values for each element as indicated in the graphic below. The "path" variable should be the exact filename of the file in the new folder you created in assets (in this case, the files should be in "press".
 
 <img src="https://raw.github.com/camb416/CardBox/master/doc/data_file.png" />
+
+Icon Art adapted from art by <a href="http://www.cuberto.com/">Cuberto</a> for <a href="http://www.smashingmagazine.com/2012/02/02/freebie-valentines-day-icon-set/">Smashing Magazine</a>
