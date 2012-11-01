@@ -1,4 +1,3 @@
-
 {
     "debugstate" : 0,
 	"basepath" : "assets/opening",
