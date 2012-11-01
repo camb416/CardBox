@@ -57,8 +57,8 @@ void InfoSection::open(){
     nextButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/2.0f,0));
     prevButton.moveTo(getWindowCenter()+Vec2f(pageOne.getWidth()/-2.0f,0));
     closeButton.show();
-    // nextButton.show();
-    // prevButton.show();
+     nextButton.show();
+     prevButton.show();
     
 }
 
@@ -106,9 +106,9 @@ void InfoSection::prev(){
 int InfoSection::mouseUp(MouseEvent evt){
     // returns:
     // -1   nothing
-    // 0    shrink everything
-    // 1    prev card
-    // 2    next card
+    // 0    close the info section
+    // 1    prev page
+    // 2    next page
     
     if(closeButton.isOver(evt.getPos()) && closeButton.isDown()){
     //    hide();
@@ -116,19 +116,19 @@ int InfoSection::mouseUp(MouseEvent evt){
         console() << "you released while over the close button" << endl;
         return 0;
     }else if(prevButton.isOver(evt.getPos()) && prevButton.isDown()){
-      //  prevButton.up();
-      //  prev();
+        prevButton.up();
+        prev();
         console() << "you released while over the prev button" << endl;
         return 1;
     } else if(nextButton.isOver(evt.getPos()) && nextButton.isDown()){
-      //  nextButton.up();
-      //  next();
+        nextButton.up();
+        next();
         console() << "you released while over the next button" << endl;
         return 2;
     } else {
-     //   closeButton.up();
-     //   nextButton.up();
-     //   prevButton.up();
+        closeButton.up();
+        nextButton.up();
+        prevButton.up();
         return -1;
     }
 
@@ -140,10 +140,10 @@ void InfoSection::mouseDown(MouseEvent evt){
         console() << "you pressed while over the close button" << endl;
         
     }else if(prevButton.isOver(evt.getPos())){
-      //  prevButton.down();
+        prevButton.down();
         console() << "you pressed while over the prev button" << endl;
     } else if(nextButton.isOver(evt.getPos())){
-      //  nextButton.down();
+        nextButton.down();
         console() << "you pressed while over the next button" << endl;
     } else {
         console () << endl;

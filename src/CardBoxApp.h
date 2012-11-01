@@ -17,6 +17,7 @@
 #include "Button.h"
 #include "cinder/params/Params.h"
 #include "InfoSection.h"
+#include "Button.h"
 #include "CardUI.h"
 
 using namespace ci;
@@ -105,6 +106,7 @@ private :
     CardUI cui;
 
     // Info Section UI
+    Button infoButton;
     InfoSection infoSection;
     
     // Debugging UI

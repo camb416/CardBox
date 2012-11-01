@@ -43,6 +43,8 @@ void CardBoxApp::setup(){
     
     // and these images are not specified in JSON? 
     infoSection.setup("instructions1.png","instructions2.png");
+    infoButton = Button("infoButton.png",Vec2f(getWindowWidth()-75,75));
+    infoButton.show();
     
     // PARSE THE JSON
     string basePath = getHomeDirectory().string()+"Documents/AMNH/postcards/";
@@ -148,6 +150,8 @@ void CardBoxApp::update()
         cards.at(i)->update();
     }
     
+      
+        
     // card selection
     if(isMouseDown && !cui.isOpen() && !infoSection.isOpen()){
         float nearest = 99999;
@@ -190,7 +194,7 @@ void CardBoxApp::draw(){
             bigCard = cards.at(i);
         }
     }
-    
+    infoButton.draw();
     // draw the Card UI
     cui.drawBackground();
     
@@ -201,7 +205,12 @@ void CardBoxApp::draw(){
     cui.drawForeground();
 
     // draw the info section
-    if(infoSection.isOpen()) infoSection.draw();
+        if(infoSection.isOpen()){
+            
+             infoSection.draw();
+        } 
+           
+        
     
     // debug UI
     if(debugState>0){
@@ -241,8 +250,14 @@ void CardBoxApp::mouseDown( MouseEvent evt )
     cursorDownPos = evt.getPos();
     cursorDownTime = getElapsedSeconds();
     isMouseDown = true;
-    if(cui.isOpen()) cui.mouseDown(evt);    // pass the event to the CardUI
-    if(infoSection.isOpen()) infoSection.mouseDown(evt);    // pass the event to the InfoSection
+    
+    if(cui.isOpen()){
+        cui.mouseDown(evt);
+    }else if(infoSection.isOpen()){
+        infoSection.mouseDown(evt);    // pass the event to the InfoSection
+    } else if(infoButton.isOver(cursorDownPos)){
+        infoButton.down();
+    }
     
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
@@ -278,9 +293,21 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         
     } else if(infoSection.isOpen()){
     
-        infoSection.mouseUp(evt);
+        switch(infoSection.mouseUp(evt)){
+            case 0:
+                infoButton.show();
+                break;
+            default:
+                // do nothing
+                break;
+        }
+     
+    } else if(infoButton.isOver(cursorPos)){
+        infoButton.up();
+        info();
+        infoButton.hide();
         
-    }else if(selectedCard>-1){
+    }   else if(selectedCard>-1){
         
         shrinkAll(selectedCard);
         cui.show();
