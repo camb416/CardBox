@@ -106,8 +106,11 @@ private :
     CardUI cui;
 
     // Info Section UI
-    Button infoButton;
     InfoSection infoSection;
+    
+    Button infoButton;
+    Button shuffleButton;
+    
     
     // Debugging UI
 	params::InterfaceGl	mParams;

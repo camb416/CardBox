@@ -38,10 +38,14 @@ public:
     void show(float time_in = 0.3f);
     void moveTo(Vec2f _pos);
     void slideTo(Vec2f _pos, float time_in = 1.0f);
+    void addAlternate(string path_str);
+    bool swap();
 private:
     gl::Texture tex;
+    gl::Texture altTex;
     bool bOver;
     bool bDown;
+    bool buttonState;
     
 };
 

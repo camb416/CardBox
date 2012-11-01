@@ -12,7 +12,7 @@
 Button::Button(){
     pos = Vec2f(0,0);
     alpha = 0.0f;
-    bDown = bOver = false;
+    bDown = bOver = buttonState = false;
 }
 
 void Button::moveTo(Vec2f _pos){
@@ -22,8 +22,21 @@ void Button::slideTo(Vec2f _pos, float time_in){
     timeline().apply(&pos,_pos,time_in,EaseInOutAtan());
 }
 
+void Button::addAlternate(string path_str){
+    try{
+        altTex = loadImage(loadResource(path_str));
+    } catch(Exception e){
+        console() << "had a problem loading a button alternate" << endl;
+    }
+}
+
+bool Button::swap(){
+    buttonState = !buttonState;
+    return buttonState;
+}
+
 Button::Button(string path_str, Vec2f _pos){
-        // eventually this shouldnt be loading from resources...
+        // eventually this shouldnt be loading from resources... ?
     pos = (_pos);
     alpha = 0.0f;
     try{
@@ -32,6 +45,7 @@ Button::Button(string path_str, Vec2f _pos){
         console() << "figure i got a problem loading a button..." << endl;
     }
     bDown = bOver = false;
+    altTex = tex;
 }
 void Button::down(){
     bDown = true;
@@ -86,7 +100,7 @@ void Button::draw(){
   //  } else {
         gl::color(1.0f,1.0f,1.0f,alpha);
   //  }
-    gl::draw(tex);
+    buttonState ? gl::draw(altTex) : gl::draw(tex);
     
     gl::popMatrices();
 }

@@ -45,6 +45,9 @@ void CardBoxApp::setup(){
     infoSection.setup("instructions1.png","instructions2.png");
     infoButton = Button("infoButton.png",Vec2f(getWindowWidth()-75,75));
     infoButton.show();
+    shuffleButton = Button("gridButton.png",Vec2f(75,getWindowHeight()-75));
+    shuffleButton.addAlternate("shuffleButton.png");
+    shuffleButton.show();
     
     // PARSE THE JSON
     string basePath = getHomeDirectory().string()+"Documents/AMNH/postcards/";
@@ -153,7 +156,7 @@ void CardBoxApp::update()
       
         
     // card selection
-    if(isMouseDown && !cui.isOpen() && !infoSection.isOpen()){
+    if(isMouseDown && !cui.isOpen() && !infoSection.isOpen() && !shuffleButton.isOver(cursorPos) && !infoButton.isOver(cursorPos)){
         float nearest = 99999;
         float nearestID = -1;
         for(int i=0;i<cards.size(); i++){
@@ -195,6 +198,7 @@ void CardBoxApp::draw(){
         }
     }
     infoButton.draw();
+        shuffleButton.draw();
     // draw the Card UI
     cui.drawBackground();
     
@@ -257,6 +261,8 @@ void CardBoxApp::mouseDown( MouseEvent evt )
         infoSection.mouseDown(evt);    // pass the event to the InfoSection
     } else if(infoButton.isOver(cursorDownPos)){
         infoButton.down();
+    } else if(shuffleButton.isOver(cursorDownPos)){
+        shuffleButton.down();
     }
     
 }
@@ -296,6 +302,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         switch(infoSection.mouseUp(evt)){
             case 0:
                 infoButton.show();
+                shuffleButton.show();
                 break;
             default:
                 // do nothing
@@ -306,8 +313,14 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         infoButton.up();
         info();
         infoButton.hide();
+        shuffleButton.hide();
         
-    }   else if(selectedCard>-1){
+    } else if(shuffleButton.isOver(cursorPos)){
+        // do something here
+        shuffleButton.up();
+        shuffleButton.swap() ? alignToGrid() : randomize();
+      
+    } else if(selectedCard>-1){
         
         shrinkAll(selectedCard);
         cui.show();
@@ -393,6 +406,11 @@ void CardBoxApp::keyDown(KeyEvent evt){
 }
 void CardBoxApp::resize(ResizeEvent evt){
     
+    
+    
+       
+    shuffleButton.moveTo(Vec2f(75,getWindowHeight()-75));
+    infoButton.moveTo(Vec2f(getWindowWidth()-75,75));
     cui.resize(evt);
 
 }
