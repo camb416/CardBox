@@ -432,6 +432,7 @@ void CardBoxApp::randomize(){
                             );
         float randomNumber = (rand() % 360) - 180.0f;
         cards.at(i)->setRot(randomNumber, true);
+        // this should be configurable...
         Rectf r = Rectf(0,0,160,160);
         cards.at(i)->fitToRect(r, true);
     }

@@ -51,6 +51,7 @@ public:
     void setScale(float _scale, bool _setOrigin = false);
     void setRot(float _rot, bool _setOrigin = false);
     void fitToRect(Rectf r, bool _setOrigin = false);
+    
     bool operator < (const Card* crd) const
     {
         return (getSize().length() < crd->getSize().length());
