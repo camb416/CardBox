@@ -46,6 +46,6 @@ Before submitting the data file, you can validate it using a free online tool, <
 
 Copy and paste the content of the file into JSONLint and click Validate. If it results in "Valid JSON", then the file looks good and should be ready to update the gallery interactive.
 
-<img src="<img src="https://raw.github.com/camb416/CardBox/master/doc/jsonlint_screenshot.jpg" />
+<img src="https://raw.github.com/camb416/CardBox/master/doc/jsonlint_screenshot.jpg" />
 
 Icon Art adapted from art by <a href="http://www.cuberto.com/">Cuberto</a> for <a href="http://www.smashingmagazine.com/2012/02/02/freebie-valentines-day-icon-set/">Smashing Magazine</a>
