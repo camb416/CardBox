@@ -151,16 +151,22 @@ void Card::draw(){
         Rectf bgRect = Rectf(texRect.x1-5,texRect.y1-5,texRect.x2+5,texRect.y2+5);
         
         Rectf shadowRect = bgRect;
-        shadowRect.inflate(Vec2f(scale2f.x*10.0f,scale2f.y*10.0f));
+        
         gl::Texture shadow = settings->shadow_tex;
         if(shadow){
+            if(isSelected){
+                gl::color(1.0f,1.0f,1.0f);
+               shadowRect.inflate(Vec2f(scale2f.x*20.0f,scale2f.y*20.0f));
+            } else {
+                gl::color(0.0f,0.0f,0.0f);
+                shadowRect.inflate(Vec2f(scale2f.x*10.0f,scale2f.y*10.0f));
+            }
             gl::draw(shadow, shadowRect);
         }
         gl::translate(0,0,0.01f);
         gl::translate(0,0,0.01f);
-        if(isSelected){
-            gl::drawStrokedRect(bgRect);
-        }
+      
+        gl::color(1.0f,1.0f,1.0f);
          gl::draw(tex, texRect );
 }
     gl::popMatrices();
