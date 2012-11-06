@@ -40,6 +40,7 @@ public:
     void slideTo(Vec2f _pos, float time_in = 1.0f);
     void addAlternate(string path_str);
     bool swap();
+    bool getState();
 private:
     gl::Texture tex;
     gl::Texture altTex;

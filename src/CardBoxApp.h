@@ -42,6 +42,10 @@ public:
     void resize(ResizeEvent evt);
     /////////////////////////////////////////
     
+    bool isAttract;
+    void leaveAttract();
+    void enterAttract();
+    
 private :
     /////////////////////////////////////////
     // app view and controller methods //////
@@ -91,6 +95,7 @@ private :
     int sideMargin;
     int gutter;
     bool isMouseVisible;
+    // bool isAttract;
     /////////////////////////////////////////
     
     /////////////////////////////////////////

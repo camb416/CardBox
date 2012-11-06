@@ -51,6 +51,8 @@ public:
     void setScale(float _scale, bool _setOrigin = false);
     void setRot(float _rot, bool _setOrigin = false);
     void fitToRect(Rectf r, bool _setOrigin = false);
+    void pulse(float mOffset);
+    void removeYRot();
     
     bool operator < (const Card* crd) const
     {
@@ -73,6 +75,7 @@ public:
 private:
     bool isBig;
     Anim<float> rot;
+    Anim<float> yRot;
     Anim<Vec3f> pos;
     Anim<float> alpha;
     Vec3f originalPos;

@@ -14,7 +14,9 @@ Button::Button(){
     alpha = 0.0f;
     bDown = bOver = buttonState = false;
 }
-
+bool Button::getState(){
+    return buttonState;
+}
 void Button::moveTo(Vec2f _pos){
     pos = _pos;
 }

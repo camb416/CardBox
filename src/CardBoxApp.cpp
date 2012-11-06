@@ -14,6 +14,7 @@ void CardBoxApp::prepareSettings(Settings * settings){
 
 void CardBoxApp::setup(){
     
+    isAttract = false;
     cursorDownPos = Vec2f(-1,-1);
     debugState = 0;
     isMouseDown = false;
@@ -38,6 +39,9 @@ void CardBoxApp::setup(){
     mParams.addButton("next info", std::bind( &CardBoxApp::nextInfo, this ));
     mParams.addButton("prev info", std::bind( &CardBoxApp::prevInfo, this ));
     mParams.addButton("toggle grid visibility", std::bind( &CardBoxApp::toggleGridVisibility, this ));
+    mParams.addParam("attract mode", &isAttract);
+    mParams.addButton("enter attract", std::bind(&CardBoxApp::enterAttract, this));
+    
     mParams.hide();
 
     
@@ -172,6 +176,14 @@ void CardBoxApp::update()
             selectedCard = nearestID;
             selectACard(nearestID);
         }
+    } else if(isAttract) {
+        for(int i=0;i<cards.size(); i++){
+          //  console() << i << ": " << ((float)i/(float)cards.size() * M_PI*2.0f)<< " > " << M_PI*2 << endl;
+        //    cards.at(i)->pulse(getElapsedSeconds()+((float)i/(float)cards.size()*M_PI*2.0f));
+            cards.at(i)->pulse(getElapsedSeconds()+cards.at(i)->getPos2f().x/(float)getWindowWidth()*2.0f*M_PI);
+            
+        }
+        // console() << "excuse for a breakpoint" << endl;
     }
     }
 }
@@ -249,8 +261,21 @@ void CardBoxApp::mouseDrag(MouseEvent evt){
     
 }
 
+void CardBoxApp::enterAttract(){
+    isAttract = true;
+    randomize();
+}
+
+void CardBoxApp::leaveAttract(){
+    isAttract = false;
+    shrinkAll();
+}
+
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
+    if(isAttract){
+        leaveAttract();
+    }
     cursorDownPos = evt.getPos();
     cursorDownTime = getElapsedSeconds();
     isMouseDown = true;
@@ -298,7 +323,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         }
         
     } else if(infoSection.isOpen()){
-    
+       
         switch(infoSection.mouseUp(evt)){
             case 0:
                 infoButton.show();
@@ -308,6 +333,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
                 // do nothing
                 break;
         }
+         console() << "mouse up when the info section is open" << infoSection.mouseUp(evt) << endl;
      
     } else if(infoButton.isOver(cursorPos)){
         infoButton.up();
@@ -420,6 +446,10 @@ void CardBoxApp::resize(ResizeEvent evt){
 
 
 void CardBoxApp::randomize(){
+    
+    if(shuffleButton.getState()){
+        shuffleButton.swap();
+    }
     
     // randomize card placement
     for(int i=0;i<cards.size();i++){

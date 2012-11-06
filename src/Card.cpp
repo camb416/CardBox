@@ -21,6 +21,7 @@ Card::Card(CardSettings * _settings, CardModel _model){
     isSelected = false;
     isBig = false;
     scalef = 1.0f;
+    yRot = 0.0f;
     
 }
 void Card::load(){
@@ -82,6 +83,7 @@ Rectf Card::grow(float lowerBound){
     
     Rectf returnRect = Rectf(sideBounds,upperBound,getWindowWidth()-sideBounds,lowerBound);
     if(!isBig){
+        removeYRot();
         console() << "growing: " << model.uid << endl;
         isBig = true;
         
@@ -105,7 +107,12 @@ Rectf Card::grow(float lowerBound){
     return returnRect;
     
 }
+void Card::removeYRot(){
+    timeline().apply(&yRot, 0.0f, 1.5f,EaseOutElastic(0.2f,0.8f));
+}
 void Card::shrink(float _s){
+    
+    if(yRot!=0.0f) removeYRot();
     
     if(isBig){
         console() << "shrinking: " << model.uid << endl;
@@ -118,6 +125,7 @@ void Card::shrink(float _s){
             setPos(originalPos);
             setRot(originalRot);
             setScale(originalScale);
+       
             //setScale(0.2f);
        // } else {
        //     console() << "questionable: " << model.uid << endl;
@@ -142,7 +150,8 @@ void Card::draw(){
         
         Vec3f vec = pos;
         gl::translate(vec.x,vec.y, vec.z);
-        gl::rotate(rot);
+        //gl::rotate(rot);
+        gl::rotate(Vec3f(0,yRot,rot));
 
         Vec2f scale2f = scale;
         
@@ -166,11 +175,32 @@ void Card::draw(){
         gl::translate(0,0,0.01f);
         gl::translate(0,0,0.01f);
       
-        gl::color(1.0f,1.0f,1.0f);
+        float colorMod = 1.0f-fabs(yRot)*2.0f;
+        // if(yRot!=0.0f) console() << "yRot: " << yRot << ", colorMode: " << colorMod << endl;
+        gl::color(colorMod, colorMod, colorMod);
          gl::draw(tex, texRect );
 }
     gl::popMatrices();
 }
+
+void Card::pulse(float mOffset){
+    float modf = (sin(mOffset)/8.0f+1.0f);
+    float modf2 = (cos(mOffset))*5.0f;
+    float dscale;
+    float drot;
+    dscale = modf*originalScale;
+    drot = modf2+originalRot;
+    
+    Vec2f curScale2f = scale;
+    float curScalef = curScale2f.x;
+    curScalef += (dscale-curScalef)/4.0f;
+    scale = Vec2f(curScalef,curScalef);
+    
+    rot = rot + (drot-rot)/4.0f;
+    yRot = yRot + ((modf-1.0f)*2.0f-yRot)/8.0f;
+    console() << " ";
+}
+
 Vec2f Card::getSize() const{
     Vec2f scale2f = scale;
     Vec2f effectiveSize = Vec2f(0,0);

@@ -126,9 +126,9 @@ int InfoSection::mouseUp(MouseEvent evt){
         console() << "you released while over the next button" << endl;
         return 2;
     } else {
-        closeButton.up();
-        nextButton.up();
-        prevButton.up();
+       if(closeButton.isDown()) closeButton.up();
+       if(nextButton.isDown()) nextButton.up();
+       if(prevButton.isDown()) prevButton.up();
         return -1;
     }
 
