@@ -14,6 +14,9 @@ void CardBoxApp::prepareSettings(Settings * settings){
 
 void CardBoxApp::setup(){
     
+    lastTouched = getElapsedSeconds();
+    timeout = 5.0f;
+    
     isAttract = false;
     cursorDownPos = Vec2f(-1,-1);
     debugState = 0;
@@ -148,6 +151,11 @@ void CardBoxApp::updateDebugState(){
 
 void CardBoxApp::update()
 {
+    
+    console() << (getElapsedSeconds()-lastTouched) << endl;
+    if(!isAttract){
+        if(getElapsedSeconds()-lastTouched > timeout) enterAttract();
+    }
     if(debugState>-1){
     // manual z-sorting (sort methods in Card.h)
     sort(cards.begin(), cards.end(), sortByZ);
@@ -248,14 +256,14 @@ void CardBoxApp::draw(){
 }
 
 void CardBoxApp::mouseMove(MouseEvent evt){
-    
+    // lastTouched = getElapsedSeconds();
     cursorPos = evt.getPos();
     cui.handleMouse(cursorPos);
     
 }
 
 void CardBoxApp::mouseDrag(MouseEvent evt){
-    
+    lastTouched = getElapsedSeconds();
     cursorPos = evt.getPos();
     cui.handleMouse(cursorPos);
     
@@ -273,6 +281,7 @@ void CardBoxApp::leaveAttract(){
 
 void CardBoxApp::mouseDown( MouseEvent evt )
 {
+    lastTouched = getElapsedSeconds();
     if(isAttract){
         leaveAttract();
     }
@@ -292,7 +301,7 @@ void CardBoxApp::mouseDown( MouseEvent evt )
     
 }
 void CardBoxApp::mouseUp(MouseEvent evt){
-    
+    lastTouched = getElapsedSeconds();
      isMouseDown = false;
     
     float timeTouched = getElapsedSeconds()-cursorDownTime;

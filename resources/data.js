@@ -1,7 +1,9 @@
 {
-    "debugstate" : 0,
-	"basepath" : "assets/opening",
-	"cards" : [
+    "debugstate"    :   1,
+    "timeout"       :   3,
+	"basepath"      :   "assets/opening",
+	
+    "cards" : [
 
 { 
  		"firstname" : "giraffe restaurant",

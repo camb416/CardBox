@@ -95,6 +95,8 @@ private :
     int sideMargin;
     int gutter;
     bool isMouseVisible;
+    double lastTouched;
+    float timeout;
     // bool isAttract;
     /////////////////////////////////////////
     
