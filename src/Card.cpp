@@ -198,7 +198,6 @@ void Card::pulse(float mOffset){
     
     rot = rot + (drot-rot)/4.0f;
     yRot = yRot + ((modf-1.0f)*2.0f-yRot)/8.0f;
-    console() << " ";
 }
 
 Vec2f Card::getSize() const{

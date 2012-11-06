@@ -76,6 +76,7 @@ void CardBoxApp::setup(){
     // cs.background = root["background"].getValue();
     //cs.shadow_path = root["shadow"].getValue();
     debugState = atoi(root["debugstate"].getValue().c_str());
+    timeout = atof(root["timeout"].getValue().c_str());
     console() << "setting debugstate to: " << debugState << endl;
     updateDebugState();
     cs.shadow_tex = gl::Texture(loadImage(loadResource("shadow.png")));
@@ -152,7 +153,6 @@ void CardBoxApp::updateDebugState(){
 void CardBoxApp::update()
 {
     
-    console() << (getElapsedSeconds()-lastTouched) << endl;
     if(!isAttract){
         if(getElapsedSeconds()-lastTouched > timeout) enterAttract();
     }

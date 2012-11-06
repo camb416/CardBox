@@ -1,6 +1,6 @@
 {
-    "debugstate"    :   1,
-    "timeout"       :   3,
+    "debugstate"    :   0,
+    "timeout"       :   30,
 	"basepath"      :   "assets/opening",
 	
     "cards" : [
