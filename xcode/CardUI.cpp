@@ -158,7 +158,17 @@ void CardUI::updateCaption(string _text){
   
     // cgcontexterror if text is empty....
     if(_text.length()>0){
-        Font mFont = Font( "Amasis MT Pro", 32 );
+        Font mFont;
+        try{
+        mFont = Font( "Amasis MT Pro", 32 );
+        } catch(Exception e){
+            cout << "couldn't load Amasis MT Pro... trying Arial instead" << endl;
+            try{
+            mFont = Font("Arial", 32);
+            } catch(Exception e){
+                console() << "oh man, couldn't even load Arial." << endl;
+            }
+            }
         Vec2f mSize = Vec2f(getWindowWidth() - 100,75);
         
         TextBox tbox = TextBox().alignment( TextBox::CENTER ).font( mFont ).size( Vec2i( mSize.x, TextBox::GROW ) ).text( _text );
@@ -185,8 +195,20 @@ void CardUI::updateByline(string _text){
     if(_text.length()>0){
     string normalFont( "HouseMovements-Sign" );
     TextLayout layout;
-    layout.setFont( Font( normalFont, 36 ) );
-    layout.setColor( Color( 1, 1, 1 ) );
+        try{
+            layout.setFont( Font( normalFont, 36 ) );
+        } catch(Exception e){
+            
+            cout << "couldn't load HouseMovements-Sign... trying Arial instead" << endl;
+            try{
+                layout.setFont( Font( "Arial", 36 ) );
+            } catch(Exception e){
+                console() << "oh man, couldn't even load Arial." << endl;
+            }
+        }
+    // layout.setFont( Font( normalFont, 36 ) );
+    
+        layout.setColor( Color( 1, 1, 1 ) );
     layout.addLine( _text);
     Surface8u rendered = layout.render( true, false );
     byline_tex = gl::Texture( rendered );
