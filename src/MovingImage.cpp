@@ -20,7 +20,7 @@ MovingImage::~MovingImage(){
 }
 void MovingImage::setup(string _path){
     path = _path;
-    tex = gl::Texture(loadImage(loadResource(path)));
+    tex = gl::Texture(loadImage(path));
 }
 void MovingImage::update(){
     // empty update

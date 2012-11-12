@@ -20,11 +20,8 @@
 		3223121B160A07D800FB16AF /* rightArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231219160A07D800FB16AF /* rightArrow.png */; };
 		32231225160A3A0C00FB16AF /* InfoSection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32231223160A3A0C00FB16AF /* InfoSection.cpp */; };
 		32231228160A44C400FB16AF /* MovingImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32231226160A44C400FB16AF /* MovingImage.cpp */; };
-		3223122B160A591A00FB16AF /* instructions2.png in Resources */ = {isa = PBXBuildFile; fileRef = 32231229160A591A00FB16AF /* instructions2.png */; };
-		3223122C160A591A00FB16AF /* instructions1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3223122A160A591A00FB16AF /* instructions1.png */; };
 		3223122F160A59FE00FB16AF /* CardUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3223122D160A59FE00FB16AF /* CardUI.cpp */; };
 		324ADD311638457500292D89 /* shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 324ADD301638457500292D89 /* shadow.png */; };
-		324ADD341638460200292D89 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 324ADD331638460200292D89 /* background.jpg */; };
 		3251CB30164306BA00B50F0B /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3251CB2F164306BA00B50F0B /* infoButton.png */; };
 		3251CB33164313B700B50F0B /* shuffleButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3251CB32164313B700B50F0B /* shuffleButton.png */; };
 		3251CB351643180D00B50F0B /* gridButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3251CB341643180D00B50F0B /* gridButton.png */; };
@@ -57,13 +54,10 @@
 		32231224160A3A0C00FB16AF /* InfoSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoSection.h; path = ../src/InfoSection.h; sourceTree = "<group>"; };
 		32231226160A44C400FB16AF /* MovingImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovingImage.cpp; path = ../src/MovingImage.cpp; sourceTree = "<group>"; };
 		32231227160A44C400FB16AF /* MovingImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovingImage.h; path = ../src/MovingImage.h; sourceTree = "<group>"; };
-		32231229160A591A00FB16AF /* instructions2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instructions2.png; path = ../resources/instructions2.png; sourceTree = "<group>"; };
-		3223122A160A591A00FB16AF /* instructions1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instructions1.png; path = ../resources/instructions1.png; sourceTree = "<group>"; };
 		3223122D160A59FE00FB16AF /* CardUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CardUI.cpp; sourceTree = "<group>"; };
 		3223122E160A59FE00FB16AF /* CardUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardUI.h; sourceTree = "<group>"; };
 		3223123A160B942000FB16AF /* CardBoxApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CardBoxApp.h; path = ../src/CardBoxApp.h; sourceTree = "<group>"; };
 		324ADD301638457500292D89 /* shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shadow.png; path = ../resources/shadow.png; sourceTree = "<group>"; };
-		324ADD331638460200292D89 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = ../resources/background.jpg; sourceTree = "<group>"; };
 		3251CB2F164306BA00B50F0B /* infoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = infoButton.png; path = ../resources/infoButton.png; sourceTree = "<group>"; };
 		3251CB32164313B700B50F0B /* shuffleButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shuffleButton.png; path = ../resources/shuffleButton.png; sourceTree = "<group>"; };
 		3251CB341643180D00B50F0B /* gridButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gridButton.png; path = ../resources/gridButton.png; sourceTree = "<group>"; };
@@ -179,11 +173,8 @@
 				3251CB341643180D00B50F0B /* gridButton.png */,
 				3251CB32164313B700B50F0B /* shuffleButton.png */,
 				3251CB2F164306BA00B50F0B /* infoButton.png */,
-				324ADD331638460200292D89 /* background.jpg */,
 				324ADD301638457500292D89 /* shadow.png */,
 				32DA67D11635EAB2003E81CB /* envelopeIcon.icns */,
-				32231229160A591A00FB16AF /* instructions2.png */,
-				3223122A160A591A00FB16AF /* instructions1.png */,
 				32231218160A07D800FB16AF /* leftArrow.png */,
 				32231219160A07D800FB16AF /* rightArrow.png */,
 				322312121608FAFE00FB16AF /* closeButton.png */,
@@ -254,11 +245,8 @@
 				322312131608FAFE00FB16AF /* closeButton.png in Resources */,
 				3223121A160A07D800FB16AF /* leftArrow.png in Resources */,
 				3223121B160A07D800FB16AF /* rightArrow.png in Resources */,
-				3223122B160A591A00FB16AF /* instructions2.png in Resources */,
-				3223122C160A591A00FB16AF /* instructions1.png in Resources */,
 				32DA67D21635EAB2003E81CB /* envelopeIcon.icns in Resources */,
 				324ADD311638457500292D89 /* shadow.png in Resources */,
-				324ADD341638460200292D89 /* background.jpg in Resources */,
 				3251CB30164306BA00B50F0B /* infoButton.png in Resources */,
 				3251CB33164313B700B50F0B /* shuffleButton.png in Resources */,
 				3251CB351643180D00B50F0B /* gridButton.png in Resources */,
@@ -290,6 +278,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CINDER_PATH = ../../Cinder;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.01;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_MODEL_TUNING = G5;
@@ -302,6 +291,7 @@
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
 				PRODUCT_NAME = CardBox;
 				SDKROOT = "";
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -311,6 +301,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CINDER_PATH = ../../Cinder;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_FAST_MATH = YES;
@@ -327,6 +318,7 @@
 				PRODUCT_NAME = CardBox;
 				SDKROOT = "";
 				STRIP_INSTALLED_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -337,6 +329,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = i386;
 				CINDER_PATH = ../../cinder_0.8.3_mac;
+				CURRENT_PROJECT_VERSION = 1.01;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
@@ -352,6 +345,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = i386;
 				CINDER_PATH = ../../cinder_0.8.3_mac;
+				CURRENT_PROJECT_VERSION = 1.01;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";

@@ -48,15 +48,17 @@ void CardBoxApp::setup(){
     mParams.hide();
 
     
-    // and these images are not specified in JSON? 
-    infoSection.setup("instructions1.png","instructions2.png");
-    infoButton = Button("infoButton.png",Vec2f(getWindowWidth()-75,75));
-    infoButton.show();
+    // and these images are not specified in JSON?
+    
+
+    
+
     shuffleButton = Button("gridButton.png",Vec2f(75,getWindowHeight()-75));
     shuffleButton.addAlternate("shuffleButton.png");
     shuffleButton.show();
     
     // PARSE THE JSON
+    string dataErrorMessage;
     string basePath = getHomeDirectory().string()+"Documents/AMNH/postcards/";
     console() << "I'd like to load a file from here: " << basePath+"data.js" << endl;
     JsonTree root;
@@ -65,20 +67,13 @@ void CardBoxApp::setup(){
         root = JsonTree( loadFile(basePath+"data.js"));
     } catch(Exception ex){
         debugState = -1;
-        console() << "BORK" << endl;
-        
-        
+        console() << "Problem loading " << basePath << "data.js" << endl;
+         dataErrorMessage = "problem loading data.js";
     }
     
     if(debugState>-1){
         try{
     cs.basePath = basePath+root["basepath"].getValue();
-    // cs.background = root["background"].getValue();
-    //cs.shadow_path = root["shadow"].getValue();
-    debugState = atoi(root["debugstate"].getValue().c_str());
-    timeout = atof(root["timeout"].getValue().c_str());
-    console() << "setting debugstate to: " << debugState << endl;
-    updateDebugState();
     cs.shadow_tex = gl::Texture(loadImage(loadResource("shadow.png")));
 
     // hmmmmm, this should probably be handled more generally...
@@ -105,9 +100,76 @@ void CardBoxApp::setup(){
         cm.uid = i++;
         if(i<=maxCards) cards.push_back(new Card(&cs,cm));
     }
+        }catch(Exception ex){
+        // problem parsing data.js
+            debugState = -2;
+            dataErrorMessage = "problem parsing data.js";
+    }
     
-    bg_tex = gl::Texture(loadImage(loadResource("background.jpg")));
-    
+            try{
+                root = JsonTree( loadFile(basePath+"appsettings.js"));
+            } catch(Exception ex){
+                debugState = -3;
+                 dataErrorMessage = "problem loading appsettings.js";
+                console() << "Problem loading " << basePath << "appsettings.js" << endl;
+            }
+
+            vector<string> instructionsStrings;
+            string backgroundString;
+            string elementsPath;
+            
+            if(debugState>-1){
+                try{
+                   // cs.basePath = basePath+root["basepath"].getValue();
+                    // cs.background = root["background"].getValue();
+                    //cs.shadow_path = root["shadow"].getValue();
+                    debugState = atoi(root["debugstate"].getValue().c_str());
+                    timeout = atof(root["timeout"].getValue().c_str());
+                    elementsPath = root["elementspath"].getValue();
+                    backgroundString = root["background"].getValue();
+                    console() << "setting debugstate to: " << debugState << endl;
+                    updateDebugState();
+                    
+                    JsonTree instructionsTree = root.getChild( "instructions" );
+                    for( JsonTree::ConstIter cIt = instructionsTree.begin(); cIt != instructionsTree.end(); ++cIt )
+                    {
+                        JsonTree jt = (*cIt);
+                        string instructionsString = jt.getValue();
+                        
+                        //console() << "testing..." << jt.getValue() << endl;
+                        instructionsStrings.push_back(instructionsString);
+                    }
+
+                }catch(Exception e){
+                    debugState = -4;
+                    console() << "problem parsing appsettings.js" << endl;
+                     dataErrorMessage = "problem parsing appsettings.js";
+                    
+                }
+            } 
+            console() << "instructions string loaded?" << basePath+elementsPath+instructionsStrings.at(0) << endl;
+        try{
+            if(instructionsStrings.size()>1){
+                // infoSection.setup("instructions1.png","instructions2.png");
+                infoSection.setup(basePath+elementsPath+instructionsStrings.at(0), basePath+elementsPath+instructionsStrings.at(1));
+            } else if(instructionsStrings.size()>0){
+                // infoSection.setup("instructions1.png","instructions2.png");
+                infoSection.setup(basePath+elementsPath+instructionsStrings.at(0));
+            } else {
+                // t'would appear there is no infoSection...
+            }
+        } catch(Exception e){
+            debugState = -5;
+            dataErrorMessage = "problem loading the instructions file.";
+        }
+            infoButton = Button("infoButton.png",Vec2f(getWindowWidth()-75,75));
+            if(infoSection.isAvailable()) infoButton.show();
+        try{
+    bg_tex = gl::Texture(loadImage(basePath+elementsPath+backgroundString));
+        } catch(Exception e){
+            debugState = -6;
+            dataErrorMessage = "problem loading " +backgroundString;
+        }
     // some text formatting stuff
     gl::Texture::Format fmt;
     fmt.enableMipmapping( true );
@@ -116,17 +178,16 @@ void CardBoxApp::setup(){
     cui.setup();
     randomize();
     }
-     catch(Exception ex){
-        debugState = -2;
-    }
-        }
+
+        
     if(debugState<0){
         string normalFont( "Arial" );
         TextLayout layout;
         layout.setFont( Font( normalFont, 36 ) );
         layout.setColor( Color( 1,1,1 ) );
-        layout.addLine(basePath+"data.js");
-        layout.addLine("parse error.");
+        layout.addLine(dataErrorMessage);
+//        layout.addLine(basePath+"data.js");
+ //       layout.addLine("parse error.");
         
         Surface8u rendered = layout.render( true, false );
         Surface8u newSurface(1050,1680,false);
@@ -344,7 +405,7 @@ void CardBoxApp::mouseUp(MouseEvent evt){
         }
          console() << "mouse up when the info section is open" << infoSection.mouseUp(evt) << endl;
      
-    } else if(infoButton.isOver(cursorPos)){
+    } else if(infoButton.isOver(cursorPos) && infoSection.isAvailable()){
         infoButton.up();
         info();
         infoButton.hide();

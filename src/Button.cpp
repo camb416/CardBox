@@ -71,10 +71,10 @@ void Button::show(float time_in){
 }
 
 bool Button::isOver(Vec2f mousePos){
-    
     float dist = mousePos.distance(pos);
     //if(dist<200)
     //console() << "distance to button: " << dist << endl;
+    if(tex){
     if(dist<tex.getWidth()/2){
         if(!bOver){
             //timeline().apply(&alpha,1.0f,0.3f,EaseNone());
@@ -88,6 +88,9 @@ bool Button::isOver(Vec2f mousePos){
             bOver = false;
         }
         //console() << " not over" << endl;
+        return false;
+    }
+    } else {
         return false;
     }
     }

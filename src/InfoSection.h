@@ -25,7 +25,7 @@ using namespace ci::app;
 
 class InfoSection{
 public:
-    void setup(string p1_str,string p2_str);
+    void setup(string p1_str,string p2_str = "");
     InfoSection();
     Anim<Vec3f> pos;
     Anim<float> alpha;
@@ -40,11 +40,14 @@ public:
     bool isOpen();
     void next();
     void prev();
+    bool isAvailable();
 private:
+    bool bIsAvail;
     int curPage;
     Button closeButton;
     Button prevButton;
     Button nextButton;
+    bool hasSecondPage;
     
     
 };
