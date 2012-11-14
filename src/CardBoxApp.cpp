@@ -331,6 +331,7 @@ void CardBoxApp::mouseDrag(MouseEvent evt){
 }
 
 void CardBoxApp::enterAttract(){
+    if(infoSection.isOpen()) infoSection.close();
     isAttract = true;
     randomize();
 }
